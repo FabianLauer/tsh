@@ -19,7 +19,7 @@
 			"avoid-escape"
 		],
 		"semicolon": [
-			false,
+			true,
 			"never"
 		],
 		"variable-name": [
@@ -41,9 +41,13 @@
 			false
 		],
 		"curly": false,
-		"ordered-imports": [false],
+		"ordered-imports": [
+			false
+		],
 		"no-debugger": true,
-		"no-consecutive-blank-lines": [false],
+		"no-consecutive-blank-lines": [
+			false
+		],
 		"max-line-length": [
 			true,
 			120

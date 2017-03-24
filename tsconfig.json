@@ -11,6 +11,10 @@
         "emitDecoratorMetadata": true,
         "jsx": "react",
         "outDir": "./build/",
-        "declaration": true
+        "declaration": true,
+        "baseUrl": "./src/",
+        "allowJs": true,
+        "allowUnreachableCode": true,
+        "allowUnusedLabels": true
     }
 }

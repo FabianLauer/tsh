@@ -5,5 +5,9 @@
 		"**/.hg": true,
 		"**/.DS_Store": true,
 		"node_modules/": true
+	},
+	"files.associations": {
+		"*.bison": "yacc",
+		"*.lex": "yacc"
 	}
 }

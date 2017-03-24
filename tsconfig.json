@@ -1,0 +1,16 @@
+{
+    "exclude": [
+        "./build/**",
+        "node_modules/**"
+    ],
+    "compilerOptions": {
+        "target": "es6",
+        "module": "commonjs",
+        "experimentalDecorators": true,
+        "noImplicitAny": true,
+        "emitDecoratorMetadata": true,
+        "jsx": "react",
+        "outDir": "./build/",
+        "declaration": true
+    }
+}

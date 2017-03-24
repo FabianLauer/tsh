@@ -1,0 +1,10 @@
+
+## Dotfiles, Logs, etc
+.DS_Store
+.browse.VC*
+*.log
+
+## Directories
+node_modules/
+build/*
+

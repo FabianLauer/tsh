@@ -75,15 +75,15 @@ var parser = (function(){
 var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o};
 var parser = {trace: function trace() { },
 yy: {},
-symbols_: {"error":2,"primary_expression":3,"IDENTIFIER":4,"STRING_LITERAL":5,"(":6,"expression":7,")":8,"root":9,"$accept":0,"$end":1},
-terminals_: {2:"error",4:"IDENTIFIER",5:"STRING_LITERAL",6:"(",7:"expression",8:")"},
-productions_: [0,[3,1],[3,1],[3,3],[9,1]],
+symbols_: {"error":2,"primary_expression":3,"IDENTIFIER":4,"STRING_LITERAL":5,"(":6,"expression":7,")":8,"function_declaration":9,"FUNCTION":10,"root":11,"$accept":0,"$end":1},
+terminals_: {2:"error",4:"IDENTIFIER",5:"STRING_LITERAL",6:"(",7:"expression",8:")",10:"FUNCTION"},
+productions_: [0,[3,1],[3,1],[3,3],[9,1],[11,1],[11,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
 var $0 = $$.length - 1;
 switch (yystate) {
-case 1:
+case 1: case 4:
  this.$ = yy.createNode(yy.Identifier, yy.createToken($$[$0])); 
 break;
 case 2:
@@ -92,13 +92,13 @@ break;
 case 3:
  this.$ = $$[$0-1]; 
 break;
-case 4:
+case 6:
  return this.$; 
 break;
 }
 },
-table: [{3:2,4:[1,3],5:[1,4],6:[1,5],9:1},{1:[3]},{1:[2,4]},{1:[2,1]},{1:[2,2]},{7:[1,6]},{8:[1,7]},{1:[2,3]}],
-defaultActions: {2:[2,4],3:[2,1],4:[2,2],7:[2,3]},
+table: [{3:2,4:[1,4],5:[1,5],6:[1,6],9:3,10:[1,7],11:1},{1:[3]},{1:[2,5]},{1:[2,6]},{1:[2,1]},{1:[2,2]},{7:[1,8]},{1:[2,4]},{8:[1,9]},{1:[2,3]}],
+defaultActions: {2:[2,5],3:[2,6],4:[2,1],5:[2,2],7:[2,4],9:[2,3]},
 parseError: function parseError(str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -573,7 +573,7 @@ var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
 case 0: comment(); 
 break;
-case 1:return 'FUNCTION';
+case 1:return 10;
 break;
 case 2:return 4;
 break;

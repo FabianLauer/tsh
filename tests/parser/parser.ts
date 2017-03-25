@@ -7,7 +7,7 @@ import ParserTestCase from './ParserTestCase'
 
 import { readdirSync, statSync } from 'fs'
 
-describe('Parser', () => {
+describe('Parser:', () => {
 	const files = readdirSync(`${__dirname}/cases/`)
 		.map(filename => `${__dirname}/cases/${filename}`)
 		.filter(filename => statSync(filename).isFile());
@@ -15,22 +15,25 @@ describe('Parser', () => {
 	for (const filename of files) {
 		const cases: ParserTestCase[] = require(filename).default
 
-		describe(filename, () => {
+		describe(filename.replace(/^.*\//, '') + ':', () => {
 			for (const testCase of cases) {
 				let parserResult: ast.BaseNode
 
-				// parse source code to AST
-				describe('parse', () => {
+				// run the actual tests
+				describe(testCase.name, () => {
+					// parse source code to AST
 					it('should not throw an error', () => {
 						parserResult = parser.parse(testCase.sourceCode)
 					})
-				})
 
-				// validate AST node sequence
-				describe('result', () => {
+					// validate AST node sequence
 					it('should match the expected AST', () => {
 						if (!(parserResult instanceof testCase.expectation[0])) {
-							throw new Error('AST node type expectation not met')
+							throw new Error(
+								'AST node type expectation not met: ' +
+								`expected ${testCase.expectation[0].name}, ` +
+								`got ${(<any>parserResult).constructor.name} (${typeof parserResult})`
+							)
 						}
 					})
 				})

@@ -2,10 +2,10 @@ import * as cp from 'child_process'
 
 
 function merge(literals: TemplateStringsArray, ...placeholders: any[]) {
-	let tag = literals[0] || ''
-	for (let i = 0; i < placeholders.length; i++) {
-		tag += literals[i]
-		tag += placeholders[i]
+	let tag = ''
+	for (let i = 0; i < literals.length; i++) {
+		tag += literals[i] || ''
+		tag += placeholders[i] || ''
 	}
 	return tag
 }
@@ -27,8 +27,14 @@ export const _ = {
 	}
 }
 
+/**
+ * Writes a message to stdout. Shorthand method for `console.log(...)`.
+ */
 export const print = factory(console.log)
 
+/**
+ * Runs a shell command synchronously.
+ */
 export const sh = factory(input => {
 	const [command, ...args] = input.split(/\s+/i)
 	const result = cp.spawnSync(command, args, {
@@ -42,6 +48,9 @@ export const sh = factory(input => {
 })
 
 
+/**
+ * Runs a jake build command synchronously.
+ */
 export function jake(namespace: string, target: string) {
 	return sh `./jake ${namespace}:${target}`
 }

@@ -28,12 +28,12 @@ describe('Parser:', () => {
 
 					// validate AST node sequence
 					it('should match the expected AST', () => {
-						if (!(parserResult instanceof testCase.expectation[0])) {
-							throw new Error(
-								'AST node type expectation not met: ' +
-								`expected ${testCase.expectation[0].name}, ` +
-								`got ${(<any>parserResult).constructor.name} (${typeof parserResult})`
-							)
+						for (const expectation of testCase.expectation) {
+							if (!expectation(parserResult)) {
+								throw new Error(
+									`AST node type expectation not met: '${expectation.toString()}'`
+								)
+							}
 						}
 					})
 				})

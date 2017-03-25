@@ -45,30 +45,30 @@ IS			[uUlL]*
 ">="			return 'GE_OP';
 "=="			return 'EQ_OP';
 "!="			return 'NE_OP';
-";"			{ return(';'); }
+";"				{ return(';'); }
 ("{"|"<%")		{ return('{'); }
 ("}"|"%>")		%{ return('}'); %}
-","			{ return(','); }
-":"			{ return(':'); }
-"="			{ return('='); }
-"("			{ return('('); }
-")"			{ return(')'); }
+","				{ return(','); }
+":"				{ return(':'); }
+"="				{ return('='); }
+"("				{ return('('); }
+")"				{ return(')'); }
 ("["|"<:")		{ return('['); }
 ("]"|":>")		{ return(']'); }
-"."			{ return('.'); }
-"&"			{ return('&'); }
-"!"			{ return('!'); }
-"~"			{ return('~'); }
-"-"			{ return('-'); }
-"+"			{ return('+'); }
-"*"			{ return('*'); }
-"/"			{ return('/'); }
-"%"			{ return('%'); }
-"<"			{ return('<'); }
-">"			{ return('>'); }
-"^"			{ return('^'); }
-"|"			{ return('|'); }
-"?"			{ return('?'); }
+"."				{ return('.'); }
+"&"				{ return('&'); }
+"!"				{ return('!'); }
+"~"				{ return('~'); }
+"-"				{ return('-'); }
+"+"				{ return('+'); }
+"*"				{ return('*'); }
+"/"				{ return('/'); }
+"%"				{ return('%'); }
+"<"				{ return('<'); }
+">"				{ return('>'); }
+"^"				{ return('^'); }
+"|"				{ return('|'); }
+"?"				{ return('?'); }
 
 [ \t\v\n\f]		{ }
 .			{ /* ignore bad characters */ }

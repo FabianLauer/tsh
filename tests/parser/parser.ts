@@ -10,7 +10,7 @@ import { readdirSync, statSync } from 'fs'
 describe('Parser:', () => {
 	const files = readdirSync(`${__dirname}/cases/`)
 		.map(filename => `${__dirname}/cases/${filename}`)
-		.filter(filename => statSync(filename).isFile());
+		.filter(filename => statSync(filename).isFile())
 
 	for (const filename of files) {
 		const cases: ParserTestCase[] = require(filename).default

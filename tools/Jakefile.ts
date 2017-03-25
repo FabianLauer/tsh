@@ -2,7 +2,7 @@
 
 /// <reference path="../node_modules/@types/jake/index.d.ts" />
 
-import { _, sh, jake } from './buildUtils'
+import { sh, jake } from './buildUtils'
 
 namespace('build', function () {
 

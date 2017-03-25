@@ -1,4 +1,5 @@
 import * as generatedParser from './generatedParser.js'
+import * as ast from '../ast'
 
 interface IGeneratedParser {
 	yy: any
@@ -10,17 +11,19 @@ interface IGeneratedParser {
  * We keep this private.
  */
 const parser: IGeneratedParser = (<any>generatedParser).parser
-parser.yy.Node = class {
-	constructor(
-		public readonly type: string,
-		public readonly params: any[]
-	) {
-		params.forEach((param) => {
-			if (param instanceof parser.yy.Node)
-				(<any>this)[param.Type] = param
-		})
-	}
+
+for (const typeName in ast) {
+	parser.yy[typeName] = (<any>ast)[typeName]
 }
+
+parser.yy.createNode = function (type: { new (...args: any[]): ast.BaseNode }, ...args: any[]) {
+	return new type(...args)
+}
+
+parser.yy.createToken = function (rawSource: string) {
+	return new ast.Token(rawSource)
+}
+
 
 export function parse(input: string): any {
 	return parser.parse(input)

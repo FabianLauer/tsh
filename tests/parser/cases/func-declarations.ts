@@ -5,13 +5,10 @@ export const cases: ParserTestCase[] = []
 export default cases
 
 function test<TNode extends ast.BaseNode>(
-	name: string,
-	sourceCode: string = name,
+	sourceCode: string,
 	...expectation: Array<(node: TNode) => boolean>
 ): void {
-	if (name === sourceCode) {
-		name = `'${name}'`
-	}
+	const name = sourceCode
 	cases.push(ParserTestCase.create(name, sourceCode, ...expectation))
 }
 
@@ -21,28 +18,24 @@ function test<TNode extends ast.BaseNode>(
 
 test<ast.FuncDecl>(
 	'func alpha()',
-	undefined,
 	$ => $ instanceof ast.FuncDecl,
 	$ => $.name.rawValue === 'alpha'
 )
 
 test<ast.FuncDecl>(
 	'func alpha() { }',
-	undefined,
 	$ => $ instanceof ast.FuncDecl,
 	$ => $.name.rawValue === 'alpha'
 )
 
 test<ast.FuncDecl>(
 	'func alpha(): typename',
-	undefined,
 	$ => $ instanceof ast.FuncDecl,
 	$ => $.name.rawValue === 'alpha'
 )
 
 test<ast.FuncDecl>(
 	'func alpha(): typename { }',
-	undefined,
 	$ => $ instanceof ast.FuncDecl,
 	$ => $.name.rawValue === 'alpha'
 )

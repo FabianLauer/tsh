@@ -17,6 +17,16 @@ function factory<T, TScope>(fn: (this: TScope, input: string) => T, scope?: TSco
 	}
 }
 
+
+export const _ = {
+	print(msg: any, ...additionalMsg: any[]) {
+		if (typeof msg === 'undefined' && additionalMsg.length < 1)
+			return
+		additionalMsg.unshift(msg)
+		console.log.apply(console, additionalMsg)
+	}
+}
+
 export const print = factory(console.log)
 
 export const sh = factory(input => {
@@ -31,11 +41,7 @@ export const sh = factory(input => {
 	return result
 })
 
-export const _ = {
-	print(msg: any, ...additionalMsg: any[]) {
-		if (typeof msg === 'undefined' && additionalMsg.length < 1)
-			return
-		additionalMsg.unshift(msg)
-		console.log.apply(console, additionalMsg)
-	}
+
+export function jake(namespace: string, target: string) {
+	return sh `./jake ${namespace}:${target}`
 }

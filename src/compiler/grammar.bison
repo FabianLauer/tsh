@@ -12,8 +12,8 @@ expression:
 
 
 type_expression:
-		IDENTIFIER
-			{ $$ = yy.TypeExpr.fromIdentifier(new yy.Token($1)) }
+	IDENTIFIER
+		{ $$ = yy.TypeExpr.fromIdentifier(new yy.Token($1)) }
 ;
 
 
@@ -29,6 +29,15 @@ let_or_const:
 ;
 
 
+var_name_decl_with_type_expr:
+	/*
+	Example:
+		name: type_expr
+	*/
+	|	IDENTIFIER ":" type_expression
+			{ $$ = [$1, $3] }
+;
+
 var_decl:
 	/*
 	Example:
@@ -42,6 +51,20 @@ var_decl:
 				varName: yy.createToken($2)
 			})
 		}
+
+	/*
+	Example:
+		let varName: Type
+		const varName: Type
+	*/
+	|	let_or_const var_name_decl_with_type_expr
+		{
+			$$ = yy.VarDecl.create({
+				modifier: yy.getVarDeclModifierByKeyword($1),
+				varName: yy.createToken($2[0]),
+				typeDecl: $2[1]
+			})
+		}
 	
 	/*
 	Example:
@@ -53,6 +76,21 @@ var_decl:
 			$$ = yy.VarDecl.create({
 				modifier: yy.getVarDeclModifierByKeyword($1),
 				varName: yy.createToken($2),
+				assignment: $3
+			})
+		}
+	
+	/*
+	Example:
+		let varName: Type = expr
+		const varName: Type = expr
+	*/
+	|	let_or_const var_name_decl_with_type_expr assignment
+		{
+			$$ = yy.VarDecl.create({
+				modifier: yy.getVarDeclModifierByKeyword($1),
+				varName: yy.createToken($2[0]),
+				typeDecl: $2[1],
 				assignment: $3
 			})
 		}

@@ -6,9 +6,14 @@ export class Token extends BaseNode {
 		 * The raw value of this token in source code.
 		 */
 		public readonly rawValue: string
-	) {
-		super()
-	}
+	) { super() }
+
+
+	/**
+	 * A token with no content whatsoever.
+	 */
+	// tslint:disable-next-line:variable-name
+	public static readonly Empty = new Token('')
 }
 
 export default Token

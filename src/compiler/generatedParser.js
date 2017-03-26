@@ -72,33 +72,62 @@
   }
 */
 var parser = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o};
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,4],$V1=[1,11],$V2=[1,12],$V3=[1,13],$V4=[1,4,5,6,11,12],$V5=[4,5,6,11,12];
 var parser = {trace: function trace() { },
 yy: {},
-symbols_: {"error":2,"primary_expression":3,"IDENTIFIER":4,"STRING_LITERAL":5,"(":6,"expression":7,")":8,"function_declaration":9,"FUNCTION":10,"root":11,"$accept":0,"$end":1},
-terminals_: {2:"error",4:"IDENTIFIER",5:"STRING_LITERAL",6:"(",7:"expression",8:")",10:"FUNCTION"},
-productions_: [0,[3,1],[3,1],[3,3],[9,1],[11,1],[11,1]],
+symbols_: {"error":2,"expression":3,"IDENTIFIER":4,"STRING_LITERAL":5,"CONSTANT":6,"type_expression":7,"statement":8,"compound_statement":9,"statement_list":10,"{":11,"}":12,"function_declaration":13,"FUNCTION":14,"(":15,")":16,":":17,"root":18,"$accept":0,"$end":1},
+terminals_: {2:"error",4:"IDENTIFIER",5:"STRING_LITERAL",6:"CONSTANT",11:"{",12:"}",14:"FUNCTION",15:"(",16:")",17:":"},
+productions_: [0,[3,1],[3,1],[3,1],[7,1],[8,1],[8,1],[8,1],[10,1],[10,2],[9,2],[9,3],[13,4],[13,5],[13,6],[13,7],[18,1],[18,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
 var $0 = $$.length - 1;
 switch (yystate) {
-case 1: case 4:
- this.$ = yy.createNode(yy.Identifier, yy.createToken($$[$0])); 
+case 4:
+ this.$ = yy.TypeExpr.fromIdentifier(new yy.Token($$[$0])) 
 break;
-case 2:
- this.$ = yy.createNode(yy.StringLiteral, yy.createToken($$[$0])); 
+case 10: case 11:
+ this.$ = new yy.Statement() 
 break;
-case 3:
- this.$ = $$[$0-1]; 
+case 12:
+
+			this.$ = yy.FuncDecl.create({
+				funcName: yy.createToken($$[$0-2])
+			})
+		
 break;
-case 6:
+case 13:
+
+			this.$ = yy.FuncDecl.create({
+				funcName: yy.createToken($$[$0-3]),
+				funcBody: $$[$0]
+			})
+		
+break;
+case 14:
+
+			this.$ = yy.FuncDecl.create({
+				funcName: yy.createToken($$[$0-4]),
+				returnTypeDecl: $$[$0]
+			})
+		
+break;
+case 15:
+
+			this.$ = yy.FuncDecl.create({
+				funcName: yy.createToken($$[$0-5]),
+				returnTypeDecl: $$[$0-1],
+				funcBody: $$[$0]
+			})
+		
+break;
+case 16: case 17:
  return this.$; 
 break;
 }
 },
-table: [{3:2,4:[1,4],5:[1,5],6:[1,6],9:3,10:[1,7],11:1},{1:[3]},{1:[2,5]},{1:[2,6]},{1:[2,1]},{1:[2,2]},{7:[1,8]},{1:[2,4]},{8:[1,9]},{1:[2,3]}],
-defaultActions: {2:[2,5],3:[2,6],4:[2,1],5:[2,2],7:[2,4],9:[2,3]},
+table: [{9:2,11:$V0,13:3,14:[1,5],18:1},{1:[3]},{1:[2,16]},{1:[2,17]},{3:9,4:$V1,5:$V2,6:$V3,8:8,9:10,10:7,11:$V0,12:[1,6]},{4:[1,14]},o($V4,[2,10]),{3:9,4:$V1,5:$V2,6:$V3,8:16,9:10,11:$V0,12:[1,15]},o($V5,[2,8]),o($V5,[2,5]),o($V5,[2,7]),o($V5,[2,1]),o($V5,[2,2]),o($V5,[2,3]),{15:[1,17]},o($V4,[2,11]),o($V5,[2,9]),{16:[1,18]},{1:[2,12],9:19,11:$V0,17:[1,20]},{1:[2,13]},{4:[1,22],7:21},{1:[2,14],9:23,11:$V0},o($V1,[2,4]),{1:[2,15]}],
+defaultActions: {2:[2,16],3:[2,17],19:[2,13],23:[2,15]},
 parseError: function parseError(str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -573,23 +602,23 @@ var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
 case 0: comment(); 
 break;
-case 1:return 10;
+case 1:return 14;
 break;
 case 2:return 4;
 break;
-case 3:return 'CONSTANT';
+case 3:return 6;
 break;
-case 4:return 'CONSTANT';
+case 4:return 6;
 break;
-case 5:return 'CONSTANT';
+case 5:return 6;
 break;
-case 6:return 'CONSTANT';
+case 6:return 6;
 break;
-case 7:return 'CONSTANT';
+case 7:return 6;
 break;
-case 8:return 'CONSTANT';
+case 8:return 6;
 break;
-case 9:return 'CONSTANT';
+case 9:return 6;
 break;
 case 10:return 5;
 break;

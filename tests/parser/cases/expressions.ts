@@ -48,11 +48,26 @@ function test<TNode extends ast.BaseNode>(
 ///
 
 
-function isInstanceOf<T>(obj: T, constructor: { new(...args: any[]): T; name?: string }) {
+function isInstanceOf<T>(obj: T, constructor: { new (...args: any[]): T; name?: string }) {
 	if (obj instanceof constructor) {
 		return true
 	}
 	throw new Error(`instanceof assertion failed: expected ${constructor.name}, got ${obj.constructor.name}`)
+}
+
+function isInstanceOfEither<T>(obj: T, ...constructors: Array<{ new (...args: any[]): T; name?: string }>) {
+	for (const constructor of constructors) {
+		try {
+			if (isInstanceOf(obj, constructor)) {
+				return true
+			}
+		} catch (err) {
+			// ignore assertion error
+		}
+	}
+	throw new Error(
+		`instanceof assertion failed: expected ${constructors.map($ => $.name).join(' or ')}, got ${obj.constructor.name}`
+	)
 }
 
 
@@ -85,7 +100,7 @@ binaryOperators = binaryOperators.map(operator => `${operator}=`)
 for (const operator of binaryOperators) {
 	test<ast.Expr>(
 		`a ${operator} b`,
-		([$]) => isInstanceOf($, ast.BinaryOperation)
+		([$]) => isInstanceOfEither($, ast.BinaryOperation, ast.Expr)
 	)
 }
 
@@ -97,13 +112,13 @@ const unaryOperators = ['++', '--']
 for (const operator of unaryOperators) {
 	test<ast.Expr>(
 		`a${operator}`,
-		([$]) => isInstanceOf($, ast.UnaryOperation)
+		([$]) => isInstanceOfEither($, ast.UnaryOperation, ast.Expr)
 	)
 
 
 	test<ast.Expr>(
 		`${operator}a`,
-		([$]) => isInstanceOf($, ast.UnaryOperation)
+		([$]) => isInstanceOfEither($, ast.UnaryOperation, ast.Expr)
 	)
 }
 

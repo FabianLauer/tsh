@@ -21,7 +21,15 @@ namespace('dev', function () {
 		sh `rm -rf ./build/`
 		jake('build', 'parser')
 		sh `tsc`
-		sh `mocha build/tests/all.js`
+		sh `mocha build/tests/all.js --grep Parser`
+	})
+
+
+	desc('Compiles the compiler, then runs end to end tests. Useful when working on code generators.')
+	task('codegen', () => {
+		sh `rm -rf ./build/`
+		sh `tsc`
+		sh `mocha build/tests/all.js --grep E2E`
 	})
 
 })

@@ -3,3 +3,4 @@
 void require('app-module-path').addPath(__dirname + '/../src/')
 
 import './parser'
+import './e2e'

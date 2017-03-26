@@ -16,7 +16,7 @@ export function importFromDirectorySync<TExports>(
 	directoryPath: string,
 	filter: (filename: string) => boolean = () => true
 ): TExports[] {
-	return readdirSync(`${directoryPath}/`)
+	return (readdirSync(`${directoryPath}/`) || [])
 		.map(filename => `${directoryPath}/${filename}`)
 		.filter(filename => statSync(filename).isFile())
 		.filter(filter)

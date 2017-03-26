@@ -1,5 +1,5 @@
 %token IDENTIFIER
-%token FUNCTION
+%token FUNCTION LET CONST
 %start root
 %%
 
@@ -17,8 +17,33 @@ type_expression:
 ;
 
 
+var_decl:
+	/*
+	Example:
+		let a
+	*/
+		LET IDENTIFIER
+		{
+			$$ = yy.VarDecl.create({
+				varName: yy.createToken($2)
+			})
+		}
+	
+	/*
+	Example:
+		const a
+	*/
+	|	CONST IDENTIFIER
+		{
+			$$ = yy.VarDecl.create({
+				varName: yy.createToken($2)
+			})
+		}
+;
+
+
 statement:
-		expression
+		var_decl
 	|	statement
 	|	compound_statement
 ;
@@ -26,13 +51,24 @@ statement:
 
 statement_list:
 		statement
+		{ $$ = new yy.Statement([$1]) }
 	|	statement_list statement
+		{
+			$$ = new yy.Statement(
+				$1.nodes.concat($2)
+			)
+		}
 ;
 
 
 compound_statement:
-		"{" "}"					{ $$ = new yy.Statement() }
-	|	"{" statement_list "}"	{ $$ = new yy.Statement() }
+		"{" "}"
+		{ $$ = new yy.Statement() }
+
+	|	"{" statement_list "}"
+		{
+			$$ = $2
+		}
 ;
 
 
@@ -65,7 +101,7 @@ param_decl_list:
 ;
 
 
-function_declaration:
+func_decl:
 	/*
 	Example:
 		func ident()
@@ -129,6 +165,5 @@ function_declaration:
 
 
 root:
-	compound_statement			{ return $$; }
-	| function_declaration		{ return $$; }
+	func_decl					{ return $$; }
 ;

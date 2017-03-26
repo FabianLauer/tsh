@@ -41,11 +41,6 @@ function hasEmptyFuncBody(funcDecl: ast.FuncDecl) {
 }
 
 
-function hasEmptyParamDeclList(funcDecl: ast.FuncDecl) {
-	return funcDecl.runtimeParamDecls === ast.ParamDeclList.Empty
-}
-
-
 function hasOwnParamDeclList(funcDecl: ast.FuncDecl) {
 	return (
 		funcDecl.runtimeParamDecls instanceof ast.ParamDeclList &&

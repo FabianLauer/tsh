@@ -1,6 +1,6 @@
-import { Expression, Token } from './'
+import { Expr, Token } from './'
 
-export class TypeExpr extends Expression {
+export class TypeExpr extends Expr {
 	private constructor() {
 		super()
 	}

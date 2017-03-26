@@ -1,5 +1,5 @@
 import BaseNode from './BaseNode'
-import Expression from './Expression'
+import Expr from './Expr'
 import FuncDecl from './FuncDecl'
 import Identifier from './Identifier'
 import ParamDecl from './ParamDecl'
@@ -8,10 +8,11 @@ import Statement from './Statement'
 import StringLiteral from './StringLiteral'
 import Token from './Token'
 import TypeExpr from './TypeExpression'
+import VarDecl from './VarDecl'
 
 export {
 	BaseNode,
-	Expression,
+	Expr,
 	Identifier,
 	FuncDecl,
 	ParamDecl,
@@ -19,5 +20,6 @@ export {
 	Statement,
 	StringLiteral,
 	Token,
-	TypeExpr
+	TypeExpr,
+	VarDecl
 }

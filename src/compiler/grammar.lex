@@ -9,6 +9,8 @@ IS			[uUlL]*
 "/*"			{ comment(); }
 
 "func"			return 'FUNCTION';
+"let"			return 'LET';
+"const"			return 'CONST';
 
 {L}({L}|{D})*		return 'IDENTIFIER';
 

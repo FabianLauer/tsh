@@ -1,4 +1,4 @@
-import { BaseNode, Token, Expr, TypeExpr } from './'
+import { BaseNode, Token, Expr, TypeExpr, VarDeclModifier } from './'
 
 
 interface IVarDeclCreateParams {
@@ -8,10 +8,14 @@ interface IVarDeclCreateParams {
 	varName: Token
 
 	/**
+	 * The modifier with which the variable was declared.
+	 */
+	modifier: VarDeclModifier
+
+	/**
 	 * The variable's type declaration.
 	 */
 	typeDecl?: TypeExpr
-
 
 	/**
 	 * The value assigned to the variable.
@@ -27,6 +31,7 @@ export class VarDecl extends BaseNode {
 	 */
 	public static create(params: IVarDeclCreateParams) {
 		return new VarDecl(
+			params.modifier,
 			params.varName,
 			params.typeDecl,
 			params.assignment
@@ -38,6 +43,10 @@ export class VarDecl extends BaseNode {
 	 * Creates a new `VarDecl` instance.
 	 */
 	private constructor(
+		/**
+		 * The modifier with which the variable was declared.
+		 */
+		public readonly modifier: VarDeclModifier,
 		/**
 		 * The name of the variable.
 		 */

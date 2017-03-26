@@ -9,6 +9,7 @@ import StringLiteral from './StringLiteral'
 import Token from './Token'
 import TypeExpr from './TypeExpression'
 import VarDecl from './VarDecl'
+import VarDeclModifier from './VarDeclModifier'
 
 export {
 	BaseNode,
@@ -21,5 +22,6 @@ export {
 	StringLiteral,
 	Token,
 	TypeExpr,
-	VarDecl
+	VarDecl,
+	VarDeclModifier
 }

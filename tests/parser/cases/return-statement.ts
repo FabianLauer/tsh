@@ -104,3 +104,9 @@ test<ast.ReturnStatement>(
 	([$]) => isInstanceOf($, ast.ReturnStatement),
 	([$]) => isInstanceOf($.returnValue, ast.Expr)
 )
+
+test<ast.ReturnStatement>(
+	`return --num`,
+	([$]) => isInstanceOf($, ast.ReturnStatement),
+	([$]) => isInstanceOf($.returnValue, ast.Expr)
+)

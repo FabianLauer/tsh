@@ -7,7 +7,6 @@
 
 import { BaseNode } from '@/compiler/ast'
 import { ICodeGenerator } from '@/compiler/codegen/base'
-import { } from './factory'
 
 
 /// Class

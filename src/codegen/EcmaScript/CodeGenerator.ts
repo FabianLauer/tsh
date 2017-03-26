@@ -11,7 +11,7 @@ export class CodeGenerator extends BaseGenerator<SourceUnit> {
 	 * @param ast The syntax tree to generate code for.
 	 */
 	protected generateCodeConcrete(ast: SourceUnit) {
-		return ast.nodes.map(node => createGeneratorForAstNode(node)).join('')
+		return ast.nodes.map(createGeneratorForAstNode).join('')
 	}
 }
 

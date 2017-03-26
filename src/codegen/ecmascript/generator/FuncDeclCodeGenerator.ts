@@ -10,12 +10,10 @@ export class FuncDeclCodeGenerator extends BaseGenerator<FuncDecl> {
 	 * @param ast The syntax tree to generate code for.
 	 */
 	protected generateCodeConcrete(astNode: FuncDecl) {
-		return [
-			`function ${astNode.name.rawValue}() {`,
-				createForAstNode(astNode.body),
-			`}`
-		]
+		return `
+		function ${astNode.name.rawValue}(${createForAstNode(astNode.runtimeParamDecls)}) {
+			${createForAstNode(astNode.body)}
+		}
+		`
 	}
 }
-
-

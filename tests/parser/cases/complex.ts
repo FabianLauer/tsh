@@ -56,17 +56,31 @@ test<ast.FuncDecl>(
 )
 
 
+// test<ast.FuncDecl>(
+// 	`
+// 	// Comment 
+// 	func test()
+// 	`,
+// 	() => true
+// )
+
+
 test<ast.FuncDecl>(
-	`
-	// A test with a bunch of ...
-		//   ... different comments.
-	
-	// 
-	func beta(bar: Int) -> Int {
-		// This 
-		// // // 
-	}
-	`,
+	'// Comment with code: func test()',
 	() => true
 )
 
+
+// test<ast.FuncDecl>(
+// 	`
+// 	// A test with a bunch of ...
+// 		//   ... different comments.
+	
+// 	// 
+// 	func beta(bar: Int) -> Int {
+// 		// comment inside the func
+// 		// // // 
+// 	}
+// 	`,
+// 	() => true
+// )

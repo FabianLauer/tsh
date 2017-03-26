@@ -234,7 +234,11 @@ func_decl:
 ;
 
 
-root:
-		comment_list		{ yy.result.push($$) }
-	| 	func_decl			{ yy.result.push($$) }
+
+root_grammar:
+		comment_list
+	| 	func_decl
 ;
+
+
+root: root_grammar { yy.result.push($$); return $$ };

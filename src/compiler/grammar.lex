@@ -7,7 +7,7 @@ FS			[fFlL]
 IS			[uUlL]*
 
 %%
-"//"{A}			return 'SL_COMMENT';
+"//"{A}		return 'SL_COMMENT';
 
 "func"			return 'FUNCTION';
 "let"			return 'LET';

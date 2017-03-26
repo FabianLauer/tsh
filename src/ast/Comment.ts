@@ -5,7 +5,7 @@ export class Comment extends BaseNode {
 		/**
 		 * The comment's complete text as it was in the source code.
 		 */
-		public readonly text: Token
+		public readonly lines: Token[]
 	) { super() }
 }
 

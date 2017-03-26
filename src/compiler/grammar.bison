@@ -104,10 +104,23 @@ statement:
 ;
 
 
+comment:
+	SL_COMMENT { $$ = new yy.Comment([new yy.Token($1)]) }
+;
+
+
+comment_list:
+		comment
+		{ $$ = $1 }
+	|	comment_list comment
+		{ $$ = new yy.Comment($1.nodes.concat($2)) }
+;
+
+
 statement_list:
 		statement
 		{ $$ = new yy.Statement([$1]) }
-	|	comment
+	|	comment_list
 		{ $$ = new yy.Statement([$1]) }
 	|	statement_list statement
 		{
@@ -218,11 +231,6 @@ func_decl:
 				funcBody: $7
 			})
 		}
-;
-
-
-comment:
-	SL_COMMENT { $$ = new yy.Comment(new yy.Token($1)) }
 ;
 
 

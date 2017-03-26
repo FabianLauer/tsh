@@ -37,7 +37,7 @@ function test<TNode extends ast.BaseNode>(
 test<ast.Comment>(
 	'// Comment on a single line',
 	$ => $ instanceof ast.Comment,
-	$ => /Comment on a single line/.test($.text.rawValue)
+	$ => /Comment on a single line/.test($.lines[0].rawValue)
 )
 
 
@@ -50,6 +50,17 @@ test<ast.FuncDecl>(
 	$ => $ instanceof ast.FuncDecl,
 	$ => $.body.getNodeAtIndex(0) instanceof ast.Comment,
 	$ => /Comment on a single line inside a function/.test(
-		(<ast.Comment>$.body.getNodeAtIndex(0)).text.rawValue
+		(<ast.Comment>$.body.getNodeAtIndex(0)).lines[0].rawValue
 	)
 )
+
+
+test<ast.Comment>(
+	`
+	// A comment on
+	// multiple lines
+	`,
+	$ => $ instanceof ast.Comment,
+	$ => /A comment on/.test($.lines[0].rawValue)
+)
+

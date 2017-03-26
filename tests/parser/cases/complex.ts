@@ -55,3 +55,18 @@ test<ast.FuncDecl>(
 	$ => $ instanceof ast.FuncDecl
 )
 
+
+test<ast.FuncDecl>(
+	`
+	// A test with a bunch of ...
+		//   ... different comments.
+	
+	// 
+	func beta(bar: Int) -> Int {
+		// This 
+		// // // 
+	}
+	`,
+	$ => true
+)
+

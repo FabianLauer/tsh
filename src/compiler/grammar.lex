@@ -1,12 +1,13 @@
 D			[0-9]
 L			[a-zA-Z_]
 H			[a-fA-F0-9]
+A			.*
 E			[Ee][+-]?{D}+
 FS			[fFlL]
 IS			[uUlL]*
 
 %%
-"/*"			{ comment(); }
+"//"{A}			return 'SL_COMMENT';
 
 "func"			return 'FUNCTION';
 "let"			return 'LET';

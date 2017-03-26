@@ -107,6 +107,8 @@ statement:
 statement_list:
 		statement
 		{ $$ = new yy.Statement([$1]) }
+	|	comment
+		{ $$ = new yy.Statement([$1]) }
 	|	statement_list statement
 		{
 			$$ = new yy.Statement(
@@ -219,6 +221,12 @@ func_decl:
 ;
 
 
+comment:
+	SL_COMMENT { $$ = new yy.Comment(new yy.Token($1)) }
+;
+
+
 root:
-	func_decl					{ return $$; }
+		comment				{ return $$; }
+	| 	func_decl			{ return $$; }
 ;

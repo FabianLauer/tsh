@@ -22,12 +22,12 @@ describe('Parser:', () => {
 				// run the actual tests
 				describe(testCase.name, () => {
 					// parse source code to AST
-					it('should not throw an error', () => {
+					it('parsing should work', () => {
 						parserResult = parser.parse(testCase.sourceCode)
 					})
 
 					// validate AST node sequence
-					it('should match the expected AST', () => {
+					it('AST should match expectation', () => {
 						for (const expectation of testCase.expectation) {
 							if (!expectation(parserResult)) {
 								throw new Error(

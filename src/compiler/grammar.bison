@@ -17,12 +17,25 @@ type_expression:
 ;
 
 
+assignment:
+	'=' expression
+		{ $$ = new yy.Expr($1) }
+;
+
+
+let_or_const:
+		LET
+	|	CONST
+;
+
+
 var_decl:
 	/*
 	Example:
-		let a
+		let varName
+		const varName
 	*/
-		LET IDENTIFIER
+		let_or_const IDENTIFIER
 		{
 			$$ = yy.VarDecl.create({
 				varName: yy.createToken($2)
@@ -31,12 +44,14 @@ var_decl:
 	
 	/*
 	Example:
-		const a
+		let varName = expr
+		const varName = expr
 	*/
-	|	CONST IDENTIFIER
+	|	let_or_const IDENTIFIER assignment
 		{
 			$$ = yy.VarDecl.create({
-				varName: yy.createToken($2)
+				varName: yy.createToken($2),
+				assignment: $3
 			})
 		}
 ;

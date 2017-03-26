@@ -48,6 +48,14 @@ function test<TNode extends ast.BaseNode>(
 ///
 
 
+function isInstanceOf<T>(obj: T, constructor: { new(...args: any[]): T; name?: string }) {
+	if (obj instanceof constructor) {
+		return true
+	}
+	throw new Error(`instanceof assertion failed: expected ${constructor.name}, got ${obj.constructor.name}`)
+}
+
+
 ///
 /// Test Cases:
 ///
@@ -68,19 +76,16 @@ test<ast.Expr>(
 
 /// Binary Operators:
 
-const binaryOperators = [
+let binaryOperators = [
 	'+', '-', '*', '/', '%'
 ]
 
+binaryOperators = binaryOperators.map(operator => `${operator}=`)
+
 for (const operator of binaryOperators) {
 	test<ast.Expr>(
-		`a + b`,
-		([$]) => $ instanceof ast.Expr
-	)
-
-	test<ast.Expr>(
-		`a ${operator}= b`,
-		([$]) => $ instanceof ast.Expr
+		`a ${operator} b`,
+		([$]) => isInstanceOf($, ast.BinaryOperation)
 	)
 }
 
@@ -92,13 +97,13 @@ const unaryOperators = ['++', '--']
 for (const operator of unaryOperators) {
 	test<ast.Expr>(
 		`a${operator}`,
-		([$]) => $ instanceof ast.Expr
+		([$]) => isInstanceOf($, ast.UnaryOperation)
 	)
 
 
 	test<ast.Expr>(
 		`${operator}a`,
-		([$]) => $ instanceof ast.Expr
+		([$]) => isInstanceOf($, ast.UnaryOperation)
 	)
 }
 

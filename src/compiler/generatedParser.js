@@ -72,27 +72,42 @@
   }
 */
 var parser = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,7],$V1=[1,11,12,19,22,23],$V2=[1,14],$V3=[1,17],$V4=[26,30],$V5=[1,22],$V6=[1,30],$V7=[1,31],$V8=[1,11,12,22,23],$V9=[11,12,22,23],$Va=[9,11,12,22,23],$Vb=[4,9,11,12,22,23],$Vc=[1,41];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,7],$V1=[1,4,5,32,33,34,39,40,47,50,51],$V2=[1,14],$V3=[1,17],$V4=[54,58],$V5=[1,22],$V6=[1,43],$V7=[1,44],$V8=[1,32],$V9=[1,37],$Va=[1,38],$Vb=[1,35],$Vc=[1,36],$Vd=[1,4,5,32,33,34,39,40,50,51],$Ve=[4,5,32,33,34,39,40,50,51],$Vf=[1,52],$Vg=[1,53],$Vh=[1,54],$Vi=[1,55],$Vj=[1,56],$Vk=[4,5,10,11,12,13,14,32,33,34,39,40,50,51],$Vl=[2,28],$Vm=[4,5,17,32,33,34,39,40,50,51],$Vn=[1,74],$Vo=[4,5,32,33,34],$Vp=[1,78];
 var parser = {trace: function trace() { },
 yy: {},
-symbols_: {"error":2,"expression":3,"IDENTIFIER":4,"STRING_LITERAL":5,"CONSTANT":6,"type_expression":7,"assignment":8,"=":9,"let_or_const":10,"LET":11,"CONST":12,"var_name_decl_with_type_expr":13,":":14,"var_decl":15,"statement":16,"compound_statement":17,"comment":18,"SL_COMMENT":19,"comment_list":20,"statement_list":21,"{":22,"}":23,"param_decl":24,"param_decl_list":25,",":26,"func_decl":27,"FUNCTION":28,"(":29,")":30,"ARR":31,"root_grammar":32,"root":33,"$accept":0,"$end":1},
-terminals_: {2:"error",4:"IDENTIFIER",5:"STRING_LITERAL",6:"CONSTANT",9:"=",11:"LET",12:"CONST",14:":",19:"SL_COMMENT",22:"{",23:"}",26:",",28:"FUNCTION",29:"(",30:")",31:"ARR"},
-productions_: [0,[3,1],[3,1],[3,1],[7,1],[8,2],[10,1],[10,1],[13,0],[13,3],[15,2],[15,2],[15,3],[15,3],[16,1],[16,1],[16,1],[18,1],[20,1],[20,2],[21,1],[21,1],[21,2],[17,2],[17,3],[24,1],[24,3],[25,1],[25,3],[27,4],[27,5],[27,5],[27,6],[27,7],[32,1],[32,1],[33,1]],
+symbols_: {"error":2,"unary_operator_tokens":3,"INC_OP":4,"DEC_OP":5,"unary_operator":6,"unary_operation":7,"primary_expr":8,"binary_operator_tokens":9,"+":10,"-":11,"*":12,"/":13,"%":14,"binary_operator":15,"assignment_operator_tokens":16,"=":17,"MUL_ASSIGN":18,"DIV_ASSIGN":19,"MOD_ASSIGN":20,"ADD_ASSIGN":21,"SUB_ASSIGN":22,"LEFT_ASSIGN":23,"RIGHT_ASSIGN":24,"AND_ASSIGN":25,"XOR_ASSIGN":26,"OR_ASSIGN":27,"assignment_operator":28,"binary_operation":29,"expression":30,"operation":31,"IDENTIFIER":32,"STRING_LITERAL":33,"CONSTANT":34,"type_expression":35,"decl_assignment":36,"assignment_expr":37,"let_or_const":38,"LET":39,"CONST":40,"var_name_decl_with_type_expr":41,":":42,"var_decl":43,"statement":44,"compound_statement":45,"comment":46,"SL_COMMENT":47,"comment_list":48,"statement_list":49,"{":50,"}":51,"param_decl":52,"param_decl_list":53,",":54,"func_decl":55,"FUNCTION":56,"(":57,")":58,"ARR":59,"root_grammar":60,"root":61,"$accept":0,"$end":1},
+terminals_: {2:"error",4:"INC_OP",5:"DEC_OP",10:"+",11:"-",12:"*",13:"/",14:"%",17:"=",18:"MUL_ASSIGN",19:"DIV_ASSIGN",20:"MOD_ASSIGN",21:"ADD_ASSIGN",22:"SUB_ASSIGN",23:"LEFT_ASSIGN",24:"RIGHT_ASSIGN",25:"AND_ASSIGN",26:"XOR_ASSIGN",27:"OR_ASSIGN",32:"IDENTIFIER",33:"STRING_LITERAL",34:"CONSTANT",39:"LET",40:"CONST",42:":",47:"SL_COMMENT",50:"{",51:"}",54:",",56:"FUNCTION",57:"(",58:")",59:"ARR"},
+productions_: [0,[3,0],[3,1],[3,1],[6,1],[7,2],[7,2],[9,1],[9,1],[9,1],[9,1],[9,1],[15,1],[16,1],[16,1],[16,1],[16,1],[16,1],[16,1],[16,1],[16,1],[16,1],[16,1],[16,1],[28,1],[29,3],[31,1],[31,1],[8,1],[8,1],[8,1],[30,1],[30,1],[35,1],[36,2],[37,3],[38,1],[38,1],[41,0],[41,3],[43,2],[43,2],[43,3],[43,3],[44,1],[44,1],[44,1],[44,1],[44,1],[46,1],[48,1],[48,2],[49,1],[49,1],[49,2],[45,2],[45,3],[52,1],[52,3],[53,1],[53,3],[55,4],[55,5],[55,5],[55,6],[55,7],[60,1],[60,1],[61,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
 var $0 = $$.length - 1;
 switch (yystate) {
-case 4:
- this.$ = yy.TypeExpr.fromIdentifier(new yy.Token($$[$0])) 
+case 4: case 12: case 24:
+ this.$ = yy.getOperatorFromToken($$[$0]) 
 break;
 case 5:
+ this.$ = new yy.UnaryOperation($$[$0-1], $$[$0], yy.UnaryOperatorPosition.Postfix) 
+break;
+case 6:
+ this.$ = new yy.UnaryOperation($$[$0-1], $$[$0], yy.UnaryOperatorPosition.Prefix) 
+break;
+case 25:
+ this.$ = new yy.BinaryOperation($$[$0-2], $$[$0-1], $$[$0]) 
+break;
+case 33:
+ this.$ = yy.TypeExpr.fromIdentifier(new yy.Token($$[$0])) 
+break;
+case 34:
  this.$ = new yy.Expr($$[$0-1]) 
 break;
-case 9:
+case 35:
+ this.$ = new yy.BinaryOperation(new yy.Expr($$[$0-2]), $$[$0-1], $$[$0]) 
+break;
+case 39:
  this.$ = [$$[$0-2], $$[$0]] 
 break;
-case 10:
+case 40:
 
 			this.$ = yy.VarDecl.create({
 				modifier: yy.getVarDeclModifierByKeyword($$[$0-1]),
@@ -100,7 +115,7 @@ case 10:
 			})
 		
 break;
-case 11:
+case 41:
 
 			this.$ = yy.VarDecl.create({
 				modifier: yy.getVarDeclModifierByKeyword($$[$0-1]),
@@ -109,7 +124,7 @@ case 11:
 			})
 		
 break;
-case 12:
+case 42:
 
 			this.$ = yy.VarDecl.create({
 				modifier: yy.getVarDeclModifierByKeyword($$[$0-2]),
@@ -118,7 +133,7 @@ case 12:
 			})
 		
 break;
-case 13:
+case 43:
 
 			this.$ = yy.VarDecl.create({
 				modifier: yy.getVarDeclModifierByKeyword($$[$0-2]),
@@ -128,57 +143,57 @@ case 13:
 			})
 		
 break;
-case 17:
+case 49:
  this.$ = new yy.Comment([new yy.Token($$[$0])]) 
 break;
-case 18:
+case 50:
  this.$ = $$[$0] 
 break;
-case 19:
+case 51:
  this.$ = new yy.Comment($$[$0-1].lines.concat($$[$0].lines)) 
 break;
-case 20: case 21:
+case 52: case 53:
  this.$ = new yy.Statement([$$[$0]]) 
 break;
-case 22:
+case 54:
 
 			this.$ = new yy.Statement(
 				$$[$0-1].nodes.concat($$[$0])
 			)
 		
 break;
-case 23:
+case 55:
  this.$ = new yy.Statement() 
 break;
-case 24:
+case 56:
 
 			this.$ = $$[$0-1]
 		
 break;
-case 25:
+case 57:
  this.$ = new yy.ParamDecl(new yy.Token($$[$0])) 
 break;
-case 26:
+case 58:
  this.$ = new yy.ParamDecl(new yy.Token($$[$0-2]), $$[$0]) 
 break;
-case 27:
+case 59:
  this.$ = yy.ParamDeclList.fromParamDecls([ $$[$0] ]) 
 break;
-case 28:
+case 60:
 
 			this.$ = yy.ParamDeclList.fromParamDecls(
 				$$[$0-2].paramDecls.concat($$[$0])
 			)
 		
 break;
-case 29:
+case 61:
 
 			this.$ = yy.FuncDecl.create({
 				funcName: yy.createToken($$[$0-2])
 			})
 		
 break;
-case 30:
+case 62:
 
 			this.$ = yy.FuncDecl.create({
 				funcName: yy.createToken($$[$0-3]),
@@ -186,7 +201,7 @@ case 30:
 			})
 		
 break;
-case 31:
+case 63:
 
 			this.$ = yy.FuncDecl.create({
 				funcName: yy.createToken($$[$0-3]),
@@ -194,7 +209,7 @@ case 31:
 			})
 		
 break;
-case 32:
+case 64:
 
 			this.$ = yy.FuncDecl.create({
 				funcName: yy.createToken($$[$0-4]),
@@ -202,7 +217,7 @@ case 32:
 			})
 		
 break;
-case 33:
+case 65:
 
 			this.$ = yy.FuncDecl.create({
 				funcName: yy.createToken($$[$0-5]),
@@ -211,13 +226,13 @@ case 33:
 			})
 		
 break;
-case 36:
+case 68:
  yy.result.push(this.$); return this.$ 
 break;
 }
 },
-table: [{18:5,19:$V0,20:3,27:4,28:[1,6],32:2,33:1},{1:[3]},{1:[2,36]},{1:[2,34],18:8,19:$V0},{1:[2,35]},o($V1,[2,18]),{4:[1,9]},o($V1,[2,17]),o($V1,[2,19]),{29:[1,10]},{4:$V2,24:13,25:12,30:[1,11]},{1:[2,29],17:15,22:$V3,31:[1,16]},{26:[1,19],30:[1,18]},o($V4,[2,27]),o($V4,[2,25],{14:[1,20]}),{1:[2,31]},{4:$V5,7:21},{10:29,11:$V6,12:$V7,15:27,16:25,17:28,18:5,19:$V0,20:26,21:24,22:$V3,23:[1,23]},{1:[2,30]},{4:$V2,24:32},{4:$V5,7:33},{1:[2,32],17:34,22:$V3},o([1,9,11,12,22,23,26,30],[2,4]),o($V8,[2,23]),{10:29,11:$V6,12:$V7,15:27,16:36,17:28,22:$V3,23:[1,35]},o($V9,[2,20]),o($V9,[2,21],{18:8,19:$V0}),o($V9,[2,14]),o($V9,[2,16]),o($Va,[2,8],{13:38,4:[1,37]}),o($Vb,[2,6]),o($Vb,[2,7]),o($V4,[2,28]),o($V4,[2,26]),{1:[2,33]},o($V8,[2,24]),o($V9,[2,22]),o($V9,[2,10],{8:39,9:$Vc,14:[1,40]}),o($V9,[2,11],{8:42,9:$Vc}),o($V9,[2,12]),{4:$V5,7:43},{3:44,4:[1,45],5:[1,46],6:[1,47]},o($V9,[2,13]),o($Va,[2,9]),o($V9,[2,5]),o($V9,[2,1]),o($V9,[2,2]),o($V9,[2,3])],
-defaultActions: {2:[2,36],4:[2,35],15:[2,31],18:[2,30],34:[2,33]},
+table: [{46:5,47:$V0,48:3,55:4,56:[1,6],60:2,61:1},{1:[3]},{1:[2,68]},{1:[2,66],46:8,47:$V0},{1:[2,67]},o($V1,[2,50]),{32:[1,9]},o($V1,[2,49]),o($V1,[2,51]),{57:[1,10]},{32:$V2,52:13,53:12,58:[1,11]},{1:[2,61],45:15,50:$V3,59:[1,16]},{54:[1,19],58:[1,18]},o($V4,[2,59]),o($V4,[2,57],{42:[1,20]}),{1:[2,63]},{32:$V5,35:21},{3:42,4:$V6,5:$V7,6:41,7:40,8:33,29:39,30:29,31:34,32:$V8,33:$V9,34:$Va,37:28,38:31,39:$Vb,40:$Vc,43:27,44:25,45:30,46:5,47:$V0,48:26,49:24,50:$V3,51:[1,23]},{1:[2,62]},{32:$V2,52:45},{32:$V5,35:46},{1:[2,64],45:47,50:$V3},o([1,4,5,17,32,33,34,39,40,50,51,54,58],[2,33]),o($Vd,[2,55]),{3:42,4:$V6,5:$V7,6:41,7:40,8:33,29:39,30:29,31:34,32:$V8,33:$V9,34:$Va,37:28,38:31,39:$Vb,40:$Vc,43:27,44:49,45:30,50:$V3,51:[1,48]},o($Ve,[2,52]),o($Ve,[2,53],{46:8,47:$V0}),o($Ve,[2,44]),o($Ve,[2,45]),o($Ve,[2,46],{15:50,9:51,10:$Vf,11:$Vg,12:$Vh,13:$Vi,14:$Vj}),o($Ve,[2,48]),o([4,5,17,33,34,39,40,50,51],[2,38],{41:58,32:[1,57]}),o($Vk,$Vl,{28:59,16:60,17:[1,61],18:[1,62],19:[1,63],20:[1,64],21:[1,65],22:[1,66],23:[1,67],24:[1,68],25:[1,69],26:[1,70],27:[1,71]}),o([10,11,12,13,14,32,33,34,39,40,50,51],[2,31],{3:42,6:72,4:$V6,5:$V7}),o($Vk,[2,32]),o($Vm,[2,36]),o($Vm,[2,37]),o($Vk,[2,29]),o($Vk,[2,30]),o($Vk,[2,26]),o($Vk,[2,27]),{8:73,32:$Vn,33:$V9,34:$Va},o($Vk,[2,4]),o($Vk,[2,2]),o($Vk,[2,3]),o($V4,[2,60]),o($V4,[2,58]),{1:[2,65]},o($Vd,[2,56]),o($Ve,[2,54]),{3:42,4:$V6,5:$V7,6:41,7:40,8:33,29:39,30:75,31:34,32:$Vn,33:$V9,34:$Va},o($Vo,[2,12]),o($Vo,[2,7]),o($Vo,[2,8]),o($Vo,[2,9]),o($Vo,[2,10]),o($Vo,[2,11]),o($Ve,[2,40],{36:76,17:$Vp,42:[1,77]}),o($Ve,[2,41],{36:79,17:$Vp}),{3:42,4:$V6,5:$V7,6:41,7:40,8:33,29:39,30:80,31:34,32:$Vn,33:$V9,34:$Va},o($Vo,[2,24]),o($Vo,[2,13]),o($Vo,[2,14]),o($Vo,[2,15]),o($Vo,[2,16]),o($Vo,[2,17]),o($Vo,[2,18]),o($Vo,[2,19]),o($Vo,[2,20]),o($Vo,[2,21]),o($Vo,[2,22]),o($Vo,[2,23]),o($Vk,[2,5]),o($Vk,[2,6]),o($Vk,$Vl),o($Ve,[2,25],{15:50,9:51,10:$Vf,11:$Vg,12:$Vh,13:$Vi,14:$Vj}),o($Ve,[2,42]),{32:$V5,35:81},{3:42,4:$V6,5:$V7,6:41,7:40,8:33,29:39,30:82,31:34,32:$Vn,33:$V9,34:$Va},o($Ve,[2,43]),o($Ve,[2,35],{15:50,9:51,10:$Vf,11:$Vg,12:$Vh,13:$Vi,14:$Vj}),o($Vm,[2,39]),o($Ve,[2,34],{15:50,9:51,10:$Vf,11:$Vg,12:$Vh,13:$Vi,14:$Vj})],
+defaultActions: {2:[2,68],4:[2,67],15:[2,63],18:[2,62],47:[2,65]},
 parseError: function parseError(str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -690,61 +705,61 @@ options: {},
 performAction: function anonymous(yy,yy_,$avoiding_name_collisions,YY_START) {
 var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
-case 0:return 19;
+case 0:return 47;
 break;
-case 1:return 28;
+case 1:return 56;
 break;
-case 2:return 11;
+case 2:return 39;
 break;
-case 3:return 12;
+case 3:return 40;
 break;
-case 4:return 4;
+case 4:return 32;
 break;
-case 5:return 6;
+case 5:return 34;
 break;
-case 6:return 6;
+case 6:return 34;
 break;
-case 7:return 6;
+case 7:return 34;
 break;
-case 8:return 6;
+case 8:return 34;
 break;
-case 9:return 6;
+case 9:return 34;
 break;
-case 10:return 6;
+case 10:return 34;
 break;
-case 11:return 6;
+case 11:return 34;
 break;
-case 12:return 5;
+case 12:return 33;
 break;
-case 13:return 'RIGHT_ASSIGN';
+case 13:return 24;
 break;
-case 14:return 'LEFT_ASSIGN';
+case 14:return 23;
 break;
-case 15:return 'ADD_ASSIGN';
+case 15:return 21;
 break;
-case 16:return 'SUB_ASSIGN';
+case 16:return 22;
 break;
-case 17:return 'MUL_ASSIGN';
+case 17:return 18;
 break;
-case 18:return 'DIV_ASSIGN';
+case 18:return 19;
 break;
-case 19:return 'MOD_ASSIGN';
+case 19:return 20;
 break;
-case 20:return 'AND_ASSIGN';
+case 20:return 25;
 break;
-case 21:return 'XOR_ASSIGN';
+case 21:return 26;
 break;
-case 22:return 'OR_ASSIGN';
+case 22:return 27;
 break;
 case 23:return 'RIGHT_OP';
 break;
 case 24:return 'LEFT_OP';
 break;
-case 25:return 'INC_OP';
+case 25:return 4;
 break;
-case 26:return 'DEC_OP';
+case 26:return 5;
 break;
-case 27:return 31;
+case 27:return 59;
 break;
 case 28:return 'AND_OP';
 break;

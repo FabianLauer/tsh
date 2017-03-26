@@ -12,16 +12,8 @@ interface IGeneratedParser {
  */
 const parser: IGeneratedParser = (<any>generatedParser).parser
 
-for (const typeName in ast) {
-	parser.yy[typeName] = (<any>ast)[typeName]
-}
 
-parser.yy.createToken = function (rawSource: string) {
-	return new ast.Token(rawSource)
-}
-
-
-parser.yy.getVarDeclModifierByKeyword = function(keyword: 'let' | 'const') {
+export function getVarDeclModifierByKeyword(keyword: 'let' | 'const') {
 	if (keyword === 'let') {
 		return ast.VarDeclModifier.Let
 	} else if (keyword === 'const') {
@@ -32,7 +24,35 @@ parser.yy.getVarDeclModifierByKeyword = function(keyword: 'let' | 'const') {
 }
 
 
+/**
+ * Maps source code tokens to AST operator identifiers.
+ */
+const operatorMap: { [token: string]: ast.OperatorIdent } = {}
+
+// Generate the operator map
+Object.keys(ast.OperatorIdent)
+	.filter(key => typeof key !== 'string' || key.length < 1)
+	.forEach(key => {
+		operatorMap[key] = <ast.OperatorIdent><any>ast.OperatorIdent[<any>key]
+	})
+
+export function getOperatorFromToken(token: string) {
+	return new ast.Operator(operatorMap[token], new ast.Token(token))
+}
+
+
 export function parse(input: string): ast.BaseNode[] {
+	for (const typeName in ast) {
+		parser.yy[typeName] = (<any>ast)[typeName]
+	}
+
+	parser.yy.createToken = function (rawSource: string) {
+		return new ast.Token(rawSource)
+	}
+
+	parser.yy.getVarDeclModifierByKeyword = getVarDeclModifierByKeyword
+	parser.yy.getOperatorFromToken = getOperatorFromToken
+
 	parser.yy.result = []
 	parser.parse(input)
 	return parser.yy.result

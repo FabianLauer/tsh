@@ -4,10 +4,81 @@
 %%
 
 
-expression:
-		IDENTIFIER
+unary_operator_tokens:
+	|	INC_OP
+	|	DEC_OP
+;
+
+unary_operator:
+	unary_operator_tokens { $$ = yy.getOperatorFromToken($1) }
+;
+
+
+unary_operation:
+		primary_expr unary_operator
+		{ $$ = new yy.UnaryOperation($1, $2, yy.UnaryOperatorPosition.Postfix) }
+	|	unary_operator primary_expr
+		{ $$ = new yy.UnaryOperation($1, $2, yy.UnaryOperatorPosition.Prefix) }
+;
+
+
+binary_operator_tokens:
+		'+'
+	|	'-'
+	|	'*'
+	|	'/'
+	|	'%'
+;
+
+
+binary_operator:
+	binary_operator_tokens { $$ = yy.getOperatorFromToken($1) }
+;
+
+
+assignment_operator_tokens:
+		'='
+	|	MUL_ASSIGN
+	|	DIV_ASSIGN
+	|	MOD_ASSIGN
+	|	ADD_ASSIGN
+	|	SUB_ASSIGN
+	|	LEFT_ASSIGN
+	|	RIGHT_ASSIGN
+	|	AND_ASSIGN
+	|	XOR_ASSIGN
+	|	OR_ASSIGN
+;
+
+
+assignment_operator:
+	assignment_operator_tokens { $$ = yy.getOperatorFromToken($1) }
+;
+
+
+binary_operation:
+	expression binary_operator expression
+	{ $$ = new yy.BinaryOperation($1, $2, $3) }
+;
+
+
+operation:
+		binary_operation
+	|	unary_operation
+;
+
+
+
+primary_expr:
+	IDENTIFIER
 	|	STRING_LITERAL
 	|	CONSTANT
+;
+
+
+expression:
+		primary_expr
+	|	operation
 ;
 
 
@@ -17,9 +88,15 @@ type_expression:
 ;
 
 
-assignment:
+decl_assignment:
 	'=' expression
 		{ $$ = new yy.Expr($1) }
+;
+
+
+assignment_expr:
+	IDENTIFIER assignment_operator expression
+		{ $$ = new yy.BinaryOperation(new yy.Expr($1), $2, $3) }
 ;
 
 
@@ -71,7 +148,7 @@ var_decl:
 		let varName = expr
 		const varName = expr
 	*/
-	|	let_or_const IDENTIFIER assignment
+	|	let_or_const IDENTIFIER decl_assignment
 		{
 			$$ = yy.VarDecl.create({
 				modifier: yy.getVarDeclModifierByKeyword($1),
@@ -85,7 +162,7 @@ var_decl:
 		let varName: Type = expr
 		const varName: Type = expr
 	*/
-	|	let_or_const var_name_decl_with_type_expr assignment
+	|	let_or_const var_name_decl_with_type_expr decl_assignment
 		{
 			$$ = yy.VarDecl.create({
 				modifier: yy.getVarDeclModifierByKeyword($1),
@@ -99,6 +176,8 @@ var_decl:
 
 statement:
 		var_decl
+	|	assignment_expr
+	|	expression
 	|	statement
 	|	compound_statement
 ;

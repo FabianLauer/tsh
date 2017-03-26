@@ -36,27 +36,46 @@ compound_statement:
 
 
 function_declaration:
-	FUNCTION IDENTIFIER "(" ")"
+	/*
+	Example:
+		func ident()
+	*/
+		FUNCTION IDENTIFIER "(" ")"
 		{
 			$$ = yy.FuncDecl.create({
 				funcName: yy.createToken($2)
 			})
 		}
-	| FUNCTION IDENTIFIER "(" ")" compound_statement
+
+	/*
+	Example:
+		func ident() { }
+	*/
+	|	FUNCTION IDENTIFIER "(" ")" compound_statement
 		{
 			$$ = yy.FuncDecl.create({
 				funcName: yy.createToken($2),
 				funcBody: $5
 			})
 		}
-	| FUNCTION IDENTIFIER "(" ")" ":" type_expression
+
+	/*
+	Example:
+		func ident(): type
+	*/
+	|	FUNCTION IDENTIFIER "(" ")" ":" type_expression
 		{
 			$$ = yy.FuncDecl.create({
 				funcName: yy.createToken($2),
 				returnTypeDecl: $6
 			})
 		}
-	| FUNCTION IDENTIFIER "(" ")" ":" type_expression compound_statement
+
+	/*
+	Example:
+		func ident(): type { }
+	*/
+	|	FUNCTION IDENTIFIER "(" ")" ":" type_expression compound_statement
 		{
 			$$ = yy.FuncDecl.create({
 				funcName: yy.createToken($2),

@@ -54,6 +54,17 @@ function hasName(varDecl: ast.VarDecl, name: string) {
 	return varDecl.name.rawValue === name
 }
 
+function hasEmptyAssignment(varDecl: ast.VarDecl) {
+	return varDecl.assignment === ast.Expr.Empty
+}
+
+function hasOwnAssignment(varDecl: ast.VarDecl) {
+	return (
+		varDecl.assignment instanceof ast.Expr &&
+		varDecl.assignment !== ast.Expr.Empty
+	)
+}
+
 
 ///
 /// Test Cases:
@@ -62,27 +73,29 @@ function hasName(varDecl: ast.VarDecl, name: string) {
 
 test<ast.VarDecl>(
 	'const a',
-	isVarDecl, $ => hasName($, 'a'),
-	$ => $.assignment === ast.Expr.Empty
+	isVarDecl,
+	$ => hasName($, 'a'),
+	hasEmptyAssignment
 )
 
 
 test<ast.VarDecl>(
 	'const a = 1',
-	isVarDecl, $ => hasName($, 'a'),
-	$ => $.assignment instanceof ast.Expr,
-	$ => $.assignment !== ast.Expr.Empty
+	isVarDecl,
+	$ => hasName($, 'a'),
+	hasOwnAssignment
 )
 
 test<ast.VarDecl>(
 	'let a',
-	isVarDecl, $ => hasName($, 'a'),
-	$ => $.assignment === ast.Expr.Empty
+	isVarDecl,
+	$ => hasName($, 'a'),
+	hasEmptyAssignment
 )
 
 test<ast.VarDecl>(
 	'let a = 123',
-	isVarDecl, $ => hasName($, 'a'),
-	$ => $.assignment instanceof ast.Expr,
-	$ => $.assignment !== ast.Expr.Empty
+	isVarDecl,
+	$ => hasName($, 'a'),
+	hasOwnAssignment
 )

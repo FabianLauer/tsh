@@ -28,7 +28,8 @@ export class VarDecl extends BaseNode {
 	public static create(params: IVarDeclCreateParams) {
 		return new VarDecl(
 			params.varName,
-			params.typeDecl
+			params.typeDecl,
+			params.assignment
 		)
 	}
 

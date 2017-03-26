@@ -1,4 +1,5 @@
 import BaseNode from './BaseNode'
+import Comment from './Comment'
 import Expr from './Expr'
 import FuncDecl from './FuncDecl'
 import Identifier from './Identifier'
@@ -13,6 +14,7 @@ import VarDeclModifier from './VarDeclModifier'
 
 export {
 	BaseNode,
+	Comment,
 	Expr,
 	Identifier,
 	FuncDecl,

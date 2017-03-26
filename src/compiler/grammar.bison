@@ -113,7 +113,7 @@ comment_list:
 		comment
 		{ $$ = $1 }
 	|	comment_list comment
-		{ $$ = new yy.Comment($1.nodes.concat($2)) }
+		{ $$ = new yy.Comment($1.lines.concat($2.lines)) }
 ;
 
 
@@ -235,6 +235,6 @@ func_decl:
 
 
 root:
-		comment				{ return $$; }
-	| 	func_decl			{ return $$; }
+		comment_list		{ yy.result.push($$) }
+	| 	func_decl			{ yy.result.push($$) }
 ;

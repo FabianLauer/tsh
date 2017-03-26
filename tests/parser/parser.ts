@@ -17,7 +17,7 @@ describe('Parser:', () => {
 
 		describe(filename.replace(/^.*\//, '') + ':', () => {
 			for (const testCase of cases) {
-				let parserResult: ast.BaseNode
+				let parserResult: ast.BaseNode[]
 
 				// run the actual tests
 				describe(testCase.name, () => {

@@ -32,7 +32,9 @@ parser.yy.getVarDeclModifierByKeyword = function(keyword: 'let' | 'const') {
 }
 
 
-export function parse(input: string): any {
-	return parser.parse(input)
+export function parse(input: string): ast.BaseNode[] {
+	parser.yy.result = []
+	parser.parse(input)
+	return parser.yy.result
 }
 

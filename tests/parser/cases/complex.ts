@@ -22,7 +22,7 @@ export default cases
  */
 function test<TNode extends ast.BaseNode>(
 	sourceCode: string,
-	...expectation: Array<(node: TNode) => boolean>
+	...expectation: Array<(node: TNode[]) => boolean>
 ): void {
 	const name = sourceCode
 	cases.push(ParserTestCase.create(name, sourceCode, ...expectation))
@@ -41,7 +41,7 @@ test<ast.FuncDecl>(
 		const bar = 2
 	}
 	`,
-	$ => $ instanceof ast.FuncDecl
+	([$]) => $ instanceof ast.FuncDecl
 )
 
 
@@ -52,7 +52,7 @@ test<ast.FuncDecl>(
 		const fibo = nacci
 	}
 	`,
-	$ => $ instanceof ast.FuncDecl
+	([$]) => $ instanceof ast.FuncDecl
 )
 
 
@@ -67,6 +67,6 @@ test<ast.FuncDecl>(
 		// // // 
 	}
 	`,
-	$ => true
+	() => true
 )
 

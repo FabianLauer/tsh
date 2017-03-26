@@ -22,7 +22,7 @@ export default cases
  */
 function test<TNode extends ast.BaseNode>(
 	sourceCode: string,
-	...expectation: Array<(node: TNode) => boolean>
+	...expectation: Array<(node: TNode[]) => boolean>
 ): void {
 	const testName = sourceCode
 	// wrap the source code in a func decl so we can parse it
@@ -30,9 +30,8 @@ function test<TNode extends ast.BaseNode>(
 	// wrap the assertion functions so that they receive the first node of the wrapper function's
 	// body as their parameter
 	const assertions = expectation.map(fn => {
-		return (decl: ast.FuncDecl) => {
-			const firstChild = <TNode>decl.body.getNodeAtIndex(0)
-			if (fn(firstChild)) {
+		return ([decl]: ast.FuncDecl[]) => {
+			if (fn(<TNode[]>decl.body.nodes)) {
 				return true
 			} else {
 				throw new Error(fn.toString())
@@ -48,21 +47,21 @@ function test<TNode extends ast.BaseNode>(
 /// Assertions:
 ///
 
-const isVarDecl = (decl: any): decl is ast.VarDecl => decl instanceof ast.VarDecl
+const isVarDecl = ([decl]: any[]) => decl instanceof ast.VarDecl
 
 function hasName(varDecl: ast.VarDecl, name: string) {
 	return varDecl.name.rawValue === name
 }
 
 function expectModifier(modifier: ast.VarDeclModifier) {
-	return (varDecl: ast.VarDecl) => varDecl.modifier === modifier
+	return ([varDecl]: ast.VarDecl[]) => varDecl.modifier === modifier
 }
 
-function hasEmptyAssignment(varDecl: ast.VarDecl) {
+function hasEmptyAssignment([varDecl]: ast.VarDecl[]) {
 	return varDecl.assignment === ast.Expr.Empty
 }
 
-function hasOwnAssignment(varDecl: ast.VarDecl) {
+function hasOwnAssignment([varDecl]: ast.VarDecl[]) {
 	return (
 		varDecl.assignment instanceof ast.Expr &&
 		varDecl.assignment !== ast.Expr.Empty
@@ -82,7 +81,7 @@ for (const keyword of ['let', 'const']) {
 	test<ast.VarDecl>(
 		`${keyword} a`,
 		isVarDecl,
-		$ => hasName($, 'a'),
+		([$]) => hasName($, 'a'),
 		expectModifier(modifier),
 		hasEmptyAssignment
 	)
@@ -90,7 +89,7 @@ for (const keyword of ['let', 'const']) {
 	test<ast.VarDecl>(
 		`${keyword} a: Type`,
 		isVarDecl,
-		$ => hasName($, 'a'),
+		([$]) => hasName($, 'a'),
 		expectModifier(modifier),
 		hasEmptyAssignment
 	)
@@ -98,7 +97,7 @@ for (const keyword of ['let', 'const']) {
 	test<ast.VarDecl>(
 		`${keyword} a = 123`,
 		isVarDecl,
-		$ => hasName($, 'a'),
+		([$]) => hasName($, 'a'),
 		expectModifier(modifier),
 		hasOwnAssignment
 	)
@@ -107,7 +106,7 @@ for (const keyword of ['let', 'const']) {
 	test<ast.VarDecl>(
 		`${keyword} longVarName: Type = 123`,
 		isVarDecl,
-		$ => hasName($, 'longVarName'),
+		([$]) => hasName($, 'longVarName'),
 		expectModifier(modifier),
 		hasOwnAssignment
 	)

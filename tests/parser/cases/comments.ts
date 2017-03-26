@@ -22,7 +22,7 @@ export default cases
  */
 function test<TNode extends ast.BaseNode>(
 	sourceCode: string,
-	...expectation: Array<(node: TNode) => boolean>
+	...expectation: Array<(node: TNode[]) => boolean>
 ): void {
 	const name = sourceCode
 	cases.push(ParserTestCase.create(name, sourceCode, ...expectation))
@@ -36,8 +36,9 @@ function test<TNode extends ast.BaseNode>(
 
 test<ast.Comment>(
 	'// Comment on a single line',
-	$ => $ instanceof ast.Comment,
-	$ => /Comment on a single line/.test($.lines[0].rawValue)
+	([$]) => $ instanceof ast.Comment,
+	([$]) => $.lines.length === 1,
+	([$]) => /Comment on a single line/.test($.lines[0].rawValue)
 )
 
 
@@ -47,9 +48,9 @@ test<ast.FuncDecl>(
 		// Comment on a single line inside a function
 	}
 	`,
-	$ => $ instanceof ast.FuncDecl,
-	$ => $.body.getNodeAtIndex(0) instanceof ast.Comment,
-	$ => /Comment on a single line inside a function/.test(
+	([$]) => $ instanceof ast.FuncDecl,
+	([$]) => $.body.getNodeAtIndex(0) instanceof ast.Comment,
+	([$]) => /Comment on a single line inside a function/.test(
 		(<ast.Comment>$.body.getNodeAtIndex(0)).lines[0].rawValue
 	)
 )
@@ -60,7 +61,23 @@ test<ast.Comment>(
 	// A comment on
 	// multiple lines
 	`,
-	$ => $ instanceof ast.Comment,
-	$ => /A comment on/.test($.lines[0].rawValue)
+	([$]) => $ instanceof ast.Comment,
+	([$]) => $.lines.length === 2,
+	([$]) => /A comment on/.test($.lines[0].rawValue),
+	([$]) => /multiple lines/.test($.lines[1].rawValue)
+)
+
+
+test<ast.Comment>(
+	`
+	// A comment on
+		// multiple lines
+	//with formatting
+	`,
+	([$]) => $ instanceof ast.Comment,
+	([$]) => $.lines.length === 3,
+	([$]) => /A comment on/.test($.lines[0].rawValue),
+	([$]) => /multiple lines/.test($.lines[1].rawValue),
+	([$]) => /with formatting/.test($.lines[2].rawValue)
 )
 

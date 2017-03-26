@@ -16,6 +16,7 @@ type_expression:
 			{ $$ = yy.TypeExpr.fromIdentifier(new yy.Token($1)) }
 ;
 
+
 statement:
 		expression
 	|	statement
@@ -35,6 +36,35 @@ compound_statement:
 ;
 
 
+param_decl:
+	/*
+	Example:
+		name
+	*/
+		IDENTIFIER
+			{ $$ = new yy.ParamDecl(new yy.Token($1)) }
+	
+	/*
+	Example:
+		name: type_expr
+	*/
+	|	IDENTIFIER ":" type_expression
+			{ $$ = new yy.ParamDecl(new yy.Token($1), $3) }
+;
+
+
+param_decl_list:
+		param_decl
+		{ $$ = yy.ParamDeclList.fromParamDecls([ $1 ]) }
+	|	param_decl_list "," param_decl
+		{
+			$$ = yy.ParamDeclList.fromParamDecls(
+				$1.paramDecls.concat($3)
+			)
+		}
+;
+
+
 function_declaration:
 	/*
 	Example:
@@ -44,6 +74,18 @@ function_declaration:
 		{
 			$$ = yy.FuncDecl.create({
 				funcName: yy.createToken($2)
+			})
+		}
+
+	/*
+	Example:
+		func ident(params: param_types)
+	*/
+	|	FUNCTION IDENTIFIER "(" param_decl_list ")"
+		{
+			$$ = yy.FuncDecl.create({
+				funcName: yy.createToken($2),
+				runtimeParamDecls: $4
 			})
 		}
 

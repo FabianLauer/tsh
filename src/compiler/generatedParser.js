@@ -72,12 +72,12 @@
   }
 */
 var parser = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,4],$V1=[1,11],$V2=[1,12],$V3=[1,13],$V4=[1,4,5,6,11,12],$V5=[4,5,6,11,12];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,4],$V1=[1,11],$V2=[1,12],$V3=[1,13],$V4=[1,4,5,6,11,12],$V5=[4,5,6,11,12],$V6=[1,21],$V7=[16,20],$V8=[1,28];
 var parser = {trace: function trace() { },
 yy: {},
-symbols_: {"error":2,"expression":3,"IDENTIFIER":4,"STRING_LITERAL":5,"CONSTANT":6,"type_expression":7,"statement":8,"compound_statement":9,"statement_list":10,"{":11,"}":12,"function_declaration":13,"FUNCTION":14,"(":15,")":16,"ARR":17,"root":18,"$accept":0,"$end":1},
-terminals_: {2:"error",4:"IDENTIFIER",5:"STRING_LITERAL",6:"CONSTANT",11:"{",12:"}",14:"FUNCTION",15:"(",16:")",17:"ARR"},
-productions_: [0,[3,1],[3,1],[3,1],[7,1],[8,1],[8,1],[8,1],[10,1],[10,2],[9,2],[9,3],[13,4],[13,5],[13,6],[13,7],[18,1],[18,1]],
+symbols_: {"error":2,"expression":3,"IDENTIFIER":4,"STRING_LITERAL":5,"CONSTANT":6,"type_expression":7,"statement":8,"compound_statement":9,"statement_list":10,"{":11,"}":12,"param_decl":13,":":14,"param_decl_list":15,",":16,"function_declaration":17,"FUNCTION":18,"(":19,")":20,"ARR":21,"root":22,"$accept":0,"$end":1},
+terminals_: {2:"error",4:"IDENTIFIER",5:"STRING_LITERAL",6:"CONSTANT",11:"{",12:"}",14:":",16:",",18:"FUNCTION",19:"(",20:")",21:"ARR"},
+productions_: [0,[3,1],[3,1],[3,1],[7,1],[8,1],[8,1],[8,1],[10,1],[10,2],[9,2],[9,3],[13,1],[13,3],[15,1],[15,3],[17,4],[17,5],[17,5],[17,6],[17,7],[22,1],[22,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -90,13 +90,37 @@ case 10: case 11:
  this.$ = new yy.Statement() 
 break;
 case 12:
+ this.$ = new yy.ParamDecl(new yy.Token($$[$0])) 
+break;
+case 13:
+ this.$ = new yy.ParamDecl(new yy.Token($$[$0-2]), $$[$0]) 
+break;
+case 14:
+ this.$ = yy.ParamDeclList.fromParamDecls([ $$[$0] ]) 
+break;
+case 15:
+
+			this.$ = yy.ParamDeclList.fromParamDecls(
+				$$[$0-2].paramDecls.concat($$[$0])
+			)
+		
+break;
+case 16:
 
 			this.$ = yy.FuncDecl.create({
 				funcName: yy.createToken($$[$0-2])
 			})
 		
 break;
-case 13:
+case 17:
+
+			this.$ = yy.FuncDecl.create({
+				funcName: yy.createToken($$[$0-3]),
+				runtimeParamDecls: $$[$0-1]
+			})
+		
+break;
+case 18:
 
 			this.$ = yy.FuncDecl.create({
 				funcName: yy.createToken($$[$0-3]),
@@ -104,7 +128,7 @@ case 13:
 			})
 		
 break;
-case 14:
+case 19:
 
 			this.$ = yy.FuncDecl.create({
 				funcName: yy.createToken($$[$0-4]),
@@ -112,7 +136,7 @@ case 14:
 			})
 		
 break;
-case 15:
+case 20:
 
 			this.$ = yy.FuncDecl.create({
 				funcName: yy.createToken($$[$0-5]),
@@ -121,13 +145,13 @@ case 15:
 			})
 		
 break;
-case 16: case 17:
+case 21: case 22:
  return this.$; 
 break;
 }
 },
-table: [{9:2,11:$V0,13:3,14:[1,5],18:1},{1:[3]},{1:[2,16]},{1:[2,17]},{3:9,4:$V1,5:$V2,6:$V3,8:8,9:10,10:7,11:$V0,12:[1,6]},{4:[1,14]},o($V4,[2,10]),{3:9,4:$V1,5:$V2,6:$V3,8:16,9:10,11:$V0,12:[1,15]},o($V5,[2,8]),o($V5,[2,5]),o($V5,[2,7]),o($V5,[2,1]),o($V5,[2,2]),o($V5,[2,3]),{15:[1,17]},o($V4,[2,11]),o($V5,[2,9]),{16:[1,18]},{1:[2,12],9:19,11:$V0,17:[1,20]},{1:[2,13]},{4:[1,22],7:21},{1:[2,14],9:23,11:$V0},o($V1,[2,4]),{1:[2,15]}],
-defaultActions: {2:[2,16],3:[2,17],19:[2,13],23:[2,15]},
+table: [{9:2,11:$V0,17:3,18:[1,5],22:1},{1:[3]},{1:[2,21]},{1:[2,22]},{3:9,4:$V1,5:$V2,6:$V3,8:8,9:10,10:7,11:$V0,12:[1,6]},{4:[1,14]},o($V4,[2,10]),{3:9,4:$V1,5:$V2,6:$V3,8:16,9:10,11:$V0,12:[1,15]},o($V5,[2,8]),o($V5,[2,5]),o($V5,[2,7]),o($V5,[2,1]),o($V5,[2,2]),o($V5,[2,3]),{19:[1,17]},o($V4,[2,11]),o($V5,[2,9]),{4:$V6,13:20,15:19,20:[1,18]},{1:[2,16],9:22,11:$V0,21:[1,23]},{16:[1,25],20:[1,24]},o($V7,[2,14]),o($V7,[2,12],{14:[1,26]}),{1:[2,18]},{4:$V8,7:27},{1:[2,17]},{4:$V6,13:29},{4:$V8,7:30},{1:[2,19],9:31,11:$V0},o([1,11,16,20],[2,4]),o($V7,[2,15]),o($V7,[2,13]),{1:[2,20]}],
+defaultActions: {2:[2,21],3:[2,22],22:[2,18],24:[2,17],31:[2,20]},
 parseError: function parseError(str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -602,7 +626,7 @@ var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
 case 0: comment(); 
 break;
-case 1:return 14;
+case 1:return 18;
 break;
 case 2:return 4;
 break;
@@ -650,7 +674,7 @@ case 23:return 'INC_OP';
 break;
 case 24:return 'DEC_OP';
 break;
-case 25:return 17;
+case 25:return 21;
 break;
 case 26:return 'AND_OP';
 break;

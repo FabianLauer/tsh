@@ -74,36 +74,38 @@ function hasOwnAssignment(varDecl: ast.VarDecl) {
 /// Test Cases:
 ///
 
+for (const keyword of ['let', 'const']) {
+	test<ast.VarDecl>(
+		`${keyword} a`,
+		isVarDecl,
+		$ => hasName($, 'a'),
+		expectModifier(ast.VarDeclModifier.Let),
+		hasEmptyAssignment
+	)
 
-test<ast.VarDecl>(
-	'const a',
-	isVarDecl,
-	$ => hasName($, 'a'),
-	expectModifier(ast.VarDeclModifier.Const),
-	hasEmptyAssignment
-)
+	test<ast.VarDecl>(
+		`${keyword} a: Type`,
+		isVarDecl,
+		$ => hasName($, 'a'),
+		expectModifier(ast.VarDeclModifier.Let),
+		hasOwnAssignment
+	)
+
+	test<ast.VarDecl>(
+		`${keyword} a = 123`,
+		isVarDecl,
+		$ => hasName($, 'a'),
+		expectModifier(ast.VarDeclModifier.Let),
+		hasOwnAssignment
+	)
 
 
-test<ast.VarDecl>(
-	'const a = 1',
-	isVarDecl,
-	$ => hasName($, 'a'),
-	expectModifier(ast.VarDeclModifier.Const),
-	hasOwnAssignment
-)
+	test<ast.VarDecl>(
+		`${keyword} longVarName: Type = 123`,
+		isVarDecl,
+		$ => hasName($, 'longVarName'),
+		expectModifier(ast.VarDeclModifier.Let),
+		hasOwnAssignment
+	)
+}
 
-test<ast.VarDecl>(
-	'let a',
-	isVarDecl,
-	$ => hasName($, 'a'),
-	expectModifier(ast.VarDeclModifier.Let),
-	hasEmptyAssignment
-)
-
-test<ast.VarDecl>(
-	'let a = 123',
-	isVarDecl,
-	$ => hasName($, 'a'),
-	expectModifier(ast.VarDeclModifier.Let),
-	hasOwnAssignment
-)

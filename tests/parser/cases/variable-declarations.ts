@@ -62,10 +62,27 @@ function hasName(varDecl: ast.VarDecl, name: string) {
 
 test<ast.VarDecl>(
 	'const a',
-	isVarDecl, $ => hasName($, 'a')
+	isVarDecl, $ => hasName($, 'a'),
+	$ => $.assignment === ast.Expr.Empty
+)
+
+
+test<ast.VarDecl>(
+	'const a = 1',
+	isVarDecl, $ => hasName($, 'a'),
+	$ => $.assignment instanceof ast.Expr,
+	$ => $.assignment !== ast.Expr.Empty
 )
 
 test<ast.VarDecl>(
 	'let a',
-	isVarDecl, $ => hasName($, 'a')
+	isVarDecl, $ => hasName($, 'a'),
+	$ => $.assignment === ast.Expr.Empty
+)
+
+test<ast.VarDecl>(
+	'let a = 123',
+	isVarDecl, $ => hasName($, 'a'),
+	$ => $.assignment instanceof ast.Expr,
+	$ => $.assignment !== ast.Expr.Empty
 )

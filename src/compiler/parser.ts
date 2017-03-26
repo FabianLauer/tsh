@@ -16,13 +16,6 @@ for (const typeName in ast) {
 	parser.yy[typeName] = (<any>ast)[typeName]
 }
 
-parser.yy.createNode = function (
-	type: { new (...args: any[]): ast.BaseNode },
-	...args: any[]
-) {
-	return new type(...args)
-}
-
 parser.yy.createToken = function (rawSource: string) {
 	return new ast.Token(rawSource)
 }

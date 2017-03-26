@@ -50,6 +50,7 @@ var_decl:
 	|	let_or_const IDENTIFIER assignment
 		{
 			$$ = yy.VarDecl.create({
+				modifier: 
 				varName: yy.createToken($2),
 				assignment: $3
 			})

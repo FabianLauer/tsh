@@ -13,7 +13,7 @@ interface IGeneratedParser {
 const parser: IGeneratedParser = (<any>generatedParser).parser
 
 
-export function getVarDeclModifierByKeyword(keyword: 'let' | 'const') {
+function getVarDeclModifierByKeyword(keyword: 'let' | 'const') {
 	if (keyword === 'let') {
 		return ast.VarDeclModifier.Let
 	} else if (keyword === 'const') {
@@ -36,12 +36,12 @@ Object.keys(ast.OperatorIdent)
 		operatorMap[key] = <ast.OperatorIdent><any>ast.OperatorIdent[<any>key]
 	})
 
-export function getOperatorFromToken(token: string) {
+function getOperatorFromToken(token: string) {
 	return new ast.Operator(operatorMap[token], new ast.Token(token))
 }
 
 
-export function parse(input: string): ast.BaseNode[] {
+export function parseToArray(sourceCode: string): ast.BaseNode[] {
 	for (const typeName in ast) {
 		parser.yy[typeName] = (<any>ast)[typeName]
 	}
@@ -54,7 +54,15 @@ export function parse(input: string): ast.BaseNode[] {
 	parser.yy.getOperatorFromToken = getOperatorFromToken
 
 	parser.yy.result = []
-	parser.parse(input)
+	parser.parse(sourceCode)
 	return parser.yy.result
+}
+
+
+export function parseToSourceUnit(name: string, sourceCode: string): ast.SourceUnit {
+	return new ast.SourceUnit(
+		name,
+		parseToArray(sourceCode)
+	)
 }
 

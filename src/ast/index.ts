@@ -9,6 +9,7 @@ import OperatorIdent from './OperatorIdent'
 import ParamDecl from './ParamDecl'
 import ParamDeclList from './ParamDeclList'
 import ReturnStatement from './ReturnStatement'
+import SourceUnit from './SourceUnit'
 import Statement from './Statement'
 import StringLiteral from './StringLiteral'
 import Token from './Token'
@@ -30,6 +31,7 @@ export {
 	ParamDecl,
 	ParamDeclList,
 	ReturnStatement,
+	SourceUnit,
 	Statement,
 	StringLiteral,
 	Token,

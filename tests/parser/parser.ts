@@ -23,7 +23,7 @@ describe('Parser:', () => {
 				describe(testCase.name, () => {
 					// parse source code to AST
 					it('parsing should work', () => {
-						parserResult = parser.parse(testCase.sourceCode)
+						parserResult = parser.parseToArray(testCase.sourceCode)
 					})
 
 					// validate AST node sequence

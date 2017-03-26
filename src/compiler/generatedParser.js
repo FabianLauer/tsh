@@ -92,6 +92,7 @@ break;
 case 8:
 
 			this.$ = yy.VarDecl.create({
+				modifier: yy.getVarDeclModifierByKeyword($$[$0-1]),
 				varName: yy.createToken($$[$0])
 			})
 		
@@ -99,6 +100,7 @@ break;
 case 9:
 
 			this.$ = yy.VarDecl.create({
+				modifier: yy.getVarDeclModifierByKeyword($$[$0-2]),
 				varName: yy.createToken($$[$0-1]),
 				assignment: $$[$0]
 			})

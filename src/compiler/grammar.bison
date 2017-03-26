@@ -38,6 +38,7 @@ var_decl:
 		let_or_const IDENTIFIER
 		{
 			$$ = yy.VarDecl.create({
+				modifier: yy.getVarDeclModifierByKeyword($1),
 				varName: yy.createToken($2)
 			})
 		}
@@ -50,7 +51,7 @@ var_decl:
 	|	let_or_const IDENTIFIER assignment
 		{
 			$$ = yy.VarDecl.create({
-				modifier: 
+				modifier: yy.getVarDeclModifierByKeyword($1),
 				varName: yy.createToken($2),
 				assignment: $3
 			})

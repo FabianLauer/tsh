@@ -21,6 +21,17 @@ parser.yy.createToken = function (rawSource: string) {
 }
 
 
+parser.yy.getVarDeclModifierByKeyword = function(keyword: 'let' | 'const') {
+	if (keyword === 'let') {
+		return ast.VarDeclModifier.Let
+	} else if (keyword === 'const') {
+		return ast.VarDeclModifier.Const
+	} else {
+		throw new Error(`Parsing Error: "${keyword}" is not a legal var decl keyword.`)
+	}
+}
+
+
 export function parse(input: string): any {
 	return parser.parse(input)
 }

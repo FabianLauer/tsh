@@ -54,6 +54,10 @@ function hasName(varDecl: ast.VarDecl, name: string) {
 	return varDecl.name.rawValue === name
 }
 
+function expectModifier(modifier: ast.VarDeclModifier) {
+	return (varDecl: ast.VarDecl) => varDecl.modifier === modifier
+}
+
 function hasEmptyAssignment(varDecl: ast.VarDecl) {
 	return varDecl.assignment === ast.Expr.Empty
 }
@@ -75,6 +79,7 @@ test<ast.VarDecl>(
 	'const a',
 	isVarDecl,
 	$ => hasName($, 'a'),
+	expectModifier(ast.VarDeclModifier.Const),
 	hasEmptyAssignment
 )
 
@@ -83,6 +88,7 @@ test<ast.VarDecl>(
 	'const a = 1',
 	isVarDecl,
 	$ => hasName($, 'a'),
+	expectModifier(ast.VarDeclModifier.Const),
 	hasOwnAssignment
 )
 
@@ -90,6 +96,7 @@ test<ast.VarDecl>(
 	'let a',
 	isVarDecl,
 	$ => hasName($, 'a'),
+	expectModifier(ast.VarDeclModifier.Let),
 	hasEmptyAssignment
 )
 
@@ -97,5 +104,6 @@ test<ast.VarDecl>(
 	'let a = 123',
 	isVarDecl,
 	$ => hasName($, 'a'),
+	expectModifier(ast.VarDeclModifier.Let),
 	hasOwnAssignment
 )

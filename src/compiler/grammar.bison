@@ -1,5 +1,3 @@
-%token IDENTIFIER
-%token FUNCTION LET CONST
 %start root
 %%
 
@@ -70,15 +68,18 @@ operation:
 
 
 primary_expr:
-	IDENTIFIER
+		IDENTIFIER
 	|	STRING_LITERAL
 	|	CONSTANT
 ;
 
 
-expression:
+expression_tokens:
 		primary_expr
 	|	operation
+;
+expression:
+	expression_tokens { $$ = new yy.Expr($1) }
 ;
 
 
@@ -179,7 +180,13 @@ statement:
 	|	assignment_expr
 	|	expression
 	|	statement
+	|	return_statement
 	|	compound_statement
+;
+
+
+return_statement:
+	RETURN expression		{ $$ = new yy.ReturnStatement($2) }
 ;
 
 

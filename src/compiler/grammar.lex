@@ -12,6 +12,7 @@ IS							[uUlL]*
 "func"						return 'FUNCTION';
 "let"						return 'LET';
 "const"						return 'CONST';
+"return"					return 'RETURN';
 
 {L}({L}|{D})*				return 'IDENTIFIER';
 

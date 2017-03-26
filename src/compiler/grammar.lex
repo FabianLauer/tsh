@@ -38,7 +38,7 @@ IS			[uUlL]*
 "<<"			return 'LEFT_OP';
 "++"			return 'INC_OP';
 "--"			return 'DEC_OP';
-"->"			return 'PTR_OP';
+"->"			return 'ARR';
 "&&"			return 'AND_OP';
 "||"			return 'OR_OP';
 "<="			return 'LE_OP';

@@ -54,7 +54,7 @@ test<ast.FuncDecl>(
 )
 
 test<ast.FuncDecl>(
-	'func alpha(): typename',
+	'func alpha() -> typename',
 	$ => $ instanceof ast.FuncDecl,
 	$ => $.name.rawValue === 'alpha',
 	// Is the return type name a TypeExpr, but not the Empty TypeExpr?
@@ -65,7 +65,7 @@ test<ast.FuncDecl>(
 )
 
 test<ast.FuncDecl>(
-	'func alpha(): typename { }',
+	'func alpha() -> typename { }',
 	$ => $ instanceof ast.FuncDecl,
 	$ => $.name.rawValue === 'alpha',
 	// Is the return type name a TypeExpr, but not the Empty TypeExpr?

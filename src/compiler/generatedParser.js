@@ -75,8 +75,8 @@ var parser = (function(){
 var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,4],$V1=[1,11],$V2=[1,12],$V3=[1,13],$V4=[1,4,5,6,11,12],$V5=[4,5,6,11,12];
 var parser = {trace: function trace() { },
 yy: {},
-symbols_: {"error":2,"expression":3,"IDENTIFIER":4,"STRING_LITERAL":5,"CONSTANT":6,"type_expression":7,"statement":8,"compound_statement":9,"statement_list":10,"{":11,"}":12,"function_declaration":13,"FUNCTION":14,"(":15,")":16,":":17,"root":18,"$accept":0,"$end":1},
-terminals_: {2:"error",4:"IDENTIFIER",5:"STRING_LITERAL",6:"CONSTANT",11:"{",12:"}",14:"FUNCTION",15:"(",16:")",17:":"},
+symbols_: {"error":2,"expression":3,"IDENTIFIER":4,"STRING_LITERAL":5,"CONSTANT":6,"type_expression":7,"statement":8,"compound_statement":9,"statement_list":10,"{":11,"}":12,"function_declaration":13,"FUNCTION":14,"(":15,")":16,"ARR":17,"root":18,"$accept":0,"$end":1},
+terminals_: {2:"error",4:"IDENTIFIER",5:"STRING_LITERAL",6:"CONSTANT",11:"{",12:"}",14:"FUNCTION",15:"(",16:")",17:"ARR"},
 productions_: [0,[3,1],[3,1],[3,1],[7,1],[8,1],[8,1],[8,1],[10,1],[10,2],[9,2],[9,3],[13,4],[13,5],[13,6],[13,7],[18,1],[18,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
@@ -650,7 +650,7 @@ case 23:return 'INC_OP';
 break;
 case 24:return 'DEC_OP';
 break;
-case 25:return 'PTR_OP';
+case 25:return 17;
 break;
 case 26:return 'AND_OP';
 break;

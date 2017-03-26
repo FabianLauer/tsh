@@ -63,7 +63,7 @@ function_declaration:
 	Example:
 		func ident(): type
 	*/
-	|	FUNCTION IDENTIFIER "(" ")" ":" type_expression
+	|	FUNCTION IDENTIFIER "(" ")" ARR type_expression
 		{
 			$$ = yy.FuncDecl.create({
 				funcName: yy.createToken($2),
@@ -75,7 +75,7 @@ function_declaration:
 	Example:
 		func ident(): type { }
 	*/
-	|	FUNCTION IDENTIFIER "(" ")" ":" type_expression compound_statement
+	|	FUNCTION IDENTIFIER "(" ")" ARR type_expression compound_statement
 		{
 			$$ = yy.FuncDecl.create({
 				funcName: yy.createToken($2),

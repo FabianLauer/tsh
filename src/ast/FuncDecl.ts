@@ -1,26 +1,38 @@
-import { BaseNode, Token, Statement, TypeExpr } from './'
+import { BaseNode, Token, Statement, TypeExpr, ParamDeclList } from './'
+
+
+interface IFuncDeclCreateParams {
+	/**
+	 * The name of the function itself.
+	 */
+	funcName: Token
+
+	/**
+	 * The function's runtime parameter declaration list.
+	 */
+	runtimeParamDecls?: ParamDeclList
+
+	/**
+	 * The function's return type declaration.
+	 */
+	returnTypeDecl?: TypeExpr
+
+	/**
+	 * The function body.
+	 */
+	funcBody?: Statement
+}
+
 
 export class FuncDecl extends BaseNode {
 	/**
 	 * Creates a new `FuncDecl` instance.
 	 * @param params Parameters for the function declaration.
 	 */
-	public static create(params: {
-		/**
-		 * The name of the function itself.
-		 */
-		funcName: Token,
-		/**
-		 * The function's return type declaration.
-		 */
-		returnTypeDecl?: TypeExpr,
-		/**
-		 * The function body.
-		 */
-		funcBody?: Statement
-	}) {
+	public static create(params: IFuncDeclCreateParams) {
 		return new FuncDecl(
 			params.funcName,
+			params.runtimeParamDecls,
 			params.returnTypeDecl,
 			params.funcBody
 		)
@@ -36,6 +48,10 @@ export class FuncDecl extends BaseNode {
 		 */
 		public readonly name: Token,
 		/**
+		 * The function's runtime parameter declaration list.
+		 */
+		public readonly runtimeParamDecls: ParamDeclList = ParamDeclList.Empty,
+		/**
 		 * The function's return type declaration.
 		 */
 		public readonly returnTypeDecl: TypeExpr = TypeExpr.Empty,
@@ -43,9 +59,7 @@ export class FuncDecl extends BaseNode {
 		 * The function body.
 		 */
 		public readonly body: Statement = Statement.Empty
-	) {
-		super()
-	}
+	) { super() }
 }
 
 export default FuncDecl

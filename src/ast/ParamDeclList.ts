@@ -8,9 +8,7 @@ export class ParamDeclList extends BaseNode {
 		 * declarations in source code.
 		 */
 		private readonly decls: ParamDecl[]
-	) {
-		super()
-	}
+	) { super() }
 
 
 	/**

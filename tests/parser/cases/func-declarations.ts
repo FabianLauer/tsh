@@ -80,6 +80,14 @@ function hasEmptyReturnTypeDecl([funcDecl]: ast.FuncDecl[]) {
 }
 
 
+function hasOwnReturnTypeDecl([funcDecl]: ast.FuncDecl[]) {
+	return (
+		funcDecl.returnTypeDecl instanceof ast.TypeExpr &&
+		funcDecl.returnTypeDecl !== ast.TypeExpr.Empty
+	)
+}
+
+
 
 ///
 /// Test Cases:
@@ -277,7 +285,7 @@ test<ast.FuncDecl>(
 	// 1st func
 	([$]) => $ instanceof ast.FuncDecl,
 	([$]) => $.name.rawValue === 'alpha',
-	hasEmptyReturnTypeDecl,
+	hasOwnReturnTypeDecl,
 	hasEmptyFuncBody,
 	hasOwnParamDeclList,
 	([$]) => assertRuntimeParam($, 0, 'a', true),
@@ -286,7 +294,7 @@ test<ast.FuncDecl>(
 	// 2nd func
 	([, $]) => $ instanceof ast.FuncDecl,
 	([, $]) => $.name.rawValue === 'beta',
-	([, $]) => hasEmptyReturnTypeDecl([$]),
+	([, $]) => hasOwnReturnTypeDecl([$]),
 	([, $]) => hasEmptyFuncBody([$]),
 	([, $]) => hasOwnParamDeclList([$]),
 	([, $]) => assertRuntimeParam($, 0, 'a', true),

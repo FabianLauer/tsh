@@ -3,7 +3,10 @@ import { BaseNode } from './'
 export class Statement extends BaseNode {
 	public constructor(
 		private readonly items: BaseNode[]
-	) { super() }
+	) {
+		super()
+		console.assert(Array.isArray(items))
+	}
 
 
 	/**

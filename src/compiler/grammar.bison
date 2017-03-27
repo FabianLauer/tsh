@@ -219,7 +219,7 @@ statement_list:
 
 compound_statement:
 		"{" "}"
-		{ $$ = new yy.Statement() }
+		{ $$ = new yy.Statement([]) }
 
 	|	"{" statement_list "}"
 		{

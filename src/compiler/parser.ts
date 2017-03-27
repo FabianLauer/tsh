@@ -55,7 +55,7 @@ export function parseToArray(sourceCode: string): ast.BaseNode[] {
 
 	parser.yy.result = []
 	parser.parse(sourceCode)
-	return parser.yy.result
+	return [].concat(parser.yy.result)
 }
 
 

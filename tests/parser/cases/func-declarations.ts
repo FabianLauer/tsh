@@ -215,3 +215,81 @@ test<ast.FuncDecl>(
 	([$]) => assertRuntimeParam($, 1, 'b', false),
 	([$]) => assertRuntimeParam($, 2, 'abc', true)
 )
+
+
+test<ast.FuncDecl>(
+	[
+		'func alpha(a: Type, b, abc: Type)',
+		'func beta(a: Type, b, abc: Type)'
+	].join('\n'),
+	// 1st func
+	([$]) => $ instanceof ast.FuncDecl,
+	([$]) => $.name.rawValue === 'alpha',
+	hasEmptyReturnTypeDecl,
+	hasEmptyFuncBody,
+	hasOwnParamDeclList,
+	([$]) => assertRuntimeParam($, 0, 'a', true),
+	([$]) => assertRuntimeParam($, 1, 'b', false),
+	([$]) => assertRuntimeParam($, 2, 'abc', true),
+	// 2nd func
+	([, $]) => $ instanceof ast.FuncDecl,
+	([, $]) => $.name.rawValue === 'beta',
+	([, $]) => hasEmptyReturnTypeDecl([$]),
+	([, $]) => hasEmptyFuncBody([$]),
+	([, $]) => hasOwnParamDeclList([$]),
+	([, $]) => assertRuntimeParam($, 0, 'a', true),
+	([, $]) => assertRuntimeParam($, 1, 'b', false),
+	([, $]) => assertRuntimeParam($, 2, 'abc', true)
+)
+
+
+test<ast.FuncDecl>(
+	[
+		'func alpha(a: Type, b, abc: Type) {}',
+		'func beta(a: Type, b, abc: Type) { }'
+	].join('\n'),
+	// 1st func
+	([$]) => $ instanceof ast.FuncDecl,
+	([$]) => $.name.rawValue === 'alpha',
+	hasEmptyReturnTypeDecl,
+	hasEmptyFuncBody,
+	hasOwnParamDeclList,
+	([$]) => assertRuntimeParam($, 0, 'a', true),
+	([$]) => assertRuntimeParam($, 1, 'b', false),
+	([$]) => assertRuntimeParam($, 2, 'abc', true),
+	// 2nd func
+	([, $]) => $ instanceof ast.FuncDecl,
+	([, $]) => $.name.rawValue === 'beta',
+	([, $]) => hasEmptyReturnTypeDecl([$]),
+	([, $]) => hasEmptyFuncBody([$]),
+	([, $]) => hasOwnParamDeclList([$]),
+	([, $]) => assertRuntimeParam($, 0, 'a', true),
+	([, $]) => assertRuntimeParam($, 1, 'b', false),
+	([, $]) => assertRuntimeParam($, 2, 'abc', true)
+)
+
+
+test<ast.FuncDecl>(
+	[
+		'func alpha(a: Type, b, abc: Type) -> Type',
+		'func beta(a: Type, b, abc: Type) -> Type'
+	].join('\n'),
+	// 1st func
+	([$]) => $ instanceof ast.FuncDecl,
+	([$]) => $.name.rawValue === 'alpha',
+	hasEmptyReturnTypeDecl,
+	hasEmptyFuncBody,
+	hasOwnParamDeclList,
+	([$]) => assertRuntimeParam($, 0, 'a', true),
+	([$]) => assertRuntimeParam($, 1, 'b', false),
+	([$]) => assertRuntimeParam($, 2, 'abc', true),
+	// 2nd func
+	([, $]) => $ instanceof ast.FuncDecl,
+	([, $]) => $.name.rawValue === 'beta',
+	([, $]) => hasEmptyReturnTypeDecl([$]),
+	([, $]) => hasEmptyFuncBody([$]),
+	([, $]) => hasOwnParamDeclList([$]),
+	([, $]) => assertRuntimeParam($, 0, 'a', true),
+	([, $]) => assertRuntimeParam($, 1, 'b', false),
+	([, $]) => assertRuntimeParam($, 2, 'abc', true)
+)

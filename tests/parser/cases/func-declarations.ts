@@ -103,9 +103,7 @@ test<ast.FuncDecl>(
 	([$]) => $ instanceof ast.FuncDecl,
 	([$]) => $.name.rawValue === 'alpha',
 	([$]) => $.returnTypeDecl === ast.TypeExpr.Empty,
-	// Is the body a Statement, but not the Empty Statement?
-	([$]) => $.body instanceof ast.Statement,
-	([$]) => $.body !== ast.Statement.Empty
+	([$]) => $.body === ast.Statement.Empty
 )
 
 test<ast.FuncDecl>(
@@ -126,9 +124,8 @@ test<ast.FuncDecl>(
 	// Is the return type name a TypeExpr, but not the Empty TypeExpr?
 	([$]) => $.returnTypeDecl instanceof ast.TypeExpr,
 	([$]) => $.returnTypeDecl !== ast.TypeExpr.Empty,
-	// Is the body a Statement, but not the Empty Statement?
 	([$]) => $.body instanceof ast.Statement,
-	([$]) => $.body !== ast.Statement.Empty
+	([$]) => $.body === ast.Statement.Empty
 )
 
 test<ast.FuncDecl>(

@@ -169,7 +169,7 @@ case 57:
 		
 break;
 case 58:
- this.$ = new yy.Statement([]) 
+ this.$ = yy.Statement.Empty 
 break;
 case 59:
 

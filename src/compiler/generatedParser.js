@@ -154,7 +154,13 @@ case 61:
  this.$ = new yy.ParamDecl(new yy.Token($$[$0-1]), $$[$0]) 
 break;
 case 62:
- this.$ = yy.ParamDeclList.fromParamDecls([ $$[$0] ]) 
+
+			const decls = []
+			if (typeof $$[$0] !== 'undefined') {
+				decls.push($$[$0])
+			}
+			this.$ = yy.ParamDeclList.fromParamDecls(decls)
+		
 break;
 case 63:
 

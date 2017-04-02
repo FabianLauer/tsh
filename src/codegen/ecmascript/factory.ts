@@ -70,5 +70,10 @@ export function createForAstNode<TNode extends BaseNode>(astNode: TNode) {
 		})
 		// return the best match
 		[0]
+	if (typeof constructor !== 'object') {
+		throw new Error(
+			`Can not create code generator for AST node ${astNode.constructor.name}: no generator in registry.`
+		)
+	}
 	return <ICodeGenerator<TNode>>new constructor.generatorType(astNode)
 }

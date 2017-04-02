@@ -3,7 +3,7 @@ import { register, createForAstNode } from '../factory'
 import { Statement } from '@/compiler/ast'
 
 @register(node => node instanceof Statement ? 1 : 0)
-export class StatmenetCodeGenerator extends BaseGenerator<Statement> {
+export class StatementCodeGenerator extends BaseGenerator<Statement> {
 	/**
 	 * Generates code for a given syntax tree.
 	 * This method is automatically called by the `BaseGenerator` class whenever necessary.

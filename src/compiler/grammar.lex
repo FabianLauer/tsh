@@ -5,6 +5,7 @@ A							.*
 E							[Ee][+-]?{D}+
 FS							[fFlL]
 IS							[uUlL]*
+NL							\n
 
 %%
 "//"{A}						return 'SL_COMMENT';
@@ -13,6 +14,8 @@ IS							[uUlL]*
 "let"						return 'LET';
 "const"						return 'CONST';
 "return"					return 'RETURN';
+
+{NL}						return 'NL';
 
 {L}({L}|{D})*				return 'IDENTIFIER';
 
@@ -49,6 +52,7 @@ IS							[uUlL]*
 ">="						return 'GE_OP';
 "=="						return 'EQ_OP';
 "!="						return 'NE_OP';
+<<EOF>>						return 'EOF';
 
 ";"							{ return(';'); }
 ("{"|"<%")					{ return('{'); }
@@ -75,7 +79,7 @@ IS							[uUlL]*
 "|"							{ return('|'); }
 "?"							{ return('?'); }
 
-[ \t\v\n\f]					{ }
+[ \t\v\r\f]					{ }
 .							{ /* ignore bad characters */ }
 
 %%

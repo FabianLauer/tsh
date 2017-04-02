@@ -35,9 +35,29 @@ function test<TNode extends ast.BaseNode>(
 ///
 
 
+function isEmptyStatement(statement: ast.Statement): boolean {
+	if (
+		statement === ast.Statement.Empty || (
+			statement instanceof ast.Statement &&
+			statement.nodes.length === 0
+		)
+	) {
+		return true
+	}
+	const firstNonEmptyStatementOrNodeIndex = statement.nodes.findIndex(
+		node => {
+			if (node instanceof ast.Statement) {
+				return isEmptyStatement(node)
+			}
+			return true
+		}
+	)
+	return firstNonEmptyStatementOrNodeIndex !== -1
+}
+
 
 function hasEmptyFuncBody([funcDecl]: ast.FuncDecl[]) {
-	return funcDecl.body === ast.Statement.Empty
+	return isEmptyStatement(funcDecl.body)
 }
 
 
@@ -102,8 +122,7 @@ test<ast.FuncDecl>(
 	([$]) => $ instanceof ast.FuncDecl,
 	([$]) => $.name.rawValue === 'alpha',
 	([$]) => $.returnTypeDecl === ast.TypeExpr.Empty,
-	// Is the body the Empty Statement?
-	([$]) => $.body === ast.Statement.Empty
+	hasEmptyFuncBody
 )
 
 test<ast.FuncDecl>(
@@ -111,7 +130,7 @@ test<ast.FuncDecl>(
 	([$]) => $ instanceof ast.FuncDecl,
 	([$]) => $.name.rawValue === 'alpha',
 	([$]) => $.returnTypeDecl === ast.TypeExpr.Empty,
-	([$]) => $.body === ast.Statement.Empty
+	hasEmptyFuncBody
 )
 
 test<ast.FuncDecl>(
@@ -121,8 +140,7 @@ test<ast.FuncDecl>(
 	// Is the return type name a TypeExpr, but not the Empty TypeExpr?
 	([$]) => $.returnTypeDecl instanceof ast.TypeExpr,
 	([$]) => $.returnTypeDecl !== ast.TypeExpr.Empty,
-	// Is the body the Empty Statement?
-	([$]) => $.body === ast.Statement.Empty
+	hasEmptyFuncBody
 )
 
 test<ast.FuncDecl>(
@@ -132,8 +150,7 @@ test<ast.FuncDecl>(
 	// Is the return type name a TypeExpr, but not the Empty TypeExpr?
 	([$]) => $.returnTypeDecl instanceof ast.TypeExpr,
 	([$]) => $.returnTypeDecl !== ast.TypeExpr.Empty,
-	([$]) => $.body instanceof ast.Statement,
-	([$]) => $.body === ast.Statement.Empty
+	hasEmptyFuncBody
 )
 
 test<ast.FuncDecl>(

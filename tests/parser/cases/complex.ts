@@ -38,6 +38,16 @@ test<ast.FuncDecl>(
 	`
 	func alpha() {
 		let foo = 1
+	}
+	`,
+	([$]) => $ instanceof ast.FuncDecl
+)
+
+
+test<ast.FuncDecl>(
+	`
+	func alpha() {
+		let foo = 1
 		const bar = 2
 	}
 	`,
@@ -50,6 +60,20 @@ test<ast.FuncDecl>(
 	func beta(bar: Int) -> Int {
 		let foo = bar
 		const fibo = nacci
+	}
+	`,
+	([$]) => $ instanceof ast.FuncDecl
+)
+
+
+test<ast.FuncDecl>(
+	`
+	func gamma(bar: Int) -> Void {
+		let foo = bar
+		foo += bar
+		const fibo = foo++
+		foo += bar * fibo
+		return foo
 	}
 	`,
 	([$]) => $ instanceof ast.FuncDecl
@@ -75,7 +99,7 @@ test<ast.FuncDecl>(
 // 	`
 // 	// A test with a bunch of ...
 // 		//   ... different comments.
-	
+
 // 	// 
 // 	func beta(bar: Int) -> Int {
 // 		// comment inside the func

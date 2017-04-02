@@ -1,69 +1,111 @@
 %start root
 %%
 
+/* ------------------------------------------------------------------------------- */
+/* ----------- TRIVIA ------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------- */
 
-unary_operator_tokens:
-	|	INC_OP
-	|	DEC_OP
+nl_or_eof:
+		NL
+	|	EOF
 ;
 
+maybe_nl:
+		NL
+	|
+;
+
+maybe_nl_or_eof:
+		NL
+	|	EOF
+	|
+;
+
+
+comment: SL_COMMENT nl_or_eof { $$ = new yy.Comment([new yy.Token($1)]) };
+
+
+
+
+/* ------------------------------------------------------------------------------- */
+/* ----------- OPERATIONS -------------------------------------------------------- */
+/* ------------------------------------------------------------------------------- */
+
+
+/* ---------------------------- */
+/* Unary Operators & Operations */
+/* ---------------------------- */
+
+
 unary_operator:
-	unary_operator_tokens { $$ = yy.getOperatorFromToken($1) }
+		INC_OP		{ $$ = yy.getOperatorFromToken($1) }
+	|	DEC_OP		{ $$ = yy.getOperatorFromToken($1) }
 ;
 
 
 unary_operation:
+	/* postfix: */
 		primary_expr unary_operator
-		{ $$ = new yy.UnaryOperation($1, $2, yy.UnaryOperatorPosition.Postfix) }
+			{ $$ = new yy.UnaryOperation($1, $2, yy.UnaryOperatorPosition.Postfix) }
+	
+	/* prefix: */
 	|	unary_operator primary_expr
-		{ $$ = new yy.UnaryOperation($1, $2, yy.UnaryOperatorPosition.Prefix) }
+			{ $$ = new yy.UnaryOperation($1, $2, yy.UnaryOperatorPosition.Prefix) }
 ;
 
 
-binary_operator_tokens:
-		'+'
-	|	'-'
-	|	'*'
-	|	'/'
-	|	'%'
-;
+
+/* ----------------------------- */
+/* Binary Operators & Operations */
+/* ----------------------------- */
 
 
 binary_operator:
-	binary_operator_tokens { $$ = yy.getOperatorFromToken($1) }
-;
-
-
-assignment_operator_tokens:
-		'='
-	|	MUL_ASSIGN
-	|	DIV_ASSIGN
-	|	MOD_ASSIGN
-	|	ADD_ASSIGN
-	|	SUB_ASSIGN
-	|	LEFT_ASSIGN
-	|	RIGHT_ASSIGN
-	|	AND_ASSIGN
-	|	XOR_ASSIGN
-	|	OR_ASSIGN
-;
-
-
-assignment_operator:
-	assignment_operator_tokens { $$ = yy.getOperatorFromToken($1) }
+		'+'		{ $$ = yy.getOperatorFromToken($1) }
+	|	'-'		{ $$ = yy.getOperatorFromToken($1) }
+	|	'*'		{ $$ = yy.getOperatorFromToken($1) }
+	|	'/'		{ $$ = yy.getOperatorFromToken($1) }
+	|	'%'		{ $$ = yy.getOperatorFromToken($1) }
 ;
 
 
 binary_operation:
-	expression binary_operator expression
-	{ $$ = new yy.BinaryOperation($1, $2, $3) }
+	primary_expr binary_operator primary_expr
+		{ $$ = new yy.BinaryOperation($1, $2, $3) }
 ;
 
 
-operation:
-		binary_operation
-	|	unary_operation
+
+/* --------------------------------- */
+/* Assignment Operators & Operations */
+/* --------------------------------- */
+
+assignment_operator:
+		'='
+	|	MUL_ASSIGN		{ $$ = yy.getOperatorFromToken($1) }
+	|	DIV_ASSIGN		{ $$ = yy.getOperatorFromToken($1) }
+	|	MOD_ASSIGN		{ $$ = yy.getOperatorFromToken($1) }
+	|	ADD_ASSIGN		{ $$ = yy.getOperatorFromToken($1) }
+	|	SUB_ASSIGN		{ $$ = yy.getOperatorFromToken($1) }
+	|	LEFT_ASSIGN		{ $$ = yy.getOperatorFromToken($1) }
+	|	RIGHT_ASSIGN	{ $$ = yy.getOperatorFromToken($1) }
+	|	AND_ASSIGN		{ $$ = yy.getOperatorFromToken($1) }
+	|	XOR_ASSIGN		{ $$ = yy.getOperatorFromToken($1) }
+	|	OR_ASSIGN		{ $$ = yy.getOperatorFromToken($1) }
 ;
+
+
+assignment_expr:
+	IDENTIFIER assignment_operator expression
+		{ $$ = new yy.BinaryOperation(new yy.Expr($1), $2, $3) }
+;
+
+
+
+
+/* ------------------------------------------------------------------------------- */
+/* ----------- EXPRESSIONS ------------------------------------------------------- */
+/* ------------------------------------------------------------------------------- */
 
 
 
@@ -74,100 +116,93 @@ primary_expr:
 ;
 
 
-expression_tokens:
-		primary_expr
-	|	operation
+operation:
+		unary_operation		{ $$ = $1 }
+	|	binary_operation	{ $$ = $1 }
 ;
+
 expression:
-	expression_tokens { $$ = new yy.Expr($1) }
+		primary_expr		{ $$ = new yy.Expr($1) }
+	|	operation			{ $$ = $1 }
 ;
 
 
-type_expression:
-	IDENTIFIER
-		{ $$ = yy.TypeExpr.fromIdentifier(new yy.Token($1)) }
+type_expr:
+	IDENTIFIER { $$ = yy.TypeExpr.fromIdentifier(new yy.Token($1)) }
 ;
 
 
-decl_assignment:
-	'=' expression
-		{ $$ = new yy.Expr($1) }
+
+
+/* ------------------------------------------------------------------------------- */
+/* ----------- STATEMENTS -------------------------------------------------------- */
+/* ------------------------------------------------------------------------------- */
+
+
+return_statement:
+	RETURN expression		{ $$ = new yy.ReturnStatement($2) }
+;
+
+statement:
+		comment
+	|	assignment_expr
+	|	expression
+	|	var_decl
+	|	return_statement
+;
+
+statements:
+	|	nl_or_eof
+	| statements statement
+		{
+			$1 = $1 || yy.Statement.Empty
+			$$ = new yy.Statement($1.nodes.concat($2))
+		}
+;
+
+compound_statement:
+	"{" maybe_nl statements maybe_nl "}"
+		{
+			if ($3 === '\n' || $3 === '') {
+				$3 = yy.Statement.Empty
+			}
+			$3 = $3 || yy.Statement.Empty
+			$$ = new yy.Statement($3.nodes.concat($3))
+		}
 ;
 
 
-assignment_expr:
-	IDENTIFIER assignment_operator expression
-		{ $$ = new yy.BinaryOperation(new yy.Expr($1), $2, $3) }
+
+
+/* ------------------------------------------------------------------------------- */
+/* ----------- VARIABLE DEC ------------------------------------------------------ */
+/* ------------------------------------------------------------------------------- */
+
+
+__var_decl_modifier:
+		LET			{ $$ = yy.getVarDeclModifierByKeyword($1) }
+	|	CONST		{ $$ = yy.getVarDeclModifierByKeyword($1) }
+;
+__var_decl_type_decl: ":" type_expr	{ $$ = $1 } | ;
+
+__var_decl_name_and_maybe_type_decl:
+	IDENTIFIER __var_decl_type_decl
+		{ $$ = [yy.createToken($1), $2] }
 ;
 
+__var_decl_maybe_assignment: '=' expression { $$ = new yy.Expr($1) } | ;
 
-let_or_const:
-		LET
-	|	CONST
-;
-
-
-var_name_decl_with_type_expr:
-	/*
-	Example:
-		name: type_expr
-	*/
-	|	IDENTIFIER ":" type_expression
-			{ $$ = [$1, $3] }
-;
+__var_decl_end: maybe_nl_or_eof;
 
 var_decl:
-	/*
-	Example:
-		let varName
-		const varName
-	*/
-		let_or_const IDENTIFIER
+	__var_decl_modifier
+	__var_decl_name_and_maybe_type_decl
+	__var_decl_maybe_assignment
+	__var_decl_end
 		{
 			$$ = yy.VarDecl.create({
-				modifier: yy.getVarDeclModifierByKeyword($1),
-				varName: yy.createToken($2)
-			})
-		}
-
-	/*
-	Example:
-		let varName: Type
-		const varName: Type
-	*/
-	|	let_or_const var_name_decl_with_type_expr
-		{
-			$$ = yy.VarDecl.create({
-				modifier: yy.getVarDeclModifierByKeyword($1),
-				varName: yy.createToken($2[0]),
-				typeDecl: $2[1]
-			})
-		}
-	
-	/*
-	Example:
-		let varName = expr
-		const varName = expr
-	*/
-	|	let_or_const IDENTIFIER decl_assignment
-		{
-			$$ = yy.VarDecl.create({
-				modifier: yy.getVarDeclModifierByKeyword($1),
-				varName: yy.createToken($2),
-				assignment: $3
-			})
-		}
-	
-	/*
-	Example:
-		let varName: Type = expr
-		const varName: Type = expr
-	*/
-	|	let_or_const var_name_decl_with_type_expr decl_assignment
-		{
-			$$ = yy.VarDecl.create({
-				modifier: yy.getVarDeclModifierByKeyword($1),
-				varName: yy.createToken($2[0]),
+				modifier: $1,
+				varName: $2[0],
 				typeDecl: $2[1],
 				assignment: $3
 			})
@@ -175,80 +210,24 @@ var_decl:
 ;
 
 
-statement:
-		var_decl
-	|	assignment_expr
-	|	expression
-	|	statement
-	|	return_statement
-	|	compound_statement
+
+
+/* ------------------------------------------------------------------------------- */
+/* ----------- PARAM & FUNC DECL ------------------------------------------------- */
+/* ------------------------------------------------------------------------------- */
+
+
+__param_decl_type_expr:
+		":" type_expr { $$ = $2 }
+	|
 ;
-
-
-return_statement:
-	RETURN expression		{ $$ = new yy.ReturnStatement($2) }
+__param_decl:
+	|	IDENTIFIER __param_decl_type_expr
+			{ $$ = new yy.ParamDecl(new yy.Token($1), $2) }
 ;
-
-
-comment:
-	SL_COMMENT { $$ = new yy.Comment([new yy.Token($1)]) }
-;
-
-
-comment_list:
-		comment
-		{ $$ = $1 }
-	|	comment_list comment
-		{ $$ = new yy.Comment($1.lines.concat($2.lines)) }
-;
-
-
-statement_list:
-		statement
-		{ $$ = new yy.Statement([$1]) }
-	|	comment_list
-		{ $$ = new yy.Statement([$1]) }
-	|	statement_list statement
-		{
-			$$ = new yy.Statement(
-				$1.nodes.concat($2)
-			)
-		}
-;
-
-
-compound_statement:
-		"{" "}"
-		{ $$ = yy.Statement.Empty }
-
-	|	"{" statement_list "}"
-		{
-			$$ = $2
-		}
-;
-
-
-param_decl:
-	/*
-	Example:
-		name
-	*/
-		IDENTIFIER
-			{ $$ = new yy.ParamDecl(new yy.Token($1)) }
-	
-	/*
-	Example:
-		name: type_expr
-	*/
-	|	IDENTIFIER ":" type_expression
-			{ $$ = new yy.ParamDecl(new yy.Token($1), $3) }
-;
-
-
 param_decl_list:
-		param_decl
-		{ $$ = yy.ParamDeclList.fromParamDecls([ $1 ]) }
-	|	param_decl_list "," param_decl
+		param_decl { $$ = yy.ParamDeclList.fromParamDecls([ $1 ]) }
+	|	param_decl_list "," __param_decl
 		{
 			$$ = yy.ParamDeclList.fromParamDecls(
 				$1.paramDecls.concat($3)
@@ -257,74 +236,63 @@ param_decl_list:
 ;
 
 
+__func_ident: FUNCTION IDENTIFIER { $$ = yy.createToken($2) };
+__func_param_decl_list: "(" param_decl_list ")" { $$ = $2 };
+__func_return_expr: ARR type_expr { $$ = $2 } | ;
+__func_body: compound_statement { $$ = $1 } | ;
 func_decl:
-	/*
-	Example:
-		func ident()
-	*/
-		FUNCTION IDENTIFIER "(" ")"
+		__func_ident
+		__func_param_decl_list
+		__func_return_expr
+		__func_body
+		nl_or_eof
 		{
 			$$ = yy.FuncDecl.create({
-				funcName: yy.createToken($2)
-			})
-		}
-
-	/*
-	Example:
-		func ident(params: param_types)
-	*/
-	|	FUNCTION IDENTIFIER "(" param_decl_list ")"
-		{
-			$$ = yy.FuncDecl.create({
-				funcName: yy.createToken($2),
-				runtimeParamDecls: $4
-			})
-		}
-
-	/*
-	Example:
-		func ident() { }
-	*/
-	|	FUNCTION IDENTIFIER "(" ")" compound_statement
-		{
-			$$ = yy.FuncDecl.create({
-				funcName: yy.createToken($2),
-				funcBody: $5
-			})
-		}
-
-	/*
-	Example:
-		func ident(): type
-	*/
-	|	FUNCTION IDENTIFIER "(" ")" ARR type_expression
-		{
-			$$ = yy.FuncDecl.create({
-				funcName: yy.createToken($2),
-				returnTypeDecl: $6
-			})
-		}
-
-	/*
-	Example:
-		func ident(): type { }
-	*/
-	|	FUNCTION IDENTIFIER "(" ")" ARR type_expression compound_statement
-		{
-			$$ = yy.FuncDecl.create({
-				funcName: yy.createToken($2),
-				returnTypeDecl: $6,
-				funcBody: $7
+				funcName: $1,
+				runtimeParamDecls: $2,
+				returnTypeDecl: $3,
+				funcBody: $4
 			})
 		}
 ;
+
+
+/* ------------------------------------------------------------------------------- */
+/* ----------- ROOT -------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------- */
 
 
 
 root_grammar:
-		comment_list
-	| 	func_decl
+		comment
+	|	func_decl
+	|	nl_or_eof
 ;
 
 
-root: root_grammar { yy.result.push($$); return $$ };
+root_grammar_list:
+		root_grammar
+			{ $$ = $1 }
+	|	root_grammar_list root_grammar
+		{
+			$1 = $1 || []
+			if (!Array.isArray($1)) {
+				$1 = [$1]
+			}
+			$$ = $1.concat($2)
+		}
+;
+
+root: root_grammar_list {
+	if (Array.isArray($1)) {
+		$1 = $1.filter(node => (
+			node !== '\n' &&
+			node !== ''
+		))
+		yy.result.push.apply(yy.result, $1)
+	} else {
+		yy.result.push($1)
+	}
+	return $$
+};
+

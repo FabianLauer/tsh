@@ -5,7 +5,10 @@ export class Statement extends BaseNode {
 		private readonly items: BaseNode[]
 	) {
 		super()
-		console.assert(Array.isArray(items))
+		console.assert(
+			Array.isArray(items),
+			'Invalid Argument for ast.Statement: must be an array'
+		)
 	}
 
 

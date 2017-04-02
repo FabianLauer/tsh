@@ -22,6 +22,20 @@ namespace('test', function () {
 		sh `mocha build/tests/all.js`
 	})
 
+
+	desc('Runs all parser tests.')
+	task('parser', () => {
+		sh `tsc`
+		sh `mocha build/tests/all.js --grep Parser`
+	})
+
+
+	desc('Runs all end to end tests.')
+	task('e2e', () => {
+		sh `tsc`
+		sh `mocha build/tests/all.js --grep E2E`
+	})
+
 })
 
 

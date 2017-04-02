@@ -14,6 +14,17 @@ namespace('build', function () {
 })
 
 
+namespace('test', function () {
+
+	desc('Runs all tests.')
+	task('all', () => {
+		sh `tsc`
+		sh `mocha build/tests/all.js`
+	})
+
+})
+
+
 namespace('dev', function () {
 
 	desc('Compiles the parser, then runs tests for it. Useful when working on the grammar definitions.')

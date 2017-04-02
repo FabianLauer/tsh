@@ -226,7 +226,13 @@ __param_decl:
 			{ $$ = new yy.ParamDecl(new yy.Token($1), $2) }
 ;
 param_decl_list:
-		param_decl { $$ = yy.ParamDeclList.fromParamDecls([ $1 ]) }
+		param_decl {
+			const decls = []
+			if (typeof $1 !== 'undefined') {
+				decls.push($1)
+			}
+			$$ = yy.ParamDeclList.fromParamDecls(decls)
+		}
 	|	param_decl_list "," __param_decl
 		{
 			$$ = yy.ParamDeclList.fromParamDecls(

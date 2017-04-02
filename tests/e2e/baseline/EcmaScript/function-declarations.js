@@ -1,3 +1,11 @@
-function foo(a, b) {
-	/* EMPTY STATEMENT */
+function alpha() {
+
+}
+
+function beta(a) {
+
+}
+
+function gamma(a, b) {
+
 }

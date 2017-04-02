@@ -10,6 +10,6 @@ export class EmptyStatmenetCodeGenerator extends BaseGenerator<Statement> {
 	 * @param ast The syntax tree to generate code for.
 	 */
 	protected generateCodeConcrete(astNode: Statement) {
-		return ' /* EMPTY STATEMENT */ '
+		return ''
 	}
 }

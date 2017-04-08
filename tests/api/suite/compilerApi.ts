@@ -27,18 +27,30 @@ function runTestSuite(dependencies: ITestSuiteDependencies) {
 	 */
 	const VALID_TEST_SOURCE_CODE = 'func test() { }'
 
-	it('should return `false`: isInstanceOfCompilerApi(invalid)', () => {
-		dependencies.isInstanceOfCompilerApi(undefined)
+	///
+	/// Validate Injected Dependencies
+	///
+
+	it('[DI] should  return `false`: isInstanceOfCompilerApi(invalid)', () => {
+		assert(!dependencies.isInstanceOfCompilerApi(undefined), '`undefined`')
+		assert(!dependencies.isInstanceOfCompilerApi(null), '`null`')
+		assert(!dependencies.isInstanceOfCompilerApi({}), '`{}`')
 	})
 
-	it('should instantiate without error', () => {
+	it('[DI] should instantiate without error', () => {
 		dependencies.createCompilerApi()
 	})
 
-	it('should instantiate to expected type', () => {
+	it('[DI] should instantiate to expected type', () => {
 		const api = dependencies.createCompilerApi()
 		assert(dependencies.isInstanceOfCompilerApi(api))
 	})
+
+
+	///
+	/// Actual Tests
+	///
+
 
 	it('should throw: compileSourceCode(undef, valid)', () => {
 		const api = dependencies.createCompilerApi()

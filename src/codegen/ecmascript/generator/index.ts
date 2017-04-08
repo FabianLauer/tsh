@@ -1,6 +1,7 @@
 import './BaseConditionalStatementCodeGenerator'
 import './ClassDeclCodeGenerator'
 import './ClassMemberDeclCodeGenerator'
+import './CommentCodeGenerator'
 import './ElseIfStatementCodeGenerator'
 import './ElseStatementCodeGenerator'
 import './EmptyStatementCodeGenerator'

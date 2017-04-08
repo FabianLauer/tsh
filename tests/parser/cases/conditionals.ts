@@ -31,7 +31,10 @@ function test<TNodes extends ast.BaseNode[]>(
 	// body as their parameter
 	const assertions = expectation.map(fn => {
 		return ([decl]: ast.FuncDecl[]) => {
-			if (fn(<TNodes>decl.body.nodes)) {
+			// The parser wraps conditional statements in another statement.
+			// We unwrap that statement here and pass its nodes into the assertion function.
+			const wrapperStatement = (<ast.Statement>decl.body.nodes[0])
+			if (fn(<TNodes>wrapperStatement.nodes)) {
 				return true
 			} else {
 				throw new Error(fn.toString())
@@ -75,11 +78,11 @@ test<[ast.IfStatement, ast.ElseIfStatement, ast.ElseStatement]>(
 	`if variable { } else if variable2 { } else { }`,
 	([ifStm]) => isInstanceOf(ifStm, ast.IfStatement),
 	([, elseIfStm]) => isInstanceOf(elseIfStm, ast.ElseIfStatement),
-	([, , elseStm]) => isInstanceOf(elseStm, ast.ElseIfStatement)
+	([, , elseStm]) => isInstanceOf(elseStm, ast.ElseStatement)
 )
 
 test<[ast.IfStatement, ast.ElseStatement]>(
 	`if variable { } else { }`,
 	([ifStm]) => isInstanceOf(ifStm, ast.IfStatement),
-	([, elseStm]) => isInstanceOf(elseStm, ast.ElseIfStatement)
+	([, elseStm]) => isInstanceOf(elseStm, ast.ElseStatement)
 )

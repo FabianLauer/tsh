@@ -33,6 +33,14 @@ export class CompilerApi implements ICompilerApi {
 
 
 	/**
+	 * Returns all available compile target identifiers.
+	 */
+	public getAvailableCompileTargets(): CompileTarget[] {
+		return this.compileTargetIds.map($ => $.id)
+	}
+
+
+	/**
 	 * Returns all available identifiers that are associated to a compile target.
 	 * The compile target must be known to the API, otherwise an error will be thrown.
 	 * @throws

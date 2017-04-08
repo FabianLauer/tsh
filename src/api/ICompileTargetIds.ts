@@ -62,6 +62,25 @@ export namespace ICompileTargetIds {
 	export function create(id: TCompileTarget, humanReadableId: THumanReadableId) {
 		return <ICompileTargetIds<TCompileTarget, THumanReadableId>>{ id, humanReadableId }
 	}
+
+
+	/**
+	 * Checks whether an object implements `ICompileTargetIds`.
+	 * This function does not throw.
+	 * @param object The object to validate.
+	 * @return Returns `true` if `object` implements `ICompileTargetIds`, `false` if not.
+	 */
+	export function isValid(
+		object: ICompileTargetIds.Any
+	): object is ICompileTargetIds.Any {
+		return (
+			typeof object === 'object' &&
+			object !== null &&
+			object.id >= 0 &&
+			typeof object.humanReadableId === 'string' &&
+			object.humanReadableId.length > 0
+		)
+	}
 }
 
 export default ICompileTargetIds

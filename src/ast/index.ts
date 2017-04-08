@@ -1,5 +1,6 @@
 import BaseNode from './BaseNode'
 import BinaryOperation from './BinaryOperation'
+import ClassDecl from './ClassDecl'
 import Comment from './Comment'
 import Expr from './Expr'
 import ExprStatement from './ExprStatement'
@@ -23,6 +24,7 @@ import VarDeclModifier from './VarDeclModifier'
 export {
 	BaseNode,
 	BinaryOperation,
+	ClassDecl,
 	Comment,
 	Expr,
 	ExprStatement,

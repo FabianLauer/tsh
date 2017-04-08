@@ -1,3 +1,11 @@
+///
+/// Compiler API Test Suite
+///
+/// Contains all tests for `ICompilerApi` instances.
+/// Tests marked with `[DI]` test the depdencies that were injected into the test suite.
+///
+
+
 import { assert, assertThrows } from '../../utils'
 import { ICompilerApi, ICompileTargetIds, CompileTarget } from '@/compiler/api'
 
@@ -18,6 +26,16 @@ export interface ITestSuiteDependencies {
 	 * @return Returns `true` if `object` implements `ICompilerApi`, `false` if not.
 	 */
 	isInstanceOfCompilerApi(object: ICompilerApi | any): object is ICompilerApi
+
+	/**
+	 * Returns all compile target IDs that will be available in the tested compiler API.
+	 */
+	getAvailableCompileTargets(): CompileTarget[]
+
+	/**
+	 * Returns a human readable name for a certain compile target.
+	 */
+	getHumanReadableCompileTargetId(id: CompileTarget): ICompileTargetIds.THumanReadableId
 }
 
 
@@ -44,6 +62,43 @@ function runTestSuite(dependencies: ITestSuiteDependencies) {
 	it('[DI] should instantiate to expected type', () => {
 		const api = dependencies.createCompilerApi()
 		assert(dependencies.isInstanceOfCompilerApi(api))
+	})
+
+	it('[DI] should return only valid values from getAvailableCompileTargets()', () => {
+		const targets = dependencies.getAvailableCompileTargets()
+		const invalidTargets = targets
+			.filter(_ => !ICompileTargetIds.TCompileTarget.isValid(_))
+		assert(
+			invalidTargets.length === 0,
+			`returned ${invalidTargets.length} invalid targets: ${invalidTargets.join(', ')}`
+		)
+	})
+
+	it('[DI] getHumanReadableCompileTargetId() should return valid human readable I for every target', () => {
+		const targets = dependencies.getAvailableCompileTargets()
+		const invalidHumanReadableIds = targets
+			.map(_ => dependencies.getHumanReadableCompileTargetId(_))
+			.filter(_ => !ICompileTargetIds.THumanReadableId.isValid(_))
+		assert(
+			invalidHumanReadableIds.length === 0,
+			`returned ${invalidHumanReadableIds.length} invalid targets: ${invalidHumanReadableIds.join(', ')}`
+		)
+	})
+
+	it('[DI] getHumanReadableCompileTargetId() should not return duplicates', () => {
+		const targets = dependencies.getAvailableCompileTargets()
+		const humanReadableIds = targets
+			.map(_ => dependencies.getHumanReadableCompileTargetId(_))
+
+		// Count the number of duplicates by creating a `Set` and comparing its length to
+		// the length of the original array. See http://stackoverflow.com/a/7376645/3861083.
+		const humanReadableIdSet = new Set(humanReadableIds)
+		const numDuplis = humanReadableIds.length - humanReadableIdSet.size
+
+		assert(
+			numDuplis === 0,
+			`there's ${numDuplis - 1} duplicate human readable IDs: ${humanReadableIds.join(', ')}`
+		)
 	})
 
 
@@ -134,10 +189,10 @@ function runTestSuite(dependencies: ITestSuiteDependencies) {
 		)
 	})
 
-	it('should throw: compileSourceCode(undef, valid)', () => {
-		const api = dependencies.createCompilerApi()
-		assertThrows(() => api.compileSourceCode(undefined, CompileTarget.EcmaScript))
-	})
+
+	/// Method `compileSourceCode()`:
+	/// We test this method's `compileTarget` parameter with every available compile target
+	/// of the API. We loop over all available compile targets further below to do that.
 
 	it('should throw: compileSourceCode(valid, undef)', () => {
 		const api = dependencies.createCompilerApi()
@@ -149,10 +204,22 @@ function runTestSuite(dependencies: ITestSuiteDependencies) {
 		assertThrows(() => api.compileSourceCode(undefined, undefined))
 	})
 
-	it('should not throw: compileSourceCode(valid, valid)', () => {
-		const api = dependencies.createCompilerApi()
-		api.compileSourceCode(VALID_TEST_SOURCE_CODE, CompileTarget.EcmaScript)
-	})
+	// Loop over all available compile targets.
+	// We test `compileSourceCode()`'s parameter `compileTarget` using this loop.
+	for (const compileTargetID of dependencies.getAvailableCompileTargets()) {
+		/** The human readable name of the compile target tested in a loop iteration. */
+		const compileTargetName = dependencies.getHumanReadableCompileTargetId(compileTargetID)
+
+		it(`should throw: compileSourceCode(undef, ${compileTargetName}`, () => {
+			const api = dependencies.createCompilerApi()
+			assertThrows(() => api.compileSourceCode(undefined, compileTargetID))
+		})
+
+		it(`should not throw: compileSourceCode(valid, ${compileTargetName})`, () => {
+			const api = dependencies.createCompilerApi()
+			api.compileSourceCode(VALID_TEST_SOURCE_CODE, compileTargetID)
+		})
+	}
 }
 
 

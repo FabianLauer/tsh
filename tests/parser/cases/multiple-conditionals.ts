@@ -65,8 +65,8 @@ function isInstanceOf<T>(obj: T, constructor: Function | ({ new(...args: any[]):
 
 test<ast.IfStatement[]>(
 	`
-	if variable { }
-	if variable { }
+	if cond { }
+	if cond { }
 	`,
 	([first]) => isInstanceOf(first[0], ast.IfStatement),
 	([, second]) => isInstanceOf(second[0], ast.IfStatement)
@@ -75,8 +75,8 @@ test<ast.IfStatement[]>(
 
 test<[ast.IfStatement, ast.ElseStatement]>(
 	`
-	if variable { } else { }
-	if variable { } else { }
+	if cond { } else { }
+	if cond { } else { }
 	`,
 	([first]) => isInstanceOf(first[0], ast.IfStatement),
 	([first]) => isInstanceOf(first[1], ast.ElseStatement),
@@ -87,8 +87,8 @@ test<[ast.IfStatement, ast.ElseStatement]>(
 
 test<[ast.IfStatement, ast.ElseIfStatement]>(
 	`
-	if variable { } else if { }
-	if variable { } else if { }
+	if cond { } else if cond { }
+	if cond { } else if cond { }
 	`,
 	([first]) => isInstanceOf(first[0], ast.IfStatement),
 	([first]) => isInstanceOf(first[1], ast.ElseIfStatement),
@@ -99,8 +99,8 @@ test<[ast.IfStatement, ast.ElseIfStatement]>(
 
 test<[ast.IfStatement, ast.ElseIfStatement, ast.ElseIfStatement]>(
 	`
-	if variable { } else if { } else if { }
-	if variable { } else if { } else if { }
+	if cond { } else if cond { } else if cond { }
+	if cond { } else if cond { } else if cond { }
 	`,
 	([first]) => isInstanceOf(first[0], ast.IfStatement),
 	([first]) => isInstanceOf(first[1], ast.ElseIfStatement),
@@ -113,8 +113,8 @@ test<[ast.IfStatement, ast.ElseIfStatement, ast.ElseIfStatement]>(
 
 test<[ast.IfStatement, ast.ElseIfStatement, ast.ElseStatement]>(
 	`
-	if variable { } else if { } else { }
-	if variable { } else if { } else { }
+	if cond { } else if cond { } else { }
+	if cond { } else if cond { } else { }
 	`,
 	([first]) => isInstanceOf(first[0], ast.IfStatement),
 	([first]) => isInstanceOf(first[1], ast.ElseIfStatement),

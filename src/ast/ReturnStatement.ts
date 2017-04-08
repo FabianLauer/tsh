@@ -10,7 +10,7 @@ export class ReturnStatement extends BaseNode {
 	 * A return statement with no members.
 	 */
 	// tslint:disable-next-line:variable-name
-	public static readonly Empty = new ReturnStatement([])
+	public static readonly Empty = new ReturnStatement()
 }
 
 export default ReturnStatement

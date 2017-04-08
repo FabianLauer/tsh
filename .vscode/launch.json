@@ -7,7 +7,10 @@
 			"name": "Launch Tests",
 			"program": "${workspaceRoot}/node_modules/.bin/_mocha",
 			"runtimeExecutable": null,
-			"args": ["${workspaceRoot}/build/tests/all.js"],
+			"args": [
+				"${workspaceRoot}/build/tests/all.js",
+				"--colors"
+			],
 			"cwd": "${workspaceRoot}",
 			"smartStep": true,
 			"sourceMaps": true,

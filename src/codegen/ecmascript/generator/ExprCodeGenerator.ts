@@ -1,6 +1,6 @@
 import BaseGenerator from '../BaseGenerator'
-import { register } from '../factory'
-import { Expr } from '@/compiler/ast'
+import { register, createForAstNode } from '../factory'
+import { BaseNode, Expr } from '@/compiler/ast'
 
 @register(node => node instanceof Expr ? 1 : 0)
 export class ExprCodeGenerator extends BaseGenerator<Expr> {
@@ -10,6 +10,9 @@ export class ExprCodeGenerator extends BaseGenerator<Expr> {
 	 * @param ast The syntax tree to generate code for.
 	 */
 	protected generateCodeConcrete(astNode: Expr) {
+		if (astNode.content instanceof BaseNode) {
+			return createForAstNode(astNode.content)
+		}
 		return (<any>astNode.content).toString()
 	}
 }

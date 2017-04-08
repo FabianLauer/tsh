@@ -10,7 +10,10 @@ const basedir = `${process.cwd()}/tests/e2e/`
 // generator implementation as `exports.default`.
 const codeGenerators = importFromDirectorySync<
 	ICodeGeneratorTestImpl & { 'default'?: ICodeGeneratorTestImpl }
-	>(`${__dirname}/codegen/`)
+>(
+	`${__dirname}/codegen/`,
+	filename => (/.*\.(j|t)s$/g).test(filename)
+)
 	// if necessary, unwrap the `export default ...`
 	.map(imports => imports.default || imports)
 

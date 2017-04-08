@@ -2,7 +2,10 @@
 // Since they register themselves using the `factory.ts` functions, there's
 // no need to interact with them here in any other way.
 import { importFromDirectorySync } from 'utils/importUtils'
-importFromDirectorySync(`${__dirname}/generator/`)
+importFromDirectorySync(
+	`${__dirname}/generator/`,
+	filename => (/.*\.(j|t)s$/g).test(filename)
+)
 
 // Import and export the public types in this module.
 import CodeGenerator from './CodeGenerator'

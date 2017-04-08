@@ -9,6 +9,7 @@ import { readdirSync, statSync } from 'fs'
 
 describe('Parser:', () => {
 	const files = readdirSync(`${__dirname}/cases/`)
+		.filter(filename => (/.*\.(j|t)s$/g).test(filename))
 		.map(filename => `${__dirname}/cases/${filename}`)
 		.filter(filename => statSync(filename).isFile())
 

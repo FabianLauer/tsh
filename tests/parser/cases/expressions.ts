@@ -78,14 +78,16 @@ function isInstanceOfEither<T>(obj: T, ...constructors: Array<{ new (...args: an
 
 /// Simple Assignments:
 
-test<ast.Expr>(
+test<ast.ExprStatement>(
 	`a = 1`,
-	([$]) => $ instanceof ast.Expr
+	([$]) => isInstanceOf($, ast.ExprStatement),
+	([$]) => isInstanceOfEither($.expression, ast.BinaryOperation, ast.Expr)
 )
 
-test<ast.Expr>(
+test<ast.ExprStatement>(
 	`a = b`,
-	([$]) => $ instanceof ast.Expr
+	([$]) => isInstanceOf($, ast.ExprStatement),
+	([$]) => isInstanceOfEither($.expression, ast.BinaryOperation, ast.Expr)
 )
 
 
@@ -98,9 +100,10 @@ let binaryOperators = [
 binaryOperators = binaryOperators.map(operator => `${operator}=`)
 
 for (const operator of binaryOperators) {
-	test<ast.Expr>(
+	test<ast.ExprStatement>(
 		`a ${operator} b`,
-		([$]) => isInstanceOfEither($, ast.BinaryOperation, ast.Expr)
+		([$]) => isInstanceOf($, ast.ExprStatement),
+		([$]) => isInstanceOfEither($.expression, ast.BinaryOperation, ast.Expr)
 	)
 }
 
@@ -110,15 +113,17 @@ for (const operator of binaryOperators) {
 const unaryOperators = ['++', '--']
 
 for (const operator of unaryOperators) {
-	test<ast.Expr>(
+	test<ast.ExprStatement>(
 		`a${operator}`,
-		([$]) => isInstanceOfEither($, ast.UnaryOperation, ast.Expr)
+		([$]) => isInstanceOf($, ast.ExprStatement),
+		([$]) => isInstanceOfEither($.expression, ast.UnaryOperation, ast.Expr)
 	)
 
 
-	test<ast.Expr>(
+	test<ast.ExprStatement>(
 		`${operator}a`,
-		([$]) => isInstanceOfEither($, ast.UnaryOperation, ast.Expr)
+		([$]) => isInstanceOf($, ast.ExprStatement),
+		([$]) => isInstanceOfEither($.expression, ast.UnaryOperation, ast.Expr)
 	)
 }
 

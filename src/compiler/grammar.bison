@@ -101,9 +101,6 @@ assignment_expr:
 ;
 
 
-assignment_expr_statement: assignment_expr maybe_nl_or_eof;
-
-
 
 
 /* ------------------------------------------------------------------------------- */
@@ -127,9 +124,13 @@ operation:
 expression:
 		primary_expr		{ $$ = new yy.Expr($1) }
 	|	operation			{ $$ = $1 }
+	|	assignment_expr		{ $$ = $1 }
 ;
 
-expression_statement: expression maybe_nl_or_eof;
+
+expression_statement:
+	expression maybe_nl_or_eof		{ $$ = new yy.ExprStatement($1) }
+;
 
 
 type_expr:
@@ -150,7 +151,6 @@ return_statement:
 
 statement:
 		comment
-	|	assignment_expr_statement
 	|	expression_statement
 	|	var_decl
 	|	return_statement

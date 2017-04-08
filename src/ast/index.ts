@@ -2,6 +2,7 @@ import BaseNode from './BaseNode'
 import BinaryOperation from './BinaryOperation'
 import Comment from './Comment'
 import Expr from './Expr'
+import ExprStatement from './ExprStatement'
 import FuncDecl from './FuncDecl'
 import Identifier from './Identifier'
 import Operator from './Operator'
@@ -24,6 +25,7 @@ export {
 	BinaryOperation,
 	Comment,
 	Expr,
+	ExprStatement,
 	Identifier,
 	FuncDecl,
 	Operator,

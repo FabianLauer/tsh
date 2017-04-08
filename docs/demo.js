@@ -39,7 +39,15 @@ function main() {
 function compile(sourceEditor, compiledEditor) {
 	var compiled = compiler.CompilerApi.create()
 		.compileSourceCode(sourceEditor.getValue(), 0);
-	compiledEditor.setValue(compiled)
+	compiledEditor.setValue(tryBeautifyJavaScript(compiled))
+}
+
+
+function tryBeautifyJavaScript(js) {
+	if (typeof window.js_beautify === 'function') {
+		return window.js_beautify(js)
+	}
+	return js
 }
 
 

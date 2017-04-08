@@ -11,6 +11,7 @@ NL							\n
 "//"{A}						return 'SL_COMMENT';
 
 "func"						return 'FUNCTION';
+"class"						return 'CLASS';
 "let"						return 'LET';
 "const"						return 'CONST';
 "return"					return 'RETURN';

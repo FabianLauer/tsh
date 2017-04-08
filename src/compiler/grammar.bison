@@ -269,6 +269,57 @@ func_decl:
 ;
 
 
+
+/* ------------------------------------------------------------------------------- */
+/* ----------- CLASS DECL -------------------------------------------------------- */
+/* ------------------------------------------------------------------------------- */
+
+
+
+__class_body_statement:
+		comment
+	|	var_decl
+;
+
+__class_body_statements:
+	|	nl_or_eof
+	|	__class_body_statements __class_body_statement
+		{
+			$1 = $1 || []
+			$2 = $2 || yy.Statement.Empty
+			$$ = $1.concat($2)
+		}
+;
+
+__class_body_compound_statement:
+	"{" maybe_nl __class_body_statements maybe_nl "}"
+		{
+			if ($3 === '\n' || $3 === '') {
+				$3 = []
+			}
+			$3 = $3 || []
+			$$ = new yy.Statement($3)
+		}
+;
+
+
+__class_ident: CLASS IDENTIFIER { $$ = yy.createToken($2) };
+__class_body: __class_body_compound_statement { $$ = $1 } | ;
+func_decl:
+		__class_ident
+		__class_body
+		nl_or_eof
+		{
+			$$ = yy.ClassDecl.create({
+				className: $1,
+				classBody: $2
+			})
+		}
+;
+
+
+
+
 /* ------------------------------------------------------------------------------- */
 /* ----------- ROOT -------------------------------------------------------------- */
 /* ------------------------------------------------------------------------------- */

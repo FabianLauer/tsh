@@ -10,6 +10,6 @@ export class ReturnStatementCodeGenerator extends BaseGenerator<ReturnStatement>
 	 * @param ast The syntax tree to generate code for.
 	 */
 	protected generateCodeConcrete(astNode: ReturnStatement) {
-		return `return ${astNode.returnValue.content};`
+		return `return ${astNode.returnValue.content};\n`
 	}
 }

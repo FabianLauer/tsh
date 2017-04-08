@@ -4,17 +4,23 @@
         "node_modules/**"
     ],
     "compilerOptions": {
+        // Build Config
         "target": "es6",
         "module": "commonjs",
-        "experimentalDecorators": true,
-        "noImplicitAny": true,
-        "emitDecoratorMetadata": true,
-        "jsx": "react",
-        "outDir": "./build/",
         "declaration": false,
+
+        // Directories
+        "outDir": "./build/",
         "baseUrl": "./src/",
+
+        // Language Rules
         "allowJs": true,
         "allowUnreachableCode": true,
-        "allowUnusedLabels": true
+        "allowUnusedLabels": true,
+        
+        // Language Features
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "noImplicitAny": true
     }
 }

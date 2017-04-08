@@ -101,6 +101,9 @@ assignment_expr:
 ;
 
 
+assignment_expr_statement: assignment_expr maybe_nl_or_eof;
+
+
 
 
 /* ------------------------------------------------------------------------------- */
@@ -126,6 +129,8 @@ expression:
 	|	operation			{ $$ = $1 }
 ;
 
+expression_statement: expression maybe_nl_or_eof;
+
 
 type_expr:
 	IDENTIFIER { $$ = yy.TypeExpr.fromIdentifier(new yy.Token($1)) }
@@ -140,13 +145,13 @@ type_expr:
 
 
 return_statement:
-	RETURN expression		{ $$ = new yy.ReturnStatement($2) }
+	RETURN expression maybe_nl_or_eof		{ $$ = new yy.ReturnStatement($2) }
 ;
 
 statement:
 		comment
-	|	assignment_expr
-	|	expression
+	|	assignment_expr_statement
+	|	expression_statement
 	|	var_decl
 	|	return_statement
 ;

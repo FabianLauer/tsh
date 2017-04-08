@@ -32,7 +32,7 @@ export type IRatingFunc<TNode extends BaseNode> = (input: TNode) => number | voi
 /**
  * Describes the objects used to store a code generator constructor in the `registry`.
  */
-interface IRegisteredGeneratorConstructor<TNode> {
+interface IRegisteredGeneratorConstructor<TNode extends BaseNode> {
 	readonly ratingFunc: IRatingFunc<TNode>
 	readonly generatorType: IGeneratorConstructor<TNode>
 }

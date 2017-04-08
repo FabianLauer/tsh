@@ -1,5 +1,7 @@
 import { CompileTarget, ICompileTargetIds, ICompilerApi } from '@/compiler/api'
 import { parseToSourceUnit } from '@/compiler/parser'
+import { SourceUnit } from '@/compiler/ast'
+import { ICodeGenerator } from '@/compiler/codegen/base'
 import { CodeGenerator as EcmaScriptCodeGenerator } from '@/compiler/codegen/ecmascript'
 
 /**
@@ -104,17 +106,26 @@ export class CompilerApi implements ICompilerApi {
 	 */
 	public compileSourceCode(sourceCode: string, target: CompileTarget): string {
 		const sourceUnit = parseToSourceUnit(undefined, sourceCode)
-		const codeGenerator = this.getCodeGeneratorByCompileTarget(target)
-		return ''
+		const codeGenerator = this.createCodeGenerator(target, sourceUnit)
+		return codeGenerator.generateCode()
 	}
 
 
-	private getCodeGeneratorByCompileTarget(target: CompileTarget) {
+	/**
+	 * Creates a code generator instance
+	 * @param target The compile target to create a code generator for.
+	 * @param sourceUnit The source unit to create a code generator for.
+	 * @return A code generator for `target` and `sourceUnit`.
+	 */
+	private createCodeGenerator(
+		target: CompileTarget,
+		sourceUnit: SourceUnit
+	): ICodeGenerator<SourceUnit> {
 		switch (target) {
 			default:
-				throw new Error()
+				throw new Error(`No code generator for compile target ${target} exists.`)
 			case CompileTarget.EcmaScript:
-				return EcmaScriptCodeGenerator
+				return new EcmaScriptCodeGenerator(sourceUnit)
 		}
 	}
 }

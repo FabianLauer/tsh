@@ -25,7 +25,20 @@ function test<TNodes extends ast.BaseNode[]>(
 	...expectation: Array<(node: TNodes) => boolean>
 ): void {
 	const testName = sourceCode
-	cases.push(ParserTestCase.create(testName, sourceCode, ...expectation))
+	// wrap the source code in a func decl so we can parse it
+	sourceCode = `func __wrapper__() { ${sourceCode} }`
+	// wrap the assertion functions so that they receive the first node of the wrapper function's
+	// body as their parameter
+	const assertions = expectation.map(fn => {
+		return ([decl]: ast.FuncDecl[]) => {
+			if (fn(<TNodes>decl.body.nodes)) {
+				return true
+			} else {
+				throw new Error(fn.toString())
+			}
+		}
+	})
+	cases.push(ParserTestCase.create(testName, sourceCode, ...assertions))
 }
 
 

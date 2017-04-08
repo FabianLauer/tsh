@@ -120,7 +120,7 @@ function findForAstNode<TNode extends BaseNode>(astNode: TNode): IGeneratorConst
  */
 export function createForAstNode<TNode extends BaseNode>(astNode: TNode) {
 	const constructor = findForAstNode(astNode)
-	// double check that `constructor` is 
+	// double check that a `constructor` was found, throw an error if not
 	if (typeof constructor !== 'function') {
 		throw new Error(
 			`Can not create code generator for AST node ${astNode.constructor.name}: no generator in registry.`

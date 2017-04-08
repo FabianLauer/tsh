@@ -153,10 +153,11 @@ statement:
 
 statements:
 	|	nl_or_eof
-	| statements statement
+	|	statements statement
 		{
-			$1 = $1 || yy.Statement.Empty
-			$$ = new yy.Statement($1.nodes.concat($2))
+			$1 = $1 || []
+			$2 = $2 || yy.Statement.Empty
+			$$ = $1.concat($2)
 		}
 ;
 
@@ -164,10 +165,10 @@ compound_statement:
 	"{" maybe_nl statements maybe_nl "}"
 		{
 			if ($3 === '\n' || $3 === '') {
-				$3 = yy.Statement.Empty
+				$3 = []
 			}
-			$3 = $3 || yy.Statement.Empty
-			$$ = new yy.Statement($3.nodes.concat($3))
+			$3 = $3 || []
+			$$ = new yy.Statement($3)
 		}
 ;
 

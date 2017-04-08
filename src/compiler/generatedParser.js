@@ -115,17 +115,18 @@ case 39:
 break;
 case 47:
 
-			$$[$0-1] = $$[$0-1] || yy.Statement.Empty
-			this.$ = new yy.Statement($$[$0-1].nodes.concat($$[$0]))
+			$$[$0-1] = $$[$0-1] || []
+			$$[$0] = $$[$0] || yy.Statement.Empty
+			this.$ = $$[$0-1].concat($$[$0])
 		
 break;
 case 48:
 
 			if ($$[$0-2] === '\n' || $$[$0-2] === '') {
-				$$[$0-2] = yy.Statement.Empty
+				$$[$0-2] = []
 			}
-			$$[$0-2] = $$[$0-2] || yy.Statement.Empty
-			this.$ = new yy.Statement($$[$0-2].nodes.concat($$[$0-2]))
+			$$[$0-2] = $$[$0-2] || []
+			this.$ = new yy.Statement($$[$0-2])
 		
 break;
 case 49: case 50:

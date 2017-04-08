@@ -1,6 +1,6 @@
-import { Expr, Statement } from './'
+import { BaseNode, Expr, Statement } from './'
 
-export interface IConditionalStatement {
+export interface IConditionalStatement extends BaseNode {
 	/**
 	 * The condition expression.
 	 */

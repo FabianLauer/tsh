@@ -61,8 +61,6 @@ function isInstanceOf<T>(obj: T, constructor: { new(...args: any[]): T; name?: s
 ///
 
 
-/// Simple Assignments:
-
 test<ast.ReturnStatement>(
 	`return 1`,
 	([$]) => isInstanceOf($, ast.ReturnStatement),

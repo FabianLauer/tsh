@@ -19,7 +19,7 @@ function main() {
 	var compiledEditor = createEditor(
 		monaco,
 		'compiled-container',
-		'swift',
+		'javascript',
 		true,
 		[].join('\n')
 	);

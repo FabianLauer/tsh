@@ -140,6 +140,65 @@ type_expr:
 
 
 
+
+/* ------------------------------------------------------------------------------- */
+/* ----------- IF/ELSE IF/ELSE STATEMENTS ---------------------------------------- */
+/* ------------------------------------------------------------------------------- */
+
+
+__conditional_body: statement | compound_statement;
+
+
+__conditional_if_statement:
+	IF expression __conditional_body
+	{ $$ = new yy.IfStatement($2, $3) }
+;
+
+
+__conditional_else_if_statement:
+	ELSE IF expression __conditional_body
+	{ $$ = new yy.ElseIfStatement($3, $4) }
+;
+
+
+__conditional_maybe_else_if_statements:
+	|	nl_or_eof
+	|	__conditional_maybe_else_if_statements __conditional_else_if_statement
+	{
+		$$ = $1 || []
+		if (typeof $2 !== 'undefined') {
+			$$ = $$.concat($2)
+		}
+	}
+;
+
+
+__conditional_else_statement:
+	ELSE __conditional_body
+	{ $$ = new yy.ElseStatement([$2]) }
+;
+__conditional_maybe_else_statement: __conditional_else_statement | ;
+
+
+
+conditional_statement:
+	__conditional_if_statement
+	__conditional_maybe_else_if_statements
+	__conditional_maybe_else_statement
+	{
+		var statements = [$1]
+		if (Array.isArray($2)) {
+			statements = statements.concat($2)
+		}
+		if (typeof $3 !== 'undefined') {
+			statements.push($3)
+		}
+		$$ = new yy.Statement(statements)
+	}
+;
+
+
+
 /* ------------------------------------------------------------------------------- */
 /* ----------- STATEMENTS -------------------------------------------------------- */
 /* ------------------------------------------------------------------------------- */
@@ -154,6 +213,7 @@ statement:
 	|	expression_statement
 	|	var_decl
 	|	return_statement
+	|	conditional_statement
 ;
 
 statements:
@@ -316,7 +376,6 @@ class_decl:
 			})
 		}
 ;
-
 
 
 

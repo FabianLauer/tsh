@@ -15,6 +15,8 @@ NL							\n
 "let"						return 'LET';
 "const"						return 'CONST';
 "return"					return 'RETURN';
+"if"						return 'IF';
+"else"						return 'ELSE';
 
 {NL}						return 'NL';
 

@@ -39,7 +39,11 @@ export class ClassDecl extends BaseNode {
 		 * The class body.
 		 */
 		public readonly body: Statement = Statement.Empty
-	) { super() }
+	) {
+		super()
+		this.setParentOf(name, this)
+		this.setParentOf(body, this)
+	}
 }
 
 export default ClassDecl

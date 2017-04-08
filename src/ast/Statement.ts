@@ -9,6 +9,7 @@ export class Statement extends BaseNode {
 			Array.isArray(items),
 			'Invalid Argument for ast.Statement: must be an array'
 		)
+		this.items.forEach(item => this.setParentOf(item, this))
 	}
 
 

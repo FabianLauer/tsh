@@ -38,10 +38,44 @@ export namespace ICompileTargetIds {
 	export type TCompileTarget = CompileTarget
 
 
+	export namespace TCompileTarget {
+		/**
+		 * Checks whether an object implements `TCompileTarget`.
+		 * This function does not throw.
+		 * @param value The object to validate.
+		 * @return Returns `true` if `object` implements `TCompileTarget`, `false` if not.
+		 */
+		export function isValid(value: TCompileTarget): value is TCompileTarget {
+			return (
+				typeof value === 'number' &&
+				value >= 0 &&
+				isFinite(value)
+			)
+		}
+	}
+
+
 	/**
 	 * Defines the acceptable types for human readable compile target identifiers.
 	 */
 	export type THumanReadableId = string
+
+
+	export namespace THumanReadableId {
+		/**
+		 * Checks whether an object implements `THumanReadableId`.
+		 * This function does not throw.
+		 * @param value The object to validate.
+		 * @return Returns `true` if `object` implements `THumanReadableId`, `false` if not.
+		 */
+		export function isValid(value: THumanReadableId): value is THumanReadableId {
+			return (
+				typeof value === 'string' &&
+				value.length > 0 &&
+				value.trim() === value
+			)
+		}
+	}
 
 
 	/**
@@ -63,7 +97,6 @@ export namespace ICompileTargetIds {
 		return <ICompileTargetIds<TCompileTarget, THumanReadableId>>{ id, humanReadableId }
 	}
 
-
 	/**
 	 * Checks whether an object implements `ICompileTargetIds`.
 	 * This function does not throw.
@@ -76,9 +109,8 @@ export namespace ICompileTargetIds {
 		return (
 			typeof object === 'object' &&
 			object !== null &&
-			object.id >= 0 &&
-			typeof object.humanReadableId === 'string' &&
-			object.humanReadableId.length > 0
+			TCompileTarget.isValid(object.id) &&
+			THumanReadableId.isValid(object.humanReadableId)
 		)
 	}
 }

@@ -1,0 +1,8 @@
+class Alpha {
+	
+}
+
+class Beta {
+	let foo
+	const bar
+}

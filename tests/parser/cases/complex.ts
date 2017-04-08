@@ -69,6 +69,27 @@ test<ast.FuncDecl>(
 test<ast.FuncDecl>(
 	`
 	func gamma(bar: Int) -> Void {
+		foo += bar
+	}
+	`,
+	([$]) => $ instanceof ast.FuncDecl
+)
+
+
+test<ast.FuncDecl>(
+	`
+	func gamma(bar: Int) -> Void {
+		return foo
+		foo += bar
+	}
+	`,
+	([$]) => $ instanceof ast.FuncDecl
+)
+
+
+test<ast.FuncDecl>(
+	`
+	func gamma(bar: Int) -> Void {
 		let foo = bar
 		foo += bar
 		const fibo = foo++

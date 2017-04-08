@@ -45,6 +45,12 @@ namespace('test', function () {
 		sh `mocha build/tests/all.js --grep E2E`
 	})
 
+
+	desc('Runs all API tests.')
+	task('api', () => {
+		sh `mocha build/tests/all.js --grep api`
+	})
+
 })
 
 
@@ -63,6 +69,13 @@ namespace('dev', function () {
 	task('codegen', () => {
 		jake('build', 'compiler')
 		sh `mocha build/tests/all.js --grep E2E`
+	})
+
+
+	desc('Compiles the compiler, then runs API tests.')
+	task('api', () => {
+		jake('build', 'compiler')
+		jake('test', 'api')
 	})
 
 })

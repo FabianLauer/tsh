@@ -6,7 +6,6 @@ export interface ICodeGenerator<TNode extends BaseNode> {
 	 */
 	readonly outputLanguageName: string
 
-
 	/**
 	 * Creates a new code generator instance.
 	 */

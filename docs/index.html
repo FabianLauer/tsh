@@ -6,8 +6,15 @@
 		<link rel="stylesheet" type="text/css" href="./demo.css" />
 	</head>
 	<body>
-		<div id="source-container" class="editor"></div>
-		<div id="compiled-container" class="editor"></div>
+		<section id="editor-panel" class="panel">
+			<div id="source-container" class="editor"></div>
+			<div id="compiled-container" class="editor"></div>
+		</section>
+
+		<section id="problems-panel" class="panel">
+			<h3>Problems</h3>
+			<div id="problems-panel-content"></div>
+		</section>
 
 		<script src="./static/compiler.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.6.12/beautify.min.js"></script>

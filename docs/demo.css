@@ -1,15 +1,79 @@
 html, body {
-	float:left;
+	float: left;
 	clear: both;
 	width: 100vw;
 	height: 100vh;
 	padding: 0;
 	margin: 0;
+	font-family: sans-serif;
 }
 
-body > .editor {
+.panel {
+	position: relative;
+	float: left;
+	clear: both;
+	box-sizing: border-box;
+	width: 100%;
+	height: 100%;
+}
+
+#editor-panel {
+	height: 75%;
+	z-index: 1000;
+}
+
+#editor-panel > .editor {
 	float: left;
 	clear: none;
 	width: 50%;
 	height: 100%;
+}
+
+#problems-panel {
+	height: 25%;
+	z-index: 2000;
+}
+
+#problems-panel h3 {
+	width: 100%;
+	font-size: 0.8em;
+	font-weight: 300;
+	height: 1.3em;
+	margin: 0;
+	padding: 0.3em 1em;
+	background: #eee;
+	border: 1px solid #ddd;
+	border-left: none;
+	border-right: none;
+	text-transform: uppercase;
+}
+
+#problems-panel-content {
+	float: left;
+	clear: both;
+	box-sizing: border-box;
+	width: 100%;
+	height: 100%;
+	padding: 0.5em 1em;
+	overflow-x: hidden;
+	overflow-y: auto;
+	background: #fafafa;
+}
+
+#problems-panel-content > * {
+	float: left;
+	clear: both;
+	width: 100%;
+	height: auto;
+}
+
+#problems-panel-content > span {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	font-size: 0.9em;
+	text-align: center;
+	font-weight: 100;
+	color: #aaa;
 }

@@ -27,27 +27,34 @@ function main() {
 	var recompile = function () { compile(sourceEditor, compiledEditor); }
 
 	// compile once on start
-	recompile()
+	recompile();
 
 	// bind events
-	sourceEditor.onDidType(recompile)
-	sourceEditor.onDidPaste(recompile)
-	sourceEditor.onDidBlurEditor(recompile)
+	sourceEditor.onDidType(recompile);
+	sourceEditor.onDidPaste(recompile);
+	sourceEditor.onDidBlurEditor(recompile);
+	sourceEditor.onDidChangeModelContent(recompile);
 }
 
 
 function compile(sourceEditor, compiledEditor) {
-	var compiled = compiler.CompilerApi.create()
-		.compileSourceCode(sourceEditor.getValue(), 0);
-	compiledEditor.setValue(tryBeautifyJavaScript(compiled))
+	try {
+		var compiled = compiler.CompilerApi.create()
+			.compileSourceCode(sourceEditor.getValue(), 0);
+		compiledEditor.setValue(tryBeautifyJavaScript(compiled));
+	} catch(err) {
+		renderCompileProblem(err);
+		return
+	}
+	clearCompileProblems();
 }
 
 
 function tryBeautifyJavaScript(js) {
 	if (typeof window.js_beautify === 'function') {
-		return window.js_beautify(js)
+		return window.js_beautify(js);
 	}
-	return js
+	return js;
 }
 
 
@@ -61,4 +68,24 @@ function createEditor(monaco, containerId, language, readonly, content) {
 		readOnly: !!readonly,
 		theme: 'vs-light',
 	});
+}
+
+
+
+var problemsPanelContent = document.getElementById('problems-panel-content');
+
+
+function clearCompileProblems() {
+	problemsPanelContent.innerHTML = '';
+	var content = document.createElement('span');
+	content.innerText = 'No problems.';
+	problemsPanelContent.appendChild(content);
+}
+
+
+function renderCompileProblem(error) {
+	problemsPanelContent.innerHTML = '';
+	var problem = document.createElement('pre');
+	problem.innerText = error.message;
+	problemsPanelContent.appendChild(problem);
 }

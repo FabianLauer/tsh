@@ -36,7 +36,20 @@ export class CompilerApi implements ICompilerApi {
 	 * Returns all available compile target identifiers.
 	 */
 	public getAvailableCompileTargets(): CompileTarget[] {
-		return this.compileTargetIds.map($ => $.id)
+		return this.compileTargetIds.map(_ => _.id)
+	}
+
+
+	/**
+	 * Finds the first item in `this.compileTargetIds` in which the given `key` matches `value`.
+	 * @param key The key to compare.
+	 * @param value The value to compare.
+	 */
+	private getCompileTargetByKeyValue<K extends keyof ICompileTargetIds.Any>(
+		key: K,
+		value: ICompileTargetIds.Any[K]
+	) {
+		return this.compileTargetIds.find(_ => _[key] === value)
 	}
 
 
@@ -64,7 +77,22 @@ export class CompilerApi implements ICompilerApi {
 			ICompileTargetIds.THumanReadableId
 		)
 	): ICompileTargetIds.Any {
-		
+		if (ICompileTargetIds.TCompileTarget.isValid(<any>target)) {
+			return this.getCompileTargetByKeyValue('id', <ICompileTargetIds.TCompileTarget>target)
+		} else if (ICompileTargetIds.THumanReadableId.isValid(<any>target)) {
+			return this.getCompileTargetByKeyValue(
+				'humanReadableId',
+				<ICompileTargetIds.THumanReadableId>target
+			)
+		} else if (
+			ICompileTargetIds.isValid(<any>target) &&
+			this.compileTargetIds.indexOf(<any>target) !== -1
+		) {
+			return <ICompileTargetIds.Any>target
+		}
+
+		// the compile target wasn't found:
+		return undefined
 	}
 
 

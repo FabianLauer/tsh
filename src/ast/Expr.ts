@@ -1,7 +1,9 @@
 import { BaseNode } from './'
 
 export class Expr extends BaseNode {
-	public constructor() {
+	public constructor(
+		public readonly content: BaseNode = undefined
+	) {
 		super()
 	}
 

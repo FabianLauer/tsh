@@ -104,7 +104,7 @@ break;
 case 34: case 35: case 37: case 38: case 59: case 67: case 69: case 80: case 85:
  this.$ = $$[$0] 
 break;
-case 36:
+case 36: case 55:
  this.$ = new yy.Expr($$[$0]) 
 break;
 case 39:
@@ -140,9 +140,6 @@ case 52: case 66:
 break;
 case 54:
  this.$ = [yy.createToken($$[$0-1]), $$[$0]] 
-break;
-case 55:
- this.$ = new yy.Expr($$[$0-1]) 
 break;
 case 58:
 

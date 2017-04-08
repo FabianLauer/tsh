@@ -196,7 +196,7 @@ __var_decl_name_and_maybe_type_decl:
 		{ $$ = [yy.createToken($1), $2] }
 ;
 
-__var_decl_maybe_assignment: '=' expression { $$ = new yy.Expr($1) } | ;
+__var_decl_maybe_assignment: '=' expression { $$ = new yy.Expr($2) } | ;
 
 __var_decl_end: maybe_nl_or_eof;
 

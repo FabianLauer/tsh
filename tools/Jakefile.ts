@@ -61,14 +61,14 @@ namespace('dev', function () {
 		jake('build', 'clean')
 		jake('build', 'parser')
 		jake('build', 'compiler')
-		sh `mocha build/tests/all.js --grep Parser`
+		jake('test', 'parser')
 	})
 
 
 	desc('Compiles the compiler, then runs end to end tests. Useful when working on code generators.')
 	task('codegen', () => {
 		jake('build', 'compiler')
-		sh `mocha build/tests/all.js --grep E2E`
+		jake('test', 'e2e')
 	})
 
 

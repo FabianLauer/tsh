@@ -59,7 +59,8 @@
 				"singleline": "never"
 			}
 		],
-		"no-bitwise": false
+		"no-bitwise": false,
+		"no-namespace": false
 	},
 	"rulesDirectory": []
 }

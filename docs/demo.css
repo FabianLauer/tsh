@@ -8,6 +8,17 @@ html, body {
 	font-family: sans-serif;
 }
 
+.github-ribbon {
+	position: fixed;
+	top: 0;
+	right: 0;
+	z-index: 99999;
+}
+
+.github-ribbon img {
+	border: none;
+}
+
 .panel {
 	position: relative;
 	float: left;

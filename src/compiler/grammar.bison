@@ -305,7 +305,7 @@ __class_body_compound_statement:
 
 __class_ident: CLASS IDENTIFIER { $$ = yy.createToken($2) };
 __class_body: __class_body_compound_statement { $$ = $1 } | ;
-func_decl:
+class_decl:
 		__class_ident
 		__class_body
 		nl_or_eof
@@ -329,6 +329,7 @@ func_decl:
 root_grammar:
 		comment
 	|	func_decl
+	|	class_decl
 	|	nl_or_eof
 ;
 

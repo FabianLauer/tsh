@@ -11,8 +11,11 @@
 				"${workspaceRoot}/build/tests/all.js",
 				"--colors"
 			],
+			"preLaunchTask": "build",
 			"cwd": "${workspaceRoot}",
 			"smartStep": true,
+			"console": "internalConsole",
+			"internalConsoleOptions": "openOnSessionStart",
 			"sourceMaps": true,
 			"stopOnEntry": false,
 			"protocol": "inspector",

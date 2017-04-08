@@ -11,6 +11,18 @@ function main() {
 		'swift',
 		false,
 		[
+			'//',
+			'//                DEMO',
+			'// - https://github.com/FabianLauer/tsh -',
+			'//',
+			'// Any code you enter in this window will be compiled',
+			'// to JavaScript on the fly (have a look at the right',
+			'// hand side of the screen).',
+			'//',
+			'// If there\'s any errors, you\'ll find them in the',
+			'// "Problems" panel at the bottom of the screen.',
+			'// ',
+			'',
 			'class Person {',
 			'    let name',
 			'    let age: Int = 0',
@@ -24,7 +36,8 @@ function main() {
 			'func main() -> Void {',
 			'    let person: Person',
 			'    let descr: String = describePerson',
-			'}'
+			'}',
+			''
 		].join('\n')
 	);
 

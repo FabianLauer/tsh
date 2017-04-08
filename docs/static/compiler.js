@@ -22,7 +22,7 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("codegen/ecmascript/"));
 
-},{"codegen/ecmascript/":52}],4:[function(require,module,exports){
+},{"codegen/ecmascript/":53}],4:[function(require,module,exports){
 "use strict";
 function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
@@ -30,7 +30,7 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("compiler/parser"));
 
-},{"compiler/parser":54}],5:[function(require,module,exports){
+},{"compiler/parser":55}],5:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 
@@ -1013,7 +1013,35 @@ ClassVarDeclCodeGenerator = __decorate([
 ], ClassVarDeclCodeGenerator);
 exports.ClassVarDeclCodeGenerator = ClassVarDeclCodeGenerator;
 
-},{"../factory":36,"./VarDeclCodeGenerator":50,"@/compiler/ast":2}],40:[function(require,module,exports){
+},{"../factory":36,"./VarDeclCodeGenerator":51,"@/compiler/ast":2}],40:[function(require,module,exports){
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const BaseGenerator_1 = require("../BaseGenerator");
+const factory_1 = require("../factory");
+const ast_1 = require("@/compiler/ast");
+let CommentCodeGenerator = class CommentCodeGenerator extends BaseGenerator_1.default {
+    /**
+     * Generates code for a given syntax tree.
+     * This method is automatically called by the `BaseGenerator` class whenever necessary.
+     * @param ast The syntax tree to generate code for.
+     */
+    generateCodeConcrete(astNode) {
+        // we ignore comments in output
+        return '';
+    }
+};
+CommentCodeGenerator = __decorate([
+    factory_1.register(node => node instanceof ast_1.Comment ? Infinity : 0)
+], CommentCodeGenerator);
+exports.CommentCodeGenerator = CommentCodeGenerator;
+
+},{"../BaseGenerator":34,"../factory":36,"@/compiler/ast":2}],41:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1033,7 +1061,7 @@ ElseIfStatementCodeGenerator = __decorate([
 ], ElseIfStatementCodeGenerator);
 exports.ElseIfStatementCodeGenerator = ElseIfStatementCodeGenerator;
 
-},{"../factory":36,"./BaseConditionalStatementCodeGenerator":37,"@/compiler/ast":2}],41:[function(require,module,exports){
+},{"../factory":36,"./BaseConditionalStatementCodeGenerator":37,"@/compiler/ast":2}],42:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1062,7 +1090,7 @@ ElseStatementCodeGenerator = __decorate([
 ], ElseStatementCodeGenerator);
 exports.ElseStatementCodeGenerator = ElseStatementCodeGenerator;
 
-},{"../BaseGenerator":34,"../factory":36,"@/compiler/ast":2}],42:[function(require,module,exports){
+},{"../BaseGenerator":34,"../factory":36,"@/compiler/ast":2}],43:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1089,7 +1117,7 @@ EmptyStatmenetCodeGenerator = __decorate([
 ], EmptyStatmenetCodeGenerator);
 exports.EmptyStatmenetCodeGenerator = EmptyStatmenetCodeGenerator;
 
-},{"../BaseGenerator":34,"../factory":36,"@/compiler/ast":2}],43:[function(require,module,exports){
+},{"../BaseGenerator":34,"../factory":36,"@/compiler/ast":2}],44:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1119,7 +1147,7 @@ ExprCodeGenerator = __decorate([
 ], ExprCodeGenerator);
 exports.ExprCodeGenerator = ExprCodeGenerator;
 
-},{"../BaseGenerator":34,"../factory":36,"@/compiler/ast":2}],44:[function(require,module,exports){
+},{"../BaseGenerator":34,"../factory":36,"@/compiler/ast":2}],45:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1146,7 +1174,7 @@ ExprCodeGenerator = __decorate([
 ], ExprCodeGenerator);
 exports.ExprCodeGenerator = ExprCodeGenerator;
 
-},{"../BaseGenerator":34,"../factory":36,"@/compiler/ast":2}],45:[function(require,module,exports){
+},{"../BaseGenerator":34,"../factory":36,"@/compiler/ast":2}],46:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1177,7 +1205,7 @@ FuncDeclCodeGenerator = __decorate([
 ], FuncDeclCodeGenerator);
 exports.FuncDeclCodeGenerator = FuncDeclCodeGenerator;
 
-},{"../BaseGenerator":34,"../factory":36,"@/compiler/ast":2}],46:[function(require,module,exports){
+},{"../BaseGenerator":34,"../factory":36,"@/compiler/ast":2}],47:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1197,7 +1225,7 @@ IfStatementCodeGenerator = __decorate([
 ], IfStatementCodeGenerator);
 exports.IfStatementCodeGenerator = IfStatementCodeGenerator;
 
-},{"../factory":36,"./BaseConditionalStatementCodeGenerator":37,"@/compiler/ast":2}],47:[function(require,module,exports){
+},{"../factory":36,"./BaseConditionalStatementCodeGenerator":37,"@/compiler/ast":2}],48:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1224,7 +1252,7 @@ ParamDeclListCodeGenerator = __decorate([
 ], ParamDeclListCodeGenerator);
 exports.ParamDeclListCodeGenerator = ParamDeclListCodeGenerator;
 
-},{"../BaseGenerator":34,"../factory":36,"@/compiler/ast":2}],48:[function(require,module,exports){
+},{"../BaseGenerator":34,"../factory":36,"@/compiler/ast":2}],49:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1251,7 +1279,7 @@ ReturnStatementCodeGenerator = __decorate([
 ], ReturnStatementCodeGenerator);
 exports.ReturnStatementCodeGenerator = ReturnStatementCodeGenerator;
 
-},{"../BaseGenerator":34,"../factory":36,"@/compiler/ast":2}],49:[function(require,module,exports){
+},{"../BaseGenerator":34,"../factory":36,"@/compiler/ast":2}],50:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1278,7 +1306,7 @@ StatementCodeGenerator = __decorate([
 ], StatementCodeGenerator);
 exports.StatementCodeGenerator = StatementCodeGenerator;
 
-},{"../BaseGenerator":34,"../factory":36,"@/compiler/ast":2}],50:[function(require,module,exports){
+},{"../BaseGenerator":34,"../factory":36,"@/compiler/ast":2}],51:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1316,12 +1344,13 @@ VarDeclCodeGenerator = __decorate([
 ], VarDeclCodeGenerator);
 exports.VarDeclCodeGenerator = VarDeclCodeGenerator;
 
-},{"../BaseGenerator":34,"../factory":36,"@/compiler/ast":2}],51:[function(require,module,exports){
+},{"../BaseGenerator":34,"../factory":36,"@/compiler/ast":2}],52:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 require("./BaseConditionalStatementCodeGenerator");
 require("./ClassDeclCodeGenerator");
 require("./ClassMemberDeclCodeGenerator");
+require("./CommentCodeGenerator");
 require("./ElseIfStatementCodeGenerator");
 require("./ElseStatementCodeGenerator");
 require("./EmptyStatementCodeGenerator");
@@ -1334,7 +1363,7 @@ require("./ReturnStatementCodeGenerator");
 require("./StatementCodeGenerator");
 require("./VarDeclCodeGenerator");
 
-},{"./BaseConditionalStatementCodeGenerator":37,"./ClassDeclCodeGenerator":38,"./ClassMemberDeclCodeGenerator":39,"./ElseIfStatementCodeGenerator":40,"./ElseStatementCodeGenerator":41,"./EmptyStatementCodeGenerator":42,"./ExprCodeGenerator":43,"./ExprStatementCodeGenerator":44,"./FuncDeclCodeGenerator":45,"./IfStatementCodeGenerator":46,"./ParamDeclListCodeGenerator":47,"./ReturnStatementCodeGenerator":48,"./StatementCodeGenerator":49,"./VarDeclCodeGenerator":50}],52:[function(require,module,exports){
+},{"./BaseConditionalStatementCodeGenerator":37,"./ClassDeclCodeGenerator":38,"./ClassMemberDeclCodeGenerator":39,"./CommentCodeGenerator":40,"./ElseIfStatementCodeGenerator":41,"./ElseStatementCodeGenerator":42,"./EmptyStatementCodeGenerator":43,"./ExprCodeGenerator":44,"./ExprStatementCodeGenerator":45,"./FuncDeclCodeGenerator":46,"./IfStatementCodeGenerator":47,"./ParamDeclListCodeGenerator":48,"./ReturnStatementCodeGenerator":49,"./StatementCodeGenerator":50,"./VarDeclCodeGenerator":51}],53:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 // Make sure all concrete generators are imported.
@@ -1345,7 +1374,7 @@ require("./generator/");
 const CodeGenerator_1 = require("./CodeGenerator");
 exports.CodeGenerator = CodeGenerator_1.default;
 
-},{"./CodeGenerator":35,"./generator/":51}],53:[function(require,module,exports){
+},{"./CodeGenerator":35,"./generator/":52}],54:[function(require,module,exports){
 (function (process){
 /* parser generated by jison 0.4.15 */
 /*
@@ -2284,7 +2313,7 @@ if (typeof require !== 'undefined' && typeof exports !== 'undefined') {
 }
 
 }).call(this,require('_process'))
-},{"_process":57,"fs":55,"path":56}],54:[function(require,module,exports){
+},{"_process":58,"fs":56,"path":57}],55:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const generatedParser = require("./generatedParser.js");
@@ -2337,9 +2366,9 @@ function parseToSourceUnit(name, sourceCode) {
 }
 exports.parseToSourceUnit = parseToSourceUnit;
 
-},{"../ast":33,"./generatedParser.js":53}],55:[function(require,module,exports){
+},{"../ast":33,"./generatedParser.js":54}],56:[function(require,module,exports){
 
-},{}],56:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -2567,7 +2596,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require('_process'))
-},{"_process":57}],57:[function(require,module,exports){
+},{"_process":58}],58:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 

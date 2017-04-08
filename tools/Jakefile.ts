@@ -85,7 +85,10 @@ namespace('demo', function () {
 
 	desc('Clean the existing demo.')
 	task('clean', () => {
-		sh `rm -rf ./docs/static/*`
+		sh `rm -rf ./docs/monaco-editor`
+		sh `mkdir ./docs/monaco-editor`
+		sh `rm -rf ./docs/static`
+		sh `mkdir ./docs/static`
 	})
 
 

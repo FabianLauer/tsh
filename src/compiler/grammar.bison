@@ -150,19 +150,19 @@ __conditional_body: statement | compound_statement;
 
 
 __conditional_if_statement:
-	IF expression __conditional_body
+	IF expression __conditional_body maybe_nl_or_eof
 	{ $$ = new yy.IfStatement($2, $3) }
 ;
 
 
 __conditional_else_if_statement:
-	ELSE IF expression __conditional_body
+	ELSE IF expression __conditional_body maybe_nl_or_eof
 	{ $$ = new yy.ElseIfStatement($3, $4) }
 ;
 
 
 __conditional_maybe_else_if_statements:
-	|	nl_or_eof
+		maybe_nl_or_eof
 	|	__conditional_maybe_else_if_statements __conditional_else_if_statement
 	{
 		$$ = $1 || []
@@ -174,10 +174,10 @@ __conditional_maybe_else_if_statements:
 
 
 __conditional_else_statement:
-	ELSE __conditional_body
+	ELSE __conditional_body maybe_nl_or_eof
 	{ $$ = new yy.ElseStatement([$2]) }
 ;
-__conditional_maybe_else_statement: __conditional_else_statement | ;
+__conditional_maybe_else_statement: __conditional_else_statement | maybe_nl_or_eof;
 
 
 
@@ -185,6 +185,7 @@ conditional_statement:
 	__conditional_if_statement
 	__conditional_maybe_else_if_statements
 	__conditional_maybe_else_statement
+	maybe_nl_or_eof
 	{
 		var statements = [$1]
 		if (Array.isArray($2)) {

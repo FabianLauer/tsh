@@ -92,6 +92,7 @@ namespace('demo', function () {
 	desc('Update all JavaScript files (except the compiled compiler) that are needed for the demo to work.')
 	task('update-static-js', () => {
 		sh `cp ./node_modules/requirejs/require.js ./docs/static/`
+		sh `cp -r ./node_modules/monaco-editor/min/vs ./docs/monaco-editor/vs`
 	})
 
 

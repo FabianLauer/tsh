@@ -79,3 +79,33 @@ namespace('dev', function () {
 	})
 
 })
+
+
+namespace('demo', function () {
+
+	desc('Clean the existing demo.')
+	task('clean', () => {
+		sh `rm -rf ./docs/static/*`
+	})
+
+
+	desc('Update all JavaScript files (except the compiled compiler) that are needed for the demo to work.')
+	task('update-static-js', () => {
+		sh `cp ./node_modules/requirejs/require.js ./docs/static/`
+	})
+
+
+	desc('Update the JavaScript files of the compiler used for the demo.')
+	task('update-compiler-js', () => {
+		sh `node tools/bundleDemoCompiler.js`
+	})
+
+
+	desc('Fully updates the existing demo.')
+	task('update', () => {
+		jake('demo', 'clean')
+		jake('demo', 'update-static-js')
+		jake('demo', 'update-compiler-js')
+	})
+
+})

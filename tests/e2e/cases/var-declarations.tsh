@@ -1,0 +1,10 @@
+func main() {
+	let foo
+	const bar
+	let alpha = 1
+	const beta = 1
+	let fibo: Int
+	const nacci: Int
+	let a: Int = 1
+	const b: Int = 1
+}

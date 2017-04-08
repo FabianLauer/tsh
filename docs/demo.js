@@ -11,7 +11,19 @@ function main() {
 		'swift',
 		false,
 		[
-			'func main() {',
+			'class Person {',
+			'    let name',
+			'    let age: Int = 0',
+			'    let spouse: Person',
+			'}',
+			'',
+			'func describePerson(person: Person) -> String {',
+			'    return "Person ${person.name} is ${person.age} years old."',
+			'}',
+			'',
+			'func main() -> Void {',
+			'    let person: Person',
+			'    let descr: String = describePerson',
 			'}'
 		].join('\n')
 	);

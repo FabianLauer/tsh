@@ -1,0 +1,21 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Launch Tests",
+			"program": "${workspaceRoot}/node_modules/.bin/_mocha",
+			"runtimeExecutable": null,
+			"args": ["${workspaceRoot}/build/tests/all.js"],
+			"cwd": "${workspaceRoot}",
+			"smartStep": true,
+			"sourceMaps": true,
+			"stopOnEntry": false,
+			"protocol": "inspector",
+			"outFiles": [
+				"${workspaceRoot}/build/test/**"
+			]
+		}
+	]
+}

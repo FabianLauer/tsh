@@ -9,6 +9,9 @@
         "module": "commonjs",
         "declaration": false,
 
+        // Source Map Config
+        "sourceMap": true,
+
         // Directories
         "outDir": "./build/",
         "baseUrl": "./src/",

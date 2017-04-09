@@ -110,5 +110,39 @@ for (const keyword of ['let', 'const']) {
 		expectModifier(modifier),
 		hasOwnAssignment
 	)
+
+
+	for (let i = 0; i < 10; i++) {
+		const newlines = '\n'.repeat(i)
+		test<ast.VarDecl>(
+			`
+			${newlines}
+			${keyword} a${newlines}
+			${keyword} b: Type${newlines}
+			${keyword} c = 123${newlines}
+			${keyword} d: Type = 123${newlines}
+			`,
+
+			([a]) => isVarDecl([a]),
+			([a]) => hasName(a, 'a'),
+			([a]) => expectModifier(modifier)([a]),
+			([a]) => hasEmptyAssignment([a]),
+
+			([, b]) => isVarDecl([b]),
+			([, b]) => hasName(b, 'b'),
+			([, b]) => expectModifier(modifier)([b]),
+			([, b]) => hasEmptyAssignment([b]),
+
+			([, , c]) => isVarDecl([c]),
+			([, , c]) => hasName(c, 'c'),
+			([, , c]) => expectModifier(modifier)([c]),
+			([, , c]) => hasOwnAssignment([c]),
+
+			([, , , d]) => isVarDecl([d]),
+			([, , , d]) => hasName(d, 'd'),
+			([, , , d]) => expectModifier(modifier)([d]),
+			([, , , d]) => hasOwnAssignment([d])
+		)
+	}
 }
 

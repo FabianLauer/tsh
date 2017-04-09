@@ -105,9 +105,12 @@ function createEditor(monaco, containerId, language, readonly, content) {
 		language: language,
 		lineNumbers: true,
 		roundedSelection: false,
-		scrollBeyondLastLine: false,
+		scrollBeyondLastLine: true,
 		readOnly: !!readonly,
 		theme: 'vs-light',
+		fontSize: 11,
+		wordWrap: true,
+		folding: true
 	});
 }
 

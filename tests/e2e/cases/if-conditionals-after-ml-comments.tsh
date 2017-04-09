@@ -1,0 +1,39 @@
+///
+/// This file tests multi-line comments before `if` statements.
+///
+
+func a() {
+	// multi-line
+	// comment
+	if cond { }
+}
+
+func b() {
+	// multi-line
+	// comment
+	if cond { } else { }
+}
+
+func c() {
+	// multi-line
+	// comment
+	if cond { } else if cond { }
+}
+
+func d() {
+	// multi-line
+	// comment
+	if cond { } else if cond { } else if cond { }
+}
+
+func e() {
+	// multi-line
+	// comment
+	if cond { } else if cond { } else { }
+}
+
+func f() {
+	// multi-line
+	// comment
+	if cond { } else if cond { } else if cond { } else { }
+}

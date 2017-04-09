@@ -1,0 +1,33 @@
+///
+/// This file tests single-line comments before `if` statements.
+///
+
+func a() {
+	// Comment
+	if cond { }
+}
+
+func b() {
+	// Comment
+	if cond { } else { }
+}
+
+func c() {
+	// Comment
+	if cond { } else if cond { }
+}
+
+func d() {
+	// Comment
+	if cond { } else if cond { } else if cond { }
+}
+
+func e() {
+	// Comment
+	if cond { } else if cond { } else { }
+}
+
+func f() {
+	// Comment
+	if cond { } else if cond { } else if cond { } else { }
+}

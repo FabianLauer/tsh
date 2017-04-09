@@ -17,14 +17,15 @@ export default cases
 
 /**
  * Create a test case and export it from this file.
+ * @param testName The name of the test case.
  * @param sourceCode The source code to parse.
  * @param expectation Assertion functions. Return `true` for "test passed", `false` "for failed".
  */
-function test<TNode extends ast.BaseNode>(
+function testWithName<TNode extends ast.BaseNode>(
+	testName: string,
 	sourceCode: string,
 	...expectation: Array<(node: TNode[]) => boolean>
 ): void {
-	const testName = sourceCode
 	// wrap the source code in a func decl so we can parse it
 	sourceCode = `func __wrapper__() { ${sourceCode} }`
 	// wrap the assertion functions so that they receive the first node of the wrapper function's
@@ -39,6 +40,19 @@ function test<TNode extends ast.BaseNode>(
 		}
 	})
 	cases.push(ParserTestCase.create(testName, sourceCode, ...assertions))
+}
+
+/**
+ * Create a test case and export it from this file.
+ * @param sourceCode The source code to parse.
+ * @param expectation Assertion functions. Return `true` for "test passed", `false` "for failed".
+ */
+function test<TNode extends ast.BaseNode>(
+	sourceCode: string,
+	...expectation: Array<(node: TNode[]) => boolean>
+): void {
+	const testName = sourceCode
+	testWithName(testName, sourceCode, ...expectation)
 }
 
 
@@ -112,9 +126,11 @@ for (const keyword of ['let', 'const']) {
 	)
 
 
-	for (let i = 0; i < 10; i++) {
+	for (let i = 0; i < 3; i++) {
 		const newlines = '\n'.repeat(i)
-		test<ast.VarDecl>(
+		testWithName<ast.VarDecl>(
+			`var decls with ${keyword} separated by ${i} newlines each`,
+
 			`
 			${newlines}
 			${keyword} a${newlines}

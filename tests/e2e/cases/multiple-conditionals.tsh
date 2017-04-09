@@ -4,11 +4,27 @@ func multipleIfs() {
 }
 
 func multipleIfElses() {
-	if a { } else { }
-	if b { } else { }
+	if a {
+
+	} else {
+		
+	}
+
+	if b {
+		
+	} else {
+		
+	}
 }
 
 func multipleIfElseIfElses() {
-	if a { } else if c { } else { }
-	if b { } else if d { } else { }
+	if a {
+	} else if c {
+	} else {
+	}
+
+	if b {
+	} else if d {
+	} else {
+	}
 }

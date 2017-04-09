@@ -29,7 +29,7 @@ describe('E2E:', () => {
 	for (const filePath of files) {
 		const filename = filePath.replace(/^.*\//, '')
 		for (const codeGenerator of codeGenerators) {
-			describe(
+			it(
 				`${filename} -> ${codeGenerator.outputLanguageName}`,
 				() => runTestCase(filePath, codeGenerator)
 			)

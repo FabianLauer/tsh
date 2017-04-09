@@ -56,6 +56,22 @@ test<ast.FuncDecl>(
 )
 
 
+test<ast.FuncDecl>(
+	`
+	func someName() -> Void {
+
+		// Comment on a single line inside a function with blank lines before and after
+
+	}
+	`,
+	([$]) => $ instanceof ast.FuncDecl,
+	([$]) => $.body.getNodeAtIndex(0) instanceof ast.Comment,
+	([$]) => /Comment on a single line inside a function/.test(
+		(<ast.Comment>$.body.getNodeAtIndex(0)).lines[0].rawValue
+	)
+)
+
+
 test<ast.Comment>(
 	`
 	// A comment on
@@ -71,6 +87,21 @@ test<ast.Comment>(
 	// A comment on
 		// multiple lines
 	//with formatting
+	`,
+	([$]) => $ instanceof ast.Comment,
+	([$]) => /A comment on/.test($.lines[0].rawValue)
+)
+
+
+test<ast.Comment>(
+	`
+	// A comment on
+		// multiple lines
+	
+	//with formatting and
+
+
+	// empty lines in between
 	`,
 	([$]) => $ instanceof ast.Comment,
 	([$]) => /A comment on/.test($.lines[0].rawValue)

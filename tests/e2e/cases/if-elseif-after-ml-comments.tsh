@@ -1,0 +1,22 @@
+func commentBeforeIf() {
+	// multi-line
+	// comment
+	if cond { }
+	else if cond { }
+}
+
+func commentBeforeElseIf() {
+	if cond { }
+	// multi-line
+	// comment
+	else if cond { }
+}
+
+func commentBeforeAll() {
+	// multi-line
+	// comment
+	if cond { }
+	// multi-line
+	// comment
+	else if cond { }
+}

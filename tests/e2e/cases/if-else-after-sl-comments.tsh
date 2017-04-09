@@ -1,0 +1,18 @@
+func commentBeforeIf() {
+	// comment
+	if cond { }
+	else { }
+}
+
+func commentBeforeElse() {
+	if cond { }
+	// comment
+	else { }
+}
+
+func commentBeforeAll() {
+	// comment
+	if cond { }
+	// comment
+	else { }
+}

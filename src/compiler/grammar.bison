@@ -15,10 +15,14 @@ maybe_nl:
 	|
 ;
 
+maybe_nls:
+		maybe_nl
+	|	maybe_nls maybe_nl
+;
+
 maybe_nl_or_eof:
-		NL
+		maybe_nls
 	|	EOF
-	|
 ;
 
 
@@ -218,7 +222,7 @@ statement:
 ;
 
 statements:
-	|	nl_or_eof
+		maybe_nl_or_eof		{ $$ = [] }
 	|	statements statement
 		{
 			$1 = $1 || []
@@ -353,7 +357,7 @@ __class_body_statements:
 ;
 
 __class_body_compound_statement:
-	"{" maybe_nl __class_body_statements maybe_nl "}"
+	"{" maybe_nls __class_body_statements maybe_nls "}"
 		{
 			if ($3 === '\n' || $3 === '') {
 				$3 = []

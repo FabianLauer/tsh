@@ -126,7 +126,7 @@ for (const keyword of ['let', 'const']) {
 	)
 
 
-	for (let i = 0; i < 3; i++) {
+	for (let i = 0; i <= 10; i++) {
 		const newlines = '\n'.repeat(i)
 		testWithName<ast.VarDecl>(
 			`var decls with ${keyword} separated by ${i} newlines each`,

@@ -28,27 +28,31 @@ namespace('build', function () {
 
 namespace('test', function () {
 
+	const MOCHA_FLAGS = [
+		'--reporter', 'progress'
+	].join(' ')
+
 	desc('Runs all tests.')
 	task('all', () => {
-		sh `mocha build/tests/all.js`
+		sh `mocha build/tests/all.js ${MOCHA_FLAGS}`
 	})
 
 
 	desc('Runs all parser tests.')
 	task('parser', () => {
-		sh `mocha build/tests/all.js --grep Parser`
+		sh `mocha build/tests/all.js --grep Parser ${MOCHA_FLAGS}`
 	})
 
 
 	desc('Runs all end to end tests.')
 	task('e2e', () => {
-		sh `mocha build/tests/all.js --grep E2E`
+		sh `mocha build/tests/all.js --grep E2E ${MOCHA_FLAGS}`
 	})
 
 
 	desc('Runs all API tests.')
 	task('api', () => {
-		sh `mocha build/tests/all.js --grep api`
+		sh `mocha build/tests/all.js --grep api ${MOCHA_FLAGS}`
 	})
 
 })

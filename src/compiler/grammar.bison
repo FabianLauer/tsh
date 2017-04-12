@@ -28,6 +28,12 @@ maybe_nl_or_eof:
 
 comment: SL_COMMENT nl_or_eof { $$ = new yy.Comment([new yy.Token($1)]) };
 
+ml_comment: ml_comment comment;
+
+comments: comment | ml_comment;
+
+maybe_comments: comments;
+
 
 
 
@@ -153,6 +159,9 @@ type_expr:
 __conditional_body: statement | compound_statement;
 
 
+__conditional_trivia: maybe_nls;
+
+
 __conditional_if_statement:
 	IF expression __conditional_body maybe_nl_or_eof
 	{ $$ = new yy.IfStatement($2, $3) }
@@ -166,7 +175,7 @@ __conditional_else_if_statement:
 
 
 __conditional_maybe_else_if_statements:
-		maybe_nl_or_eof
+		__conditional_trivia
 	|	__conditional_maybe_else_if_statements __conditional_else_if_statement
 	{
 		$$ = $1 || []
@@ -178,8 +187,8 @@ __conditional_maybe_else_if_statements:
 
 
 __conditional_else_statement:
-	ELSE __conditional_body maybe_nl_or_eof
-	{ $$ = new yy.ElseStatement([$2]) }
+	__conditional_trivia ELSE __conditional_body maybe_nl_or_eof
+	{ $$ = new yy.ElseStatement([$3]) }
 ;
 __conditional_maybe_else_statement: __conditional_else_statement | maybe_nl_or_eof;
 
@@ -187,16 +196,18 @@ __conditional_maybe_else_statement: __conditional_else_statement | maybe_nl_or_e
 
 conditional_statement:
 	__conditional_if_statement
+	__conditional_trivia
 	__conditional_maybe_else_if_statements
+	__conditional_trivia
 	__conditional_maybe_else_statement
 	maybe_nl_or_eof
 	{
 		var statements = [$1]
-		if (Array.isArray($2)) {
-			statements = statements.concat($2)
+		if (Array.isArray($3)) {
+			statements = statements.concat($3)
 		}
-		if (typeof $3 !== 'undefined') {
-			statements.push($3)
+		if (typeof $5 !== 'undefined') {
+			statements.push($5)
 		}
 		$$ = new yy.Statement(statements)
 	}

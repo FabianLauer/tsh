@@ -66,22 +66,3 @@ test<ast.ClassDecl>(
 	([Alpha]) => Alpha.name.rawValue === 'Alpha',
 	([, Beta]) => Beta.name.rawValue === 'Beta'
 )
-
-test<ast.ClassDecl>(
-	`
-	class Alpha {
-		let foo
-		const bar = 1
-	}
-	`,
-	([Alpha]) => isInstanceOf(Alpha, ast.ClassDecl),
-	([Alpha]) => Alpha.name.rawValue === 'Alpha',
-	([Alpha]) => (
-		isInstanceOf(Alpha.body.getNodeAtIndex(0), ast.VarDecl) &&
-		(<ast.VarDecl>Alpha.body.getNodeAtIndex(0)).name.rawValue === 'foo'
-	),
-	([Alpha]) => (
-		isInstanceOf(Alpha.body.getNodeAtIndex(1), ast.VarDecl) &&
-		(<ast.VarDecl>Alpha.body.getNodeAtIndex(1)).name.rawValue === 'bar'
-	)
-)

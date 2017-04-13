@@ -58,7 +58,7 @@ test<ast.ClassDecl>(
 
 test<ast.ClassDecl>(
 	`
-	class Alpha { }
+	class Alpha  }
 	class Beta { }
 	`,
 	([Alpha]) => isInstanceOf(Alpha, ast.ClassDecl),

@@ -1,8 +1,12 @@
 import BaseGenerator from '../BaseGenerator'
 import { register, createForAstNode } from '../factory'
-import { FuncDecl } from '@/compiler/ast'
+import { FuncDecl, MethodDecl } from '@/compiler/ast'
 
-@register(node => node instanceof FuncDecl ? Infinity : 0)
+@register(node => (
+	node instanceof FuncDecl && !(node instanceof MethodDecl)
+		? Infinity
+		: 0
+))
 export class FuncDeclCodeGenerator extends BaseGenerator<FuncDecl> {
 	/**
 	 * Generates code for a given syntax tree.

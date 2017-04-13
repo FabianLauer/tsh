@@ -9,6 +9,7 @@
     "browserify": "^14.3.0",
     "colors": "^1.1.2",
     "diff": "^3.2.0",
+    "jake": "latest",
     "mocha": "^3.2.0",
     "monaco-editor": "^0.8.3",
     "requirejs": "^2.3.3",

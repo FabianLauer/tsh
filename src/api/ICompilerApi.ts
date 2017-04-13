@@ -9,7 +9,6 @@ export interface ICompilerApi {
 	 */
 	getAvailableCompileTargets(): CompileTarget[]
 
-
 	/**
 	 * Returns all available identifiers that are associated to a compile target.
 	 * The compile target must be known to the API, otherwise an error will be thrown.

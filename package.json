@@ -2,7 +2,7 @@
   "name": "__",
   "version": "0.0.1",
   "scripts": {
-    "test": "./jake test:all"
+    "test": "./jake build:parser && ./jake build:compiler && ./jake test:all"
   },
   "devDependencies": {
     "@types/jake": "0.0.28",

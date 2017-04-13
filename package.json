@@ -1,6 +1,9 @@
 {
   "name": "__",
   "version": "0.0.1",
+  "scripts": {
+    "test": "./jake test:all"
+  },
   "devDependencies": {
     "app-module-path": "^2.2.0",
     "browserify": "^14.3.0",

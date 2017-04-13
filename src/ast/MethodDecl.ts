@@ -1,4 +1,4 @@
-import { Token, Statement, TypeExpr, ParamDeclList } from './'
+import { Token, Statement, TypeExpr, ParamDeclList, ClassDecl } from './'
 import { IFuncDeclCreateParams, FuncDecl } from './FuncDecl'
 
 
@@ -47,6 +47,17 @@ export class MethodDecl extends FuncDecl {
 			returnTypeDecl,
 			body
 		)
+	}
+
+
+	/**
+	 * Returns the class declaration in which a method was defined.
+	 */
+	public getClass(): ClassDecl {
+		if (!(this.parent instanceof Statement)) {
+			return undefined
+		}
+		return <ClassDecl>this.parent.parent
 	}
 }
 

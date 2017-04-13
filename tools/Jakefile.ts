@@ -1,8 +1,36 @@
 // tslint:disable:no-reference
 
-/// <reference path="../node_modules/@types/jake/index.d.ts" />
 
 import { sh, jake } from './buildUtils'
+
+
+/**
+ * Creates a namespace which allows logical grouping of tasks, and prevents name-collisions
+ * with task-names. Namespaces can be nested inside of other namespaces.
+ * @param name The name of the namespace
+ * @param scope The enclosing scope for the namespaced tasks
+ */
+declare function namespace(name: string, scope: () => void): void;
+
+
+/**
+ * Creates a description for a Jake Task (or FileTask, DirectoryTask). When invoked, the
+ * description that iscreated will be associated with whatever Task is created next.
+ * @param description The description for the Task
+ */
+declare function desc(description: string): void;
+
+
+/**
+ * @param name The name of the Task
+ * @param prereqs Prerequisites to be run before this task
+ * @param action The action to perform for this task
+ * @param opts
+ */
+declare function task(name: string, action?: (...params: any[]) => any, opts?: any): any;
+
+
+
 
 namespace('build', function () {
 

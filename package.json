@@ -5,6 +5,7 @@
     "test": "./jake test:all"
   },
   "devDependencies": {
+    "@types/jake": "0.0.28",
     "app-module-path": "^2.2.0",
     "browserify": "^14.3.0",
     "colors": "^1.1.2",

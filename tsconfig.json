@@ -12,10 +12,6 @@
         "module": "commonjs",
         "declaration": false,
 
-        "typeRoots": [
-            "node_modules/@types"
-        ],
-
         // Source Map Config
         "sourceMap": true,
 

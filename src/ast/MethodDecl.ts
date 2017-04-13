@@ -50,4 +50,4 @@ export class MethodDecl extends FuncDecl {
 	}
 }
 
-export default FuncDecl
+export default MethodDecl

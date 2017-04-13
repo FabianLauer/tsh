@@ -1,17 +1,18 @@
-import { SourceUnit } from '@/compiler/ast'
+import { CompileTarget } from '@/compiler/api'
 
 export interface ICodeGeneratorTestImpl {
 	/**
 	 * The name of the output language.
 	 * This is used to search for baseline files in the `e2e/baseline` directory.
 	 */
-	outputLanguageName: string
+	readonly outputLanguageName: string
+
 
 	/**
-	 * Generate code for a certain AST node.
-	 * @param ast The AST node to generate code for.
+	 * The internal identifier for the compile target to be used with this test implementation.
 	 */
-	generateCode(ast: SourceUnit): string
+	readonly compileTarget: CompileTarget
+
 
 	/**
 	 * Return the filename for the baseline of a certain test case.

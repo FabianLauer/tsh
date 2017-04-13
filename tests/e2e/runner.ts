@@ -1,6 +1,6 @@
-import * as parser from '@/compiler/parser'
+import { CompilerApi } from '@/compiler/api'
 import { readdirSync, statSync, readFileSync } from 'fs'
-import ICodeGeneratorTestImpl from './ICodeGeneratorTestImpl'
+import ICodeGeneratorTestContext from './ICodeGeneratorTestContext'
 import { importFromDirectorySync } from 'utils/importUtils'
 
 const basedir = `${process.cwd()}/tests/e2e/`
@@ -9,7 +9,7 @@ const basedir = `${process.cwd()}/tests/e2e/`
 // The files in the directory are expected to export their code
 // generator implementation as `exports.default`.
 const codeGenerators = importFromDirectorySync<
-	ICodeGeneratorTestImpl & { 'default'?: ICodeGeneratorTestImpl }
+	ICodeGeneratorTestContext & { 'default'?: ICodeGeneratorTestContext }
 >(
 	`${__dirname}/codegen/`,
 	filename => (/.*\.(j|t)s$/g).test(filename)
@@ -45,19 +45,17 @@ describe('E2E:', () => {
  */
 function runTestCase(
 	testCaseFilePath: string,
-	codeGenerator: ICodeGeneratorTestImpl
+	testContext: ICodeGeneratorTestContext
 ): void {
 	// try to parse the source code
 	const sourceCode = readFileSync(testCaseFilePath).toString('utf8')
-	const sourceUnit = parser.parseToSourceUnit(testCaseFilePath, sourceCode)
-
-	// transpile using the code generator implementation
-	const transpiledCode = codeGenerator.generateCode(sourceUnit)
+	const api = CompilerApi.create()
+	const transpiledCode = api.compileSourceCode(sourceCode, testContext.compileTarget)
 
 	// read the baseline file
 	const testCaseFileName = testCaseFilePath.replace(/^.*\//, '')
-	const baselineFileName = codeGenerator.getBaselineFilename(testCaseFileName)
-	const baselinePath = `${basedir}/baseline/${codeGenerator.outputLanguageName}/`
+	const baselineFileName = testContext.getBaselineFilename(testCaseFileName)
+	const baselinePath = `${basedir}/baseline/${testContext.outputLanguageName}/`
 	const baselineCode = readFileSync(`${baselinePath}/${baselineFileName}`).toString('utf8')
 
 	// compare the transpiled code to the baseline code

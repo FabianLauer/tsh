@@ -1,21 +1,17 @@
-import { SourceUnit } from '@/compiler/ast'
-import { CodeGenerator } from '@/compiler/codegen/ecmascript'
-import ICodeGeneratorTestImpl from '../ICodeGeneratorTestImpl'
+import { CompileTarget } from '@/compiler/api'
+import ICodeGeneratorTestContext from '../ICodeGeneratorTestContext'
 
-export const implementation = new class EcmaScriptImpl implements ICodeGeneratorTestImpl {
+export const context = new class EcmaScriptTestContext implements ICodeGeneratorTestContext {
 	/**
 	 * The name of the output language.
 	 * This is used to search for baseline files in the `e2e/baseline` directory.
 	 */
-	outputLanguageName = 'EcmaScript'
+	readonly outputLanguageName = 'EcmaScript'
 
 	/**
-	 * Generate code for a certain AST node.
-	 * @param ast The AST node to generate code for.
+	 * The internal identifier for the compile target to be used with this test implementation.
 	 */
-	generateCode(ast: SourceUnit): string {
-		return new CodeGenerator(ast).generateCode()
-	}
+	readonly compileTarget = CompileTarget.EcmaScript
 
 	/**
 	 * Return the filename for the baseline of a certain test case.
@@ -25,4 +21,4 @@ export const implementation = new class EcmaScriptImpl implements ICodeGenerator
 	}
 }
 
-export default implementation
+export default context

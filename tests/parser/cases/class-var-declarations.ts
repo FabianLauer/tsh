@@ -81,8 +81,8 @@ function getClassMembers(classDecl: ast.ClassDecl) {
  * @param name The name of the member to return.
  */
 function getMemberByName<
-	TMember extends ast.VarDecl | ast.FuncDecl
-	>(classDecl: ast.ClassDecl, name: string): TMember {
+	TMember extends ast.VarDecl | ast.MethodDecl
+>(classDecl: ast.ClassDecl, name: string): TMember {
 	const members = getClassMembers(classDecl)
 	return <TMember>members.find(node => node.name.rawValue === name)
 }

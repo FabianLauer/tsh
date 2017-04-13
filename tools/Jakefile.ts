@@ -13,7 +13,8 @@ namespace('build', function () {
 
 	desc('Compiles the parser.')
 	task('parser', () => {
-		sh `jison -o ./src/compiler/generatedParser.js ./src/compiler/grammar.bison ./src/compiler/grammar.lex`
+		// tslint:disable-next-line:max-line-length
+		sh `./node_modules/.bin/jison -o ./src/compiler/generatedParser.js ./src/compiler/grammar.bison ./src/compiler/grammar.lex`
 	})
 
 

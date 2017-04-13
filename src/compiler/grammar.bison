@@ -317,14 +317,37 @@ __func_ident: FUNCTION IDENTIFIER { $$ = yy.createToken($2) };
 __func_param_decl_list: "(" param_decl_list ")" { $$ = $2 };
 __func_return_expr: ARR type_expr { $$ = $2 } | ;
 __func_body: compound_statement { $$ = $1 } | ;
+__func_decl_end: maybe_nl_or_eof;
 func_decl:
 		__func_ident
 		__func_param_decl_list
 		__func_return_expr
 		__func_body
-		nl_or_eof
+		__func_decl_end
 		{
 			$$ = yy.FuncDecl.create({
+				funcName: $1,
+				runtimeParamDecls: $2,
+				returnTypeDecl: $3,
+				funcBody: $4
+			})
+		}
+;
+
+
+
+/* ------------------------------------------------------------------------------- */
+/* ----------- METHOD DECL ------------------------------------------------------- */
+/* ------------------------------------------------------------------------------- */
+
+method_decl:
+		__func_ident
+		__func_param_decl_list
+		__func_return_expr
+		__func_body
+		__func_decl_end
+		{
+			$$ = yy.MethodDecl.create({
 				funcName: $1,
 				runtimeParamDecls: $2,
 				returnTypeDecl: $3,
@@ -344,10 +367,11 @@ func_decl:
 __class_body_statement:
 		comment
 	|	var_decl
+	|	method_decl
 ;
 
 __class_body_statements:
-	|	nl_or_eof
+		maybe_nl_or_eof		{ $$ = [] }
 	|	__class_body_statements __class_body_statement
 		{
 			$1 = $1 || []
@@ -357,7 +381,7 @@ __class_body_statements:
 ;
 
 __class_body_compound_statement:
-	"{" maybe_nls __class_body_statements maybe_nls "}"
+	"{" maybe_nl __class_body_statements maybe_nl "}"
 		{
 			if ($3 === '\n' || $3 === '') {
 				$3 = []
@@ -366,7 +390,6 @@ __class_body_compound_statement:
 			$$ = new yy.Statement($3)
 		}
 ;
-
 
 __class_ident: CLASS IDENTIFIER { $$ = yy.createToken($2) };
 __class_body: __class_body_compound_statement { $$ = $1 } | ;

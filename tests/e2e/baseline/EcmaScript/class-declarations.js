@@ -19,3 +19,25 @@ var Beta = (function() {
 	return Beta;
 })();
 
+
+/** @class Gamma */
+var Gamma = (function() {
+	/** @constructor */
+	function Gamma() {
+	}
+
+	Gamma.prototype.alpha = function alpha() {
+	}
+
+	Gamma.prototype.beta = function beta() {
+	}
+
+	Gamma.prototype.gamma = function gamma() {
+	}
+
+	Gamma.prototype.delta = function delta(a, b, c, d, e) {
+	}
+
+	return Gamma;
+})();
+

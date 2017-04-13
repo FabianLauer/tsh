@@ -6,3 +6,12 @@ class Beta {
 	let foo
 	const bar
 }
+
+class Gamma {
+	func alpha()
+	func beta() { }
+
+	func gamma( ) -> Void
+
+	func delta(a, b, c, d: Int, e) -> Int
+}

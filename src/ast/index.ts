@@ -9,6 +9,7 @@ import ExprStatement from './ExprStatement'
 import FuncDecl from './FuncDecl'
 import Identifier from './Identifier'
 import IfStatement from './IfStatement'
+import MethodDecl from './MethodDecl'
 import Operator from './Operator'
 import OperatorIdent from './OperatorIdent'
 import ParamDecl from './ParamDecl'
@@ -39,6 +40,7 @@ export {
 	ExprStatement,
 	Identifier,
 	IfStatement,
+	MethodDecl,
 	FuncDecl,
 	Operator,
 	OperatorIdent,

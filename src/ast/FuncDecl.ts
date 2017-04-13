@@ -1,7 +1,7 @@
 import { BaseNode, Token, Statement, TypeExpr, ParamDeclList } from './'
 
 
-interface IFuncDeclCreateParams {
+export interface IFuncDeclCreateParams {
 	/**
 	 * The name of the function itself.
 	 */
@@ -42,7 +42,7 @@ export class FuncDecl extends BaseNode {
 	/**
 	 * Creates a new `FuncDecl` instance.
 	 */
-	private constructor(
+	protected constructor(
 		/**
 		 * The name of the function itself.
 		 */

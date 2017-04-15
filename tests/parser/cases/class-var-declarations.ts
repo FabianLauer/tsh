@@ -87,20 +87,9 @@ function getMemberByName<
 	return <TMember>members.find(node => node.name.rawValue === name)
 }
 
-
 function isMemberVarDecl(memberName: string) {
 	return ([classDecl]: [ast.ClassDecl]) =>
 		isInstanceOf(getMemberByName<ast.VarDecl>(classDecl, memberName), ast.VarDecl)
-}
-
-function doesMemberHaveModifier(memberName: string, modifier: ast.VarDeclModifier) {
-	return ([classDecl]: [ast.ClassDecl]) =>
-		getMemberByName<ast.VarDecl>(classDecl, memberName).modifiers === modifier
-}
-
-function doesMemberHaveEmptyAssignment(memberName: string) {
-	return ([classDecl]: [ast.ClassDecl]) =>
-		getMemberByName<ast.VarDecl>(classDecl, memberName).assignment === ast.Expr.Empty
 }
 
 function doesMemberHaveOwnAssignment(memberName: string) {
@@ -109,6 +98,24 @@ function doesMemberHaveOwnAssignment(memberName: string) {
 		return (
 			varDecl.assignment instanceof ast.Expr &&
 			varDecl.assignment !== ast.Expr.Empty
+		)
+	}
+}
+
+function doesMemberHaveEmptyAssignment(memberName: string) {
+	return ([classDecl]: [ast.ClassDecl]) =>
+		getMemberByName<ast.VarDecl>(classDecl, memberName).assignment === ast.Expr.Empty
+}
+
+function expectVarDeclModifiers(
+	memberName: string,
+	firstModifier: ast.VarDeclModifier,
+	...modifiers: ast.VarDeclModifier[]
+) {
+	return ([classDecl]: [ast.ClassDecl]) => {
+		return ast.VarDeclModifier.areCombinationsEqual(
+			getMemberByName<ast.VarDecl>(classDecl, memberName).modifiers,
+			ast.VarDeclModifier.combine(firstModifier, ...modifiers)
 		)
 	}
 }
@@ -144,7 +151,7 @@ for (const keyword of ['let', 'const']) {
 		([Class]) => Class.name.rawValue === 'TestClass',
 
 		isMemberVarDecl('a'),
-		([Class]) => getMemberByName<ast.VarDecl>(Class, 'a').modifiers === modifier
+		expectVarDeclModifiers('a', modifier)
 	)
 
 
@@ -158,7 +165,7 @@ for (const keyword of ['let', 'const']) {
 		([Class]) => Class.name.rawValue === 'TestClass',
 
 		isMemberVarDecl('longMemberName'),
-		([Class]) => getMemberByName<ast.VarDecl>(Class, 'longMemberName').modifiers === modifier
+		expectVarDeclModifiers('longMemberName', modifier)
 	)
 
 
@@ -173,10 +180,10 @@ for (const keyword of ['let', 'const']) {
 		([Class]) => Class.name.rawValue === 'TestClass',
 
 		isMemberVarDecl('a'),
-		doesMemberHaveModifier('a', modifier),
+		expectVarDeclModifiers('a', modifier),
 
 		isMemberVarDecl('b'),
-		doesMemberHaveModifier('b', modifier),
+		expectVarDeclModifiers('b', modifier),
 	)
 
 
@@ -191,10 +198,10 @@ for (const keyword of ['let', 'const']) {
 		([Class]) => Class.name.rawValue === 'TestClass',
 
 		isMemberVarDecl('a'),
-		doesMemberHaveModifier('a', modifier),
+		expectVarDeclModifiers('a', modifier),
 
 		isMemberVarDecl('b'),
-		doesMemberHaveModifier('b', otherModifier),
+		expectVarDeclModifiers('b', otherModifier),
 	)
 
 
@@ -222,19 +229,19 @@ for (const keyword of ['let', 'const']) {
 			([classDecl]) => classDecl.name.rawValue === 'TestClass',
 
 			isMemberVarDecl('a'),
-			doesMemberHaveModifier('a', modifier),
+			expectVarDeclModifiers('a', modifier),
 			doesMemberHaveEmptyAssignment('a'),
 
 			isMemberVarDecl('b'),
-			doesMemberHaveModifier('b', modifier),
+			expectVarDeclModifiers('b', modifier),
 			doesMemberHaveEmptyAssignment('b'),
 
 			isMemberVarDecl('c'),
-			doesMemberHaveModifier('c', modifier),
+			expectVarDeclModifiers('c', modifier),
 			doesMemberHaveOwnAssignment('c'),
 
 			isMemberVarDecl('d'),
-			doesMemberHaveModifier('d', modifier),
+			expectVarDeclModifiers('d', modifier),
 			doesMemberHaveOwnAssignment('d')
 		)
 
@@ -256,19 +263,19 @@ for (const keyword of ['let', 'const']) {
 			([classDecl]) => classDecl.name.rawValue === 'TestClass',
 
 			isMemberVarDecl('a'),
-			doesMemberHaveModifier('a', modifier),
+			expectVarDeclModifiers('a', modifier),
 			doesMemberHaveEmptyAssignment('a'),
 
 			isMemberVarDecl('b'),
-			doesMemberHaveModifier('b', otherModifier),
+			expectVarDeclModifiers('b', otherModifier),
 			doesMemberHaveEmptyAssignment('b'),
 
 			isMemberVarDecl('c'),
-			doesMemberHaveModifier('c', modifier),
+			expectVarDeclModifiers('c', modifier),
 			doesMemberHaveOwnAssignment('c'),
 
 			isMemberVarDecl('d'),
-			doesMemberHaveModifier('d', otherModifier),
+			expectVarDeclModifiers('d', otherModifier),
 			doesMemberHaveOwnAssignment('d')
 		)
 	}

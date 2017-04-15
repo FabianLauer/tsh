@@ -41,3 +41,17 @@ var Gamma = (function() {
 	return Gamma;
 })();
 
+
+/** @class Delta */
+var Delta = (function() {
+	/** @constructor */
+	function Delta() {
+		this.foo;
+		this.bar;
+	}
+
+	Delta.fibo;
+	Delta.nacci;
+
+	return Delta;
+})();

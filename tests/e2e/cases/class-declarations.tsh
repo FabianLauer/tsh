@@ -15,3 +15,10 @@ class Gamma {
 
 	func delta(a, b, c, d: Int, e) -> Int
 }
+
+class Delta {
+	let foo
+	const bar
+	static let fibo
+	static const nacci
+}

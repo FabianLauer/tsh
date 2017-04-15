@@ -65,7 +65,11 @@ unary_operation:
 
 
 binary_operator:
-		'+'		{ $$ = yy.getOperatorFromToken($1) }
+	/* Access Operator */
+		'.'		{ $$ = yy.getOperatorFromToken($1) }
+
+	/* Arithmetic Operators */
+	|	'+'		{ $$ = yy.getOperatorFromToken($1) }
 	|	'-'		{ $$ = yy.getOperatorFromToken($1) }
 	|	'*'		{ $$ = yy.getOperatorFromToken($1) }
 	|	'/'		{ $$ = yy.getOperatorFromToken($1) }

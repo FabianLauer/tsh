@@ -93,6 +93,9 @@ test<ast.ExprStatement>(
 
 /// Binary Operators:
 
+// We don't test any access operators here since they can't be used
+// as assignment operators. See test file `access-operators.ts`.
+
 let binaryOperators = [
 	'+', '-', '*', '/', '%'
 ]

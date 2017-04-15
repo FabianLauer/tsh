@@ -124,15 +124,21 @@ primary_expr:
 ;
 
 
-operation:
+atomic_operation:
 		unary_operation		{ $$ = $1 }
 	|	binary_operation	{ $$ = $1 }
 ;
 
+operation:
+		atomic_operation			{ $$ = $1 }
+	|	'(' atomic_operation ')'	{ $$ = $2 }
+;
+
 expression:
-		primary_expr		{ $$ = new yy.Expr($1) }
-	|	operation			{ $$ = $1 }
-	|	assignment_expr		{ $$ = $1 }
+		primary_expr				{ $$ = new yy.Expr($1) }
+	|	operation					{ $$ = $1 }
+	|	assignment_expr				{ $$ = $1 }
+	|	'(' assignment_expr ')'		{ $$ = $2 }
 ;
 
 

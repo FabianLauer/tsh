@@ -47,7 +47,7 @@ unary_operator:
 ;
 
 
-unary_operation:
+atomic_unary_operation:
 	/* postfix: */
 		primary_expr unary_operator
 			{ $$ = new yy.UnaryOperation($1, $2, yy.UnaryOperatorPosition.Postfix) }
@@ -55,6 +55,12 @@ unary_operation:
 	/* prefix: */
 	|	unary_operator primary_expr
 			{ $$ = new yy.UnaryOperation($1, $2, yy.UnaryOperatorPosition.Prefix) }
+;
+
+
+unary_operation:
+		atomic_unary_operation			{ $$ = $1 }
+	|	'(' atomic_unary_operation ')'	{ $$ = $2 }
 ;
 
 
@@ -77,9 +83,15 @@ binary_operator:
 ;
 
 
-binary_operation:
-	primary_expr binary_operator primary_expr
+atomic_binary_operation:
+	expression binary_operator expression
 		{ $$ = new yy.BinaryOperation($1, $2, $3) }
+;
+
+
+binary_operation:
+		atomic_binary_operation			{ $$ = $1 }
+	|	'(' atomic_binary_operation ')'	{ $$ = $2 }
 ;
 
 
@@ -103,10 +115,17 @@ assignment_operator:
 ;
 
 
-assignment_expr:
+atomic_assignment_expr:
 	IDENTIFIER assignment_operator expression
 		{ $$ = new yy.BinaryOperation(new yy.Expr($1), $2, $3) }
 ;
+
+
+assignment_expr:
+		atomic_assignment_expr			{ $$ = $1 }
+	|	'(' atomic_assignment_expr ')'	{ $$ = $2 }
+;
+
 
 
 
@@ -124,21 +143,18 @@ primary_expr:
 ;
 
 
-atomic_operation:
-		unary_operation		{ $$ = $1 }
-	|	binary_operation	{ $$ = $1 }
-;
-
 operation:
-		atomic_operation			{ $$ = $1 }
-	|	'(' atomic_operation ')'	{ $$ = $2 }
+		unary_operation				{ $$ = $1 }
+	|	binary_operation			{ $$ = $1 }
+	|	'(' binary_operation ')'	{ $$ = $2 }
+	|	'(' unary_operation ')'		{ $$ = $2 }
 ;
 
-expression:
+
+__expression:
 		primary_expr				{ $$ = new yy.Expr($1) }
 	|	operation					{ $$ = $1 }
 	|	assignment_expr				{ $$ = $1 }
-	|	'(' assignment_expr ')'		{ $$ = $2 }
 ;
 
 

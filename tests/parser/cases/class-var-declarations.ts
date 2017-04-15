@@ -141,6 +141,7 @@ for (const keyword of ['let', 'const']) {
 		: ast.VarDeclModifier.Let
 
 
+
 	test<ast.ClassDecl>(
 		`
 		class TestClass {
@@ -153,6 +154,20 @@ for (const keyword of ['let', 'const']) {
 		isMemberVarDecl('a'),
 		expectVarDeclModifiers('a', modifier)
 	)
+
+	test<ast.ClassDecl>(
+		`
+		class TestClass {
+			static ${keyword} a
+		}
+		`,
+		([Class]) => isInstanceOf(Class, ast.ClassDecl),
+		([Class]) => Class.name.rawValue === 'TestClass',
+
+		isMemberVarDecl('a'),
+		expectVarDeclModifiers('a', modifier, ast.VarDeclModifier.Static)
+	)
+
 
 
 	test<ast.ClassDecl>(
@@ -167,6 +182,20 @@ for (const keyword of ['let', 'const']) {
 		isMemberVarDecl('longMemberName'),
 		expectVarDeclModifiers('longMemberName', modifier)
 	)
+
+	test<ast.ClassDecl>(
+		`
+		class TestClass {
+			static ${keyword} longMemberName
+		}
+		`,
+		([Class]) => isInstanceOf(Class, ast.ClassDecl),
+		([Class]) => Class.name.rawValue === 'TestClass',
+
+		isMemberVarDecl('longMemberName'),
+		expectVarDeclModifiers('longMemberName', modifier, ast.VarDeclModifier.Static)
+	)
+
 
 
 	test<ast.ClassDecl>(
@@ -186,6 +215,58 @@ for (const keyword of ['let', 'const']) {
 		expectVarDeclModifiers('b', modifier),
 	)
 
+	test<ast.ClassDecl>(
+		`
+		class TestClass {
+			static ${keyword} a
+			static ${keyword} b
+		}
+		`,
+		([Class]) => isInstanceOf(Class, ast.ClassDecl),
+		([Class]) => Class.name.rawValue === 'TestClass',
+
+		isMemberVarDecl('a'),
+		expectVarDeclModifiers('a', modifier, ast.VarDeclModifier.Static),
+
+		isMemberVarDecl('b'),
+		expectVarDeclModifiers('b', modifier, ast.VarDeclModifier.Static)
+	)
+
+	test<ast.ClassDecl>(
+		`
+		class TestClass {
+			${keyword} a
+			static ${keyword} b
+		}
+		`,
+		([Class]) => isInstanceOf(Class, ast.ClassDecl),
+		([Class]) => Class.name.rawValue === 'TestClass',
+
+		isMemberVarDecl('a'),
+		expectVarDeclModifiers('a', modifier),
+
+		isMemberVarDecl('b'),
+		expectVarDeclModifiers('b', modifier, ast.VarDeclModifier.Static)
+	)
+
+	test<ast.ClassDecl>(
+		`
+		class TestClass {
+			static ${keyword} a
+			${keyword} b
+		}
+		`,
+		([Class]) => isInstanceOf(Class, ast.ClassDecl),
+		([Class]) => Class.name.rawValue === 'TestClass',
+
+		isMemberVarDecl('a'),
+		expectVarDeclModifiers('a', modifier, ast.VarDeclModifier.Static),
+
+		isMemberVarDecl('b'),
+		expectVarDeclModifiers('b', modifier)
+	)
+
+
 
 	test<ast.ClassDecl>(
 		`
@@ -199,6 +280,57 @@ for (const keyword of ['let', 'const']) {
 
 		isMemberVarDecl('a'),
 		expectVarDeclModifiers('a', modifier),
+
+		isMemberVarDecl('b'),
+		expectVarDeclModifiers('b', otherModifier),
+	)
+
+	test<ast.ClassDecl>(
+		`
+		class TestClass {
+			static ${keyword} a
+			static ${otherKeyword} b
+		}
+		`,
+		([Class]) => isInstanceOf(Class, ast.ClassDecl),
+		([Class]) => Class.name.rawValue === 'TestClass',
+
+		isMemberVarDecl('a'),
+		expectVarDeclModifiers('a', modifier, ast.VarDeclModifier.Static),
+
+		isMemberVarDecl('b'),
+		expectVarDeclModifiers('b', otherModifier, ast.VarDeclModifier.Static),
+	)
+
+	test<ast.ClassDecl>(
+		`
+		class TestClass {
+			${keyword} a
+			static ${otherKeyword} b
+		}
+		`,
+		([Class]) => isInstanceOf(Class, ast.ClassDecl),
+		([Class]) => Class.name.rawValue === 'TestClass',
+
+		isMemberVarDecl('a'),
+		expectVarDeclModifiers('a', modifier),
+
+		isMemberVarDecl('b'),
+		expectVarDeclModifiers('b', otherModifier, ast.VarDeclModifier.Static),
+	)
+
+	test<ast.ClassDecl>(
+		`
+		class TestClass {
+			static ${keyword} a
+			${otherKeyword} b
+		}
+		`,
+		([Class]) => isInstanceOf(Class, ast.ClassDecl),
+		([Class]) => Class.name.rawValue === 'TestClass',
+
+		isMemberVarDecl('a'),
+		expectVarDeclModifiers('a', modifier, ast.VarDeclModifier.Static),
 
 		isMemberVarDecl('b'),
 		expectVarDeclModifiers('b', otherModifier),
@@ -272,6 +404,74 @@ for (const keyword of ['let', 'const']) {
 
 			isMemberVarDecl('c'),
 			expectVarDeclModifiers('c', modifier),
+			doesMemberHaveOwnAssignment('c'),
+
+			isMemberVarDecl('d'),
+			expectVarDeclModifiers('d', otherModifier),
+			doesMemberHaveOwnAssignment('d')
+		)
+
+
+		testWithName<ast.ClassDecl>(
+			`static class var decls (${keyword}, ${otherKeyword}) separated by ${i} newlines each`,
+
+			`
+			class TestClass {
+				${newlines}
+				static ${keyword} a${newlines}
+				static ${otherKeyword} b: Type${newlines}
+				static ${keyword} c = 123${newlines}
+				static ${otherKeyword} d: Type = 123${newlines}
+			}
+			`,
+
+			([classDecl]) => isInstanceOf(classDecl, ast.ClassDecl),
+			([classDecl]) => classDecl.name.rawValue === 'TestClass',
+
+			isMemberVarDecl('a'),
+			expectVarDeclModifiers('a', modifier, ast.VarDeclModifier.Static),
+			doesMemberHaveEmptyAssignment('a'),
+
+			isMemberVarDecl('b'),
+			expectVarDeclModifiers('b', otherModifier, ast.VarDeclModifier.Static),
+			doesMemberHaveEmptyAssignment('b'),
+
+			isMemberVarDecl('c'),
+			expectVarDeclModifiers('c', modifier, ast.VarDeclModifier.Static),
+			doesMemberHaveOwnAssignment('c'),
+
+			isMemberVarDecl('d'),
+			expectVarDeclModifiers('d', otherModifier, ast.VarDeclModifier.Static),
+			doesMemberHaveOwnAssignment('d')
+		)
+
+
+		testWithName<ast.ClassDecl>(
+			`class var decls (static ${keyword}, ${otherKeyword}) separated by ${i} newlines each`,
+
+			`
+			class TestClass {
+				${newlines}
+				static ${keyword} a${newlines}
+				${otherKeyword} b: Type${newlines}
+				static ${keyword} c = 123${newlines}
+				${otherKeyword} d: Type = 123${newlines}
+			}
+			`,
+
+			([classDecl]) => isInstanceOf(classDecl, ast.ClassDecl),
+			([classDecl]) => classDecl.name.rawValue === 'TestClass',
+
+			isMemberVarDecl('a'),
+			expectVarDeclModifiers('a', modifier, ast.VarDeclModifier.Static),
+			doesMemberHaveEmptyAssignment('a'),
+
+			isMemberVarDecl('b'),
+			expectVarDeclModifiers('b', otherModifier),
+			doesMemberHaveEmptyAssignment('b'),
+
+			isMemberVarDecl('c'),
+			expectVarDeclModifiers('c', modifier, ast.VarDeclModifier.Static),
 			doesMemberHaveOwnAssignment('c'),
 
 			isMemberVarDecl('d'),

@@ -1,5 +1,1 @@
-import ICodeGenerator from './ICodeGenerator'
-
-export {
-	ICodeGenerator
-}
+export * from './ICodeGenerator'

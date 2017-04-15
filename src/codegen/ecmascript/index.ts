@@ -4,5 +4,5 @@
 import './generator/'
 
 // Import and export the public types in this module.
-import CodeGenerator from './CodeGenerator'
-export { CodeGenerator }
+export * from './CodeGenerator'
+

@@ -1,64 +1,30 @@
-import BaseNode from './BaseNode'
-import BinaryOperation from './BinaryOperation'
-import ClassDecl from './ClassDecl'
-import Comment from './Comment'
-import ElseIfStatement from './ElseIfStatement'
-import ElseStatement from './ElseStatement'
-import Expr from './Expr'
-import ExprStatement from './ExprStatement'
-import FuncDecl from './FuncDecl'
-import Identifier from './Identifier'
-import IfStatement from './IfStatement'
-import MethodDecl from './MethodDecl'
-import Operator from './Operator'
-import OperatorIdent from './OperatorIdent'
-import ParamDecl from './ParamDecl'
-import ParamDeclList from './ParamDeclList'
-import ReturnStatement from './ReturnStatement'
-import SourceUnit from './SourceUnit'
-import Statement from './Statement'
-import StringLiteral from './StringLiteral'
-import Token from './Token'
-import TypeExpr from './TypeExpression'
-import UnaryOperation from './UnaryOperation'
-import UnaryOperatorPosition from './UnaryOperatorPosition'
-import VarDecl from './VarDecl'
-import VarDeclModifier from './VarDeclModifier'
+/// AST Node Types
+export * from './BaseNode'
+export * from './BinaryOperation'
+export * from './ClassDecl'
+export * from './Comment'
+export * from './ElseIfStatement'
+export * from './ElseStatement'
+export * from './Expr'
+export * from './ExprStatement'
+export * from './FuncDecl'
+export * from './Identifier'
+export * from './IfStatement'
+export * from './MethodDecl'
+export * from './Operator'
+export * from './OperatorIdent'
+export * from './ParamDecl'
+export * from './ParamDeclList'
+export * from './ReturnStatement'
+export * from './SourceUnit'
+export * from './Statement'
+export * from './StringLiteral'
+export * from './Token'
+export * from './TypeExpression'
+export * from './UnaryOperation'
+export * from './UnaryOperatorPosition'
+export * from './VarDecl'
+export * from './VarDeclModifier'
 
-import IConditionalStatement from './IConditionalStatement'
-
-export {
-	/// AST Node Types
-
-	BaseNode,
-	BinaryOperation,
-	ClassDecl,
-	Comment,
-	ElseIfStatement,
-	ElseStatement,
-	Expr,
-	ExprStatement,
-	Identifier,
-	IfStatement,
-	MethodDecl,
-	FuncDecl,
-	Operator,
-	OperatorIdent,
-	ParamDecl,
-	ParamDeclList,
-	ReturnStatement,
-	SourceUnit,
-	Statement,
-	StringLiteral,
-	Token,
-	TypeExpr,
-	UnaryOperation,
-	UnaryOperatorPosition,
-	VarDecl,
-	VarDeclModifier,
-
-
-	/// Interfaces
-
-	IConditionalStatement
-}
+/// Interfaces
+export * from './IConditionalStatement'

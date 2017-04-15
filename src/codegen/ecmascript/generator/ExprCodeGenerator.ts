@@ -13,6 +13,9 @@ export class ExprCodeGenerator extends BaseGenerator<Expr> {
 		if (astNode.content instanceof BaseNode) {
 			return createForAstNode(astNode.content)
 		}
+		if (typeof astNode.content !== 'string') {
+			return ''
+		}
 		return (<any>astNode.content).toString()
 	}
 }

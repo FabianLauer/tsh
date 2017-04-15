@@ -137,9 +137,18 @@ assignment_expr:
 
 
 primary_expr:
-		IDENTIFIER
-	|	STRING_LITERAL
-	|	CONSTANT
+		IDENTIFIER					{ $$ = new yy.Identifier(new yy.Token($1)) }
+	|	CONSTANT					{ $$ = new yy.NumericExpr(new yy.Token($1)) }
+	|	STRING_LITERAL				{
+		/*
+			We replace the quotes by slicing them away. This is trivial since the quotes
+			are *always* the first and last character in the `STRING_LITERAL` terminal.
+			The `.trim()` before the `.slice(...)` shouldn't be necessary, but we're
+			rather safe than sorry.
+		*/
+		var content = new yy.Token(($1).trim().slice(1, -1))
+		$$ = new yy.StringLiteral(content)
+	}
 ;
 
 
@@ -151,8 +160,8 @@ operation:
 ;
 
 
-__expression:
-		primary_expr				{ $$ = new yy.Expr($1) }
+expression:
+		primary_expr				{ $$ = $1 }
 	|	operation					{ $$ = $1 }
 	|	assignment_expr				{ $$ = $1 }
 ;

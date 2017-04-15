@@ -75,8 +75,8 @@ var generatedParser = (function(){
 var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,11],$V1=[1,12],$V2=[1,8],$V3=[1,13],$V4=[1,14],$V5=[1,4,5,10,82,94],$V6=[1,18],$V7=[4,5],$V8=[1,4,5,10,12,13,17,42,44,45,53,55,61,65,67,68,75,82,94],$V9=[2,91],$Va=[1,25],$Vb=[18,80],$Vc=[2,84],$Vd=[1,28],$Ve=[2,4],$Vf=[1,31],$Vg=[2,93],$Vh=[1,34],$Vi=[1,36],$Vj=[10,65,67,68,75,82],$Vk=[1,44],$Vl=[1,4,5,10,65,67,68,75,82,94],$Vm=[1,60],$Vn=[1,61],$Vo=[4,10,65,67,68,75,82],$Vp=[10,12,13,17,42,44,45,53,61,65,67,68],$Vq=[1,68],$Vr=[1,97],$Vs=[1,98],$Vt=[1,92],$Vu=[1,87],$Vv=[1,88],$Vw=[1,89],$Vx=[1,86],$Vy=[1,81],$Vz=[4,10,12,13,17,42,44,45,53,61,65,67,68],$VA=[4,5,10,12,13,17,42,44,45,53,55,61,65,67,68,75,82],$VB=[2,76],$VC=[1,100],$VD=[4,5,10,12,13,17,30,42,44,45,53,55,61,65,67,68,75,82],$VE=[4,5,10,65,67,68,75,82],$VF=[4,5,10,12,13,17,42,44,45,53,55,61,65,67,68],$VG=[10,12,13,17,42,44,45,53,55,61,65,67,68],$VH=[1,108],$VI=[1,109],$VJ=[1,110],$VK=[1,111],$VL=[1,112],$VM=[1,113],$VN=[4,5,10,12,13,17,18,20,21,22,23,24,25,42,44,45,53,55,61,64,65,67,68,75,82],$VO=[2,39],$VP=[2,42],$VQ=[2,43],$VR=[2,37],$VS=[2,14],$VT=[2,23],$VU=[12,13,17,42,44,45],$VV=[20,21,22,23,24,25],$VW=[4,5,10,12,13,17,18,42,44,45,53,55,61,64,65,67,68,75,82];
 var parser = {trace: function trace() { },
 yy: {},
-symbols_: {"error":2,"nl_or_eof":3,"NL":4,"EOF":5,"maybe_nl":6,"maybe_nls":7,"maybe_nl_or_eof":8,"comment":9,"SL_COMMENT":10,"unary_operator":11,"INC_OP":12,"DEC_OP":13,"atomic_unary_operation":14,"primary_expr":15,"unary_operation":16,"(":17,")":18,"binary_operator":19,".":20,"+":21,"-":22,"*":23,"/":24,"%":25,"atomic_binary_operation":26,"expression":27,"binary_operation":28,"assignment_operator":29,"=":30,"MUL_ASSIGN":31,"DIV_ASSIGN":32,"MOD_ASSIGN":33,"ADD_ASSIGN":34,"SUB_ASSIGN":35,"LEFT_ASSIGN":36,"RIGHT_ASSIGN":37,"AND_ASSIGN":38,"XOR_ASSIGN":39,"OR_ASSIGN":40,"atomic_assignment_expr":41,"IDENTIFIER":42,"assignment_expr":43,"STRING_LITERAL":44,"CONSTANT":45,"operation":46,"expression_statement":47,"type_expr":48,"conditional_body":49,"statement":50,"compound_statement":51,"conditional_if_statement":52,"IF":53,"conditional_else_if_statement":54,"ELSE":55,"conditional_maybe_else_if_statements":56,"conditional_else_statement":57,"conditional_maybe_else_statement":58,"conditional_statement":59,"return_statement":60,"RETURN":61,"var_decl":62,"statements":63,"{":64,"}":65,"var_decl_modifier":66,"LET":67,"CONST":68,"var_decl_type_decl":69,":":70,"var_decl_name_and_maybe_type_decl":71,"var_decl_maybe_assignment":72,"var_decl_end":73,"static_var_decl_modifier":74,"STATIC":75,"static_var_decl":76,"param_decl_type_expr":77,"param_decl":78,"param_decl_list":79,",":80,"func_ident":81,"FUNCTION":82,"func_param_decl_list":83,"func_return_expr":84,"ARR":85,"func_body":86,"func_decl_end":87,"func_decl":88,"method_decl":89,"class_body_statement":90,"class_body_statements":91,"class_body_compound_statement":92,"class_ident":93,"CLASS":94,"class_body":95,"class_decl":96,"root_grammar":97,"root_grammar_list":98,"root":99,"$accept":0,"$end":1},
-terminals_: {2:"error",4:"NL",5:"EOF",10:"SL_COMMENT",12:"INC_OP",13:"DEC_OP",17:"(",18:")",20:".",21:"+",22:"-",23:"*",24:"/",25:"%",30:"=",31:"MUL_ASSIGN",32:"DIV_ASSIGN",33:"MOD_ASSIGN",34:"ADD_ASSIGN",35:"SUB_ASSIGN",36:"LEFT_ASSIGN",37:"RIGHT_ASSIGN",38:"AND_ASSIGN",39:"XOR_ASSIGN",40:"OR_ASSIGN",42:"IDENTIFIER",44:"STRING_LITERAL",45:"CONSTANT",53:"IF",55:"ELSE",61:"RETURN",64:"{",65:"}",67:"LET",68:"CONST",70:":",75:"STATIC",80:",",82:"FUNCTION",85:"ARR",94:"CLASS"},
+symbols_: {"error":2,"nl_or_eof":3,"NL":4,"EOF":5,"maybe_nl":6,"maybe_nls":7,"maybe_nl_or_eof":8,"comment":9,"SL_COMMENT":10,"unary_operator":11,"INC_OP":12,"DEC_OP":13,"atomic_unary_operation":14,"primary_expr":15,"unary_operation":16,"(":17,")":18,"binary_operator":19,".":20,"+":21,"-":22,"*":23,"/":24,"%":25,"atomic_binary_operation":26,"expression":27,"binary_operation":28,"assignment_operator":29,"=":30,"MUL_ASSIGN":31,"DIV_ASSIGN":32,"MOD_ASSIGN":33,"ADD_ASSIGN":34,"SUB_ASSIGN":35,"LEFT_ASSIGN":36,"RIGHT_ASSIGN":37,"AND_ASSIGN":38,"XOR_ASSIGN":39,"OR_ASSIGN":40,"atomic_assignment_expr":41,"IDENTIFIER":42,"assignment_expr":43,"CONSTANT":44,"STRING_LITERAL":45,"operation":46,"expression_statement":47,"type_expr":48,"conditional_body":49,"statement":50,"compound_statement":51,"conditional_if_statement":52,"IF":53,"conditional_else_if_statement":54,"ELSE":55,"conditional_maybe_else_if_statements":56,"conditional_else_statement":57,"conditional_maybe_else_statement":58,"conditional_statement":59,"return_statement":60,"RETURN":61,"var_decl":62,"statements":63,"{":64,"}":65,"var_decl_modifier":66,"LET":67,"CONST":68,"var_decl_type_decl":69,":":70,"var_decl_name_and_maybe_type_decl":71,"var_decl_maybe_assignment":72,"var_decl_end":73,"static_var_decl_modifier":74,"STATIC":75,"static_var_decl":76,"param_decl_type_expr":77,"param_decl":78,"param_decl_list":79,",":80,"func_ident":81,"FUNCTION":82,"func_param_decl_list":83,"func_return_expr":84,"ARR":85,"func_body":86,"func_decl_end":87,"func_decl":88,"method_decl":89,"class_body_statement":90,"class_body_statements":91,"class_body_compound_statement":92,"class_ident":93,"CLASS":94,"class_body":95,"class_decl":96,"root_grammar":97,"root_grammar_list":98,"root":99,"$accept":0,"$end":1},
+terminals_: {2:"error",4:"NL",5:"EOF",10:"SL_COMMENT",12:"INC_OP",13:"DEC_OP",17:"(",18:")",20:".",21:"+",22:"-",23:"*",24:"/",25:"%",30:"=",31:"MUL_ASSIGN",32:"DIV_ASSIGN",33:"MOD_ASSIGN",34:"ADD_ASSIGN",35:"SUB_ASSIGN",36:"LEFT_ASSIGN",37:"RIGHT_ASSIGN",38:"AND_ASSIGN",39:"XOR_ASSIGN",40:"OR_ASSIGN",42:"IDENTIFIER",44:"CONSTANT",45:"STRING_LITERAL",53:"IF",55:"ELSE",61:"RETURN",64:"{",65:"}",67:"LET",68:"CONST",70:":",75:"STATIC",80:",",82:"FUNCTION",85:"ARR",94:"CLASS"},
 productions_: [0,[3,1],[3,1],[6,1],[6,0],[7,1],[7,2],[8,1],[8,1],[9,2],[11,1],[11,1],[14,2],[14,2],[16,1],[16,3],[19,1],[19,1],[19,1],[19,1],[19,1],[19,1],[26,3],[28,1],[28,3],[29,1],[29,1],[29,1],[29,1],[29,1],[29,1],[29,1],[29,1],[29,1],[29,1],[29,1],[41,3],[43,1],[43,3],[15,1],[15,1],[15,1],[46,1],[46,1],[46,3],[46,3],[27,1],[27,1],[27,1],[47,2],[48,1],[49,1],[49,1],[52,4],[54,5],[56,1],[56,2],[57,3],[58,1],[58,1],[59,4],[60,3],[50,1],[50,1],[50,1],[50,1],[50,1],[63,1],[63,2],[51,5],[66,1],[66,1],[69,2],[69,0],[71,2],[72,2],[72,0],[73,1],[62,4],[74,2],[74,2],[76,4],[77,2],[77,0],[78,0],[78,2],[79,1],[79,3],[81,2],[83,3],[84,2],[84,0],[86,1],[86,0],[87,1],[88,5],[89,5],[90,1],[90,1],[90,1],[90,1],[91,1],[91,2],[92,5],[93,2],[95,1],[95,0],[96,3],[97,1],[97,1],[97,1],[97,1],[98,1],[98,2],[99,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
@@ -95,7 +95,7 @@ break;
 case 13:
  this.$ = new yy.UnaryOperation($$[$0-1], $$[$0], yy.UnaryOperatorPosition.Prefix) 
 break;
-case 14: case 23: case 37: case 42: case 43: case 47: case 48: case 82: case 90: case 92: case 105: case 112:
+case 14: case 23: case 37: case 42: case 43: case 46: case 47: case 48: case 82: case 90: case 92: case 105: case 112:
  this.$ = $$[$0] 
 break;
 case 15: case 24: case 38: case 44: case 45: case 72: case 89:
@@ -107,8 +107,23 @@ break;
 case 36:
  this.$ = new yy.BinaryOperation(new yy.Expr($$[$0-2]), $$[$0-1], $$[$0]) 
 break;
-case 46: case 75:
- this.$ = new yy.Expr($$[$0]) 
+case 39:
+ this.$ = new yy.Identifier(new yy.Token($$[$0])) 
+break;
+case 40:
+ this.$ = new yy.NumericExpr(new yy.Token($$[$0])) 
+break;
+case 41:
+
+		/*
+			We replace the quotes by slicing them away. This is trivial since the quotes
+			are *always* the first and last character in the `STRING_LITERAL` terminal.
+			The `.trim()` before the `.slice(...)` shouldn't be necessary, but we're
+			rather safe than sorry.
+		*/
+		var content = new yy.Token(($$[$0]).trim().slice(1, -1))
+		this.$ = new yy.StringLiteral(content)
+	
 break;
 case 49:
  this.$ = new yy.ExprStatement($$[$0-1]) 
@@ -172,6 +187,9 @@ case 70: case 71: case 79: case 80:
 break;
 case 74:
  this.$ = [yy.createToken($$[$0-1]), $$[$0]] 
+break;
+case 75:
+ this.$ = new yy.Expr($$[$0]) 
 break;
 case 78:
 
@@ -770,21 +788,21 @@ case 9:return 4;
 break;
 case 10:return 42;
 break;
-case 11:return 45;
+case 11:return 44;
 break;
-case 12:return 45;
+case 12:return 44;
 break;
-case 13:return 45;
+case 13:return 44;
 break;
-case 14:return 45;
+case 14:return 44;
 break;
-case 15:return 45;
+case 15:return 44;
 break;
-case 16:return 45;
+case 16:return 44;
 break;
-case 17:return 45;
+case 17:return 44;
 break;
-case 18:return 44;
+case 18:return 45;
 break;
 case 19:return 37;
 break;

@@ -101,6 +101,24 @@ binaryOperators = binaryOperators.map(operator => `${operator}=`)
 
 for (const operator of binaryOperators) {
 	test<ast.ExprStatement>(
+		`a${operator}b`,
+		([$]) => isInstanceOf($, ast.ExprStatement),
+		([$]) => isInstanceOfEither($.expression, ast.BinaryOperation, ast.Expr)
+	)
+
+	test<ast.ExprStatement>(
+		`a ${operator}b`,
+		([$]) => isInstanceOf($, ast.ExprStatement),
+		([$]) => isInstanceOfEither($.expression, ast.BinaryOperation, ast.Expr)
+	)
+
+	test<ast.ExprStatement>(
+		`a${operator} b`,
+		([$]) => isInstanceOf($, ast.ExprStatement),
+		([$]) => isInstanceOfEither($.expression, ast.BinaryOperation, ast.Expr)
+	)
+
+	test<ast.ExprStatement>(
 		`a ${operator} b`,
 		([$]) => isInstanceOf($, ast.ExprStatement),
 		([$]) => isInstanceOfEither($.expression, ast.BinaryOperation, ast.Expr)

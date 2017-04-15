@@ -144,6 +144,12 @@ for (const operator of binaryOperators) {
 
 	// tests wrapped in parents:
 	runBinaryOperatorTests(operator, _ => `(${_})`)
+
+	// operations in assignments
+	runBinaryOperatorTests(operator, _ => `a = ${_}`)
+
+	// operations in assignments, wrapped in parens
+	runBinaryOperatorTests(operator, _ => `a = (${_})`)
 }
 
 

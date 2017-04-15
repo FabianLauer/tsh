@@ -143,7 +143,7 @@ for (const operator of binaryOperators) {
 	runBinaryOperatorTests(operator, _ => _)
 
 	// tests wrapped in parents:
-	runBinaryOperatorTests(operator, _ => `let testVar = (${_})`)
+	runBinaryOperatorTests(operator, _ => `(${_})`)
 }
 
 
@@ -160,9 +160,20 @@ for (const operator of unaryOperators) {
 		([$]) => isInstanceOfEither($.expression, ast.UnaryOperation, ast.Expr)
 	)
 
-
 	test<ast.ExprStatement>(
 		`${operator}a`,
+		([$]) => isInstanceOf($, ast.ExprStatement),
+		([$]) => isInstanceOfEither($.expression, ast.UnaryOperation, ast.Expr)
+	)
+
+	test<ast.ExprStatement>(
+		`(a${operator})`,
+		([$]) => isInstanceOf($, ast.ExprStatement),
+		([$]) => isInstanceOfEither($.expression, ast.UnaryOperation, ast.Expr)
+	)
+
+	test<ast.ExprStatement>(
+		`(${operator}a)`,
 		([$]) => isInstanceOf($, ast.ExprStatement),
 		([$]) => isInstanceOfEither($.expression, ast.UnaryOperation, ast.Expr)
 	)

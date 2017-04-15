@@ -14,6 +14,7 @@ NL							\n
 "class"						return 'CLASS';
 "let"						return 'LET';
 "const"						return 'CONST';
+"static"					return 'STATIC';
 "return"					return 'RETURN';
 "if"						return 'IF';
 "else"						return 'ELSE';

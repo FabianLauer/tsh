@@ -246,7 +246,7 @@ compound_statement:
 
 
 /* ------------------------------------------------------------------------------- */
-/* ----------- VARIABLE DEC ------------------------------------------------------ */
+/* ----------- VARIABLE DECL ----------------------------------------------------- */
 /* ------------------------------------------------------------------------------- */
 
 
@@ -273,6 +273,28 @@ var_decl:
 		{
 			$$ = yy.VarDecl.create({
 				modifiers: yy.VarDeclModifier.combine($1),
+				varName: $2[0],
+				typeDecl: $2[1],
+				assignment: $3
+			})
+		}
+;
+
+
+
+__static_var_decl_modifier:
+		STATIC LET			{ $$ = yy.getVarDeclModifierByKeyword($2) }
+	|	STATIC CONST		{ $$ = yy.getVarDeclModifierByKeyword($2) }
+;
+
+static_var_decl:
+	__static_var_decl_modifier
+	__var_decl_name_and_maybe_type_decl
+	__var_decl_maybe_assignment
+	__var_decl_end
+		{
+			$$ = yy.VarDecl.create({
+				modifiers: yy.VarDeclModifier.combine(yy.VarDeclModifier.Static, $1),
 				varName: $2[0],
 				typeDecl: $2[1],
 				assignment: $3
@@ -363,10 +385,10 @@ method_decl:
 /* ------------------------------------------------------------------------------- */
 
 
-
 __class_body_statement:
 		comment
 	|	var_decl
+	|	static_var_decl
 	|	method_decl
 ;
 

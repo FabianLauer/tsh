@@ -74,7 +74,7 @@ function runTestSuite(dependencies: ITestSuiteDependencies) {
 		)
 	})
 
-	it('[DI] getHumanReadableCompileTargetId() should return valid human readable I for every target', () => {
+	it('[DI] getHumanReadableCompileTargetId() should return valid human readable ID for every target', () => {
 		const targets = dependencies.getAvailableCompileTargets()
 		const invalidHumanReadableIds = targets
 			.map(_ => dependencies.getHumanReadableCompileTargetId(_))

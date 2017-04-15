@@ -31,9 +31,10 @@ const operatorMap: { [token: string]: ast.OperatorIdent } = {}
 
 // Generate the operator map
 Object.keys(ast.OperatorIdent)
-	.filter(key => typeof key !== 'string' || key.length < 1)
+	.filter(key => !isNaN(parseInt(key, 10)))
 	.forEach(key => {
-		operatorMap[key] = <ast.OperatorIdent><any>ast.OperatorIdent[<any>key]
+		const operator = <ast.OperatorIdent><any>ast.OperatorIdent[<any>key]
+		operatorMap[operator] = operator
 	})
 
 function getOperatorFromToken(token: string) {

@@ -55,3 +55,19 @@ var Delta = (function() {
 
 	return Delta;
 })();
+
+
+/** @class Epsilon */
+var Epsilon = (function() {
+	/** @constructor */
+	function Epsilon() {
+		this.c;
+	}
+
+	Epsilon.b;
+
+	Epsilon.prototype.a = function a() {
+	}
+
+	return Epsilon;
+})();

@@ -22,3 +22,9 @@ class Delta {
 	static let fibo
 	static const nacci
 }
+
+class Epsilon {
+	func a()
+	static let b
+	const c
+}

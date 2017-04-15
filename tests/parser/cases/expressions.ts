@@ -98,58 +98,94 @@ test<ast.ExprStatement>(
 /** Runs all binary operator tests for a certain operator. */
 function runBinaryOperatorTests(
 	operator: string,
+	leftOperands: string[],
+	rightOperands: string[],
 	// This function allows modification of test source code:
 	modifySourceCode: (code: string) => string
 ) {
-	test<ast.ExprStatement>(
-		modifySourceCode(`a${operator}b`),
-		([$]) => isInstanceOf($, ast.ExprStatement),
-		([$]) => isInstanceOfEither($.expression, ast.BinaryOperation, ast.Expr)
-	)
+	for (const leftOperand of leftOperands) {
+		for (const rightOperand of rightOperands) {
+			test<ast.ExprStatement>(
+				modifySourceCode(`${leftOperand}${operator}${rightOperand}`),
+				([$]) => isInstanceOf($, ast.ExprStatement),
+				([$]) => isInstanceOfEither($.expression, ast.BinaryOperation, ast.Expr)
+			)
 
-	test<ast.ExprStatement>(
-		modifySourceCode(`a ${operator}b`),
-		([$]) => isInstanceOf($, ast.ExprStatement),
-		([$]) => isInstanceOfEither($.expression, ast.BinaryOperation, ast.Expr)
-	)
+			test<ast.ExprStatement>(
+				modifySourceCode(`${leftOperand} ${operator}${rightOperand}`),
+				([$]) => isInstanceOf($, ast.ExprStatement),
+				([$]) => isInstanceOfEither($.expression, ast.BinaryOperation, ast.Expr)
+			)
 
-	test<ast.ExprStatement>(
-		modifySourceCode(`a${operator} b`),
-		([$]) => isInstanceOf($, ast.ExprStatement),
-		([$]) => isInstanceOfEither($.expression, ast.BinaryOperation, ast.Expr)
-	)
+			test<ast.ExprStatement>(
+				modifySourceCode(`${leftOperand}${operator} ${rightOperand}`),
+				([$]) => isInstanceOf($, ast.ExprStatement),
+				([$]) => isInstanceOfEither($.expression, ast.BinaryOperation, ast.Expr)
+			)
 
-	test<ast.ExprStatement>(
-		modifySourceCode(`a ${operator} b`),
-		([$]) => isInstanceOf($, ast.ExprStatement),
-		([$]) => isInstanceOfEither($.expression, ast.BinaryOperation, ast.Expr)
-	)
+			test<ast.ExprStatement>(
+				modifySourceCode(`${leftOperand} ${operator} ${rightOperand}`),
+				([$]) => isInstanceOf($, ast.ExprStatement),
+				([$]) => isInstanceOfEither($.expression, ast.BinaryOperation, ast.Expr)
+			)
+		}
+	}
 }
 
 
 // We don't test any access operators here since they can't be used
 // as assignment operators. See test file `access-operators.ts`.
 
-let binaryOperators = [
+const binaryOperators = [
 	'+', '-', '*', '/', '%'
 ]
 
-binaryOperators.push(
-	...binaryOperators.map(operator => `${operator}=`)
-)
-
 for (const operator of binaryOperators) {
-	// unmodified tests:
-	runBinaryOperatorTests(operator, _ => _)
+	const assignmentOperator = `${operator}=`
+	const leftOperands = ['a']
+	const leftOperandsWithLiterals = leftOperands.concat(['1'])
+	const rightOperandsWithLiterals = ['b', '2']
 
-	// tests wrapped in parents:
-	runBinaryOperatorTests(operator, _ => `(${_})`)
+	void (<Array<(sourceCode: string) => string>>[
 
-	// operations in assignments
-	runBinaryOperatorTests(operator, _ => `a = ${_}`)
+		// unmodified tests:
+		_ => _,
 
-	// operations in assignments, wrapped in parens
-	runBinaryOperatorTests(operator, _ => `a = (${_})`)
+		// tests wrapped in parens:
+		_ => `(${_})`,
+
+		// additional operator and left operand:
+		_ => `2 * (${_})`,
+
+		// additional operator and right operand:
+		_ => `(${_}) + 123`,
+
+		// additional operator and left operand in parens:
+		_ => `(234 * (${_}))`,
+
+		// operations in assignments:
+		_ => `a = ${_}`,
+
+		// operations in assignments, wrapped in parens:
+		_ => `a = (${_})`,
+
+		// operations in assignments, wrapped in parens:
+		_ => `a = (${_}) * 3`
+
+	]).forEach(modifySourceCode => {
+		runBinaryOperatorTests(
+			operator,
+			leftOperandsWithLiterals,
+			rightOperandsWithLiterals,
+			modifySourceCode
+		)
+		runBinaryOperatorTests(
+			assignmentOperator,
+			leftOperands,
+			rightOperandsWithLiterals,
+			modifySourceCode
+		)
+	})
 }
 
 

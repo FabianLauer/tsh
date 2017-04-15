@@ -123,6 +123,20 @@ export namespace VarDeclModifier {
 	) {
 		return combinationA === combinationB
 	}
+
+
+	/**
+	 * Checks whether a var declaration modifier combination contains a certain var
+	 * declaration modifier.
+	 * @param combination The combination to search `modifier` in.
+	 * @param modifier The modifier to search in `combination`.
+	 */
+	export function doesCombinationContain(
+		combination: ICombination,
+		modifier: VarDeclModifier
+	): boolean {
+		return (combination & modifier) !== 0
+	}
 }
 
 export default VarDeclModifier

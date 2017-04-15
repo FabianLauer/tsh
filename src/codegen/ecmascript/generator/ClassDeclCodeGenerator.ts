@@ -1,6 +1,6 @@
 import BaseGenerator from '../BaseGenerator'
 import { register, createForAstNode } from '../factory'
-import { ClassDecl, MethodDecl, VarDecl } from '@/compiler/ast'
+import { ClassDecl, MethodDecl, VarDecl, VarDeclModifier } from '@/compiler/ast'
 
 @register(node => node instanceof ClassDecl ? Infinity : 0)
 export class ClassDeclCodeGenerator extends BaseGenerator<ClassDecl> {
@@ -11,9 +11,23 @@ export class ClassDeclCodeGenerator extends BaseGenerator<ClassDecl> {
 	 */
 	protected generateCodeConcrete(astNode: ClassDecl) {
 		const className = astNode.name.rawValue
-		const memberVarDecls = astNode.body.nodes.filter(node => (
-			node instanceof VarDecl
+
+		const instanceVarDecls = astNode.body.nodes.filter(node => (
+			node instanceof VarDecl &&
+			!VarDeclModifier.doesCombinationContain(
+				node.modifiers,
+				VarDeclModifier.Static
+			)
 		))
+
+		const staticVarDecls = astNode.body.nodes.filter(node => (
+			node instanceof VarDecl &&
+			VarDeclModifier.doesCombinationContain(
+				node.modifiers,
+				VarDeclModifier.Static
+			)
+		))
+
 		const methodDecls = astNode.body.nodes.filter(node => (
 			node instanceof MethodDecl
 		))
@@ -23,8 +37,10 @@ export class ClassDeclCodeGenerator extends BaseGenerator<ClassDecl> {
 		var ${className} = (function() {
 			/** @constructor */
 			function ${className}() {
-				${memberVarDecls.map(createForAstNode).join('')}
+				${instanceVarDecls.map(createForAstNode).join('')}
 			}
+
+			${staticVarDecls.map(createForAstNode).join('')}
 
 			${methodDecls.map(createForAstNode).join('')}
 

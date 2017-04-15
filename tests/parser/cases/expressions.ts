@@ -78,13 +78,13 @@ function isInstanceOfEither<T>(obj: T, ...constructors: Array<{ new (...args: an
 
 /// Simple Assignments:
 
-test<ast.ExprStatement>(
+test<ast.ExprStatement<ast.Expr>>(
 	`a = 1`,
 	([$]) => isInstanceOf($, ast.ExprStatement),
 	([$]) => isInstanceOfEither($.expression, ast.BinaryOperation, ast.Expr)
 )
 
-test<ast.ExprStatement>(
+test<ast.ExprStatement<ast.Expr>>(
 	`a = b`,
 	([$]) => isInstanceOf($, ast.ExprStatement),
 	([$]) => isInstanceOfEither($.expression, ast.BinaryOperation, ast.Expr)
@@ -105,25 +105,25 @@ function runBinaryOperatorTests(
 ) {
 	for (const leftOperand of leftOperands) {
 		for (const rightOperand of rightOperands) {
-			test<ast.ExprStatement>(
+			test<ast.ExprStatement<ast.Expr>>(
 				modifySourceCode(`${leftOperand}${operator}${rightOperand}`),
 				([$]) => isInstanceOf($, ast.ExprStatement),
 				([$]) => isInstanceOfEither($.expression, ast.BinaryOperation, ast.Expr)
 			)
 
-			test<ast.ExprStatement>(
+			test<ast.ExprStatement<ast.Expr>>(
 				modifySourceCode(`${leftOperand} ${operator}${rightOperand}`),
 				([$]) => isInstanceOf($, ast.ExprStatement),
 				([$]) => isInstanceOfEither($.expression, ast.BinaryOperation, ast.Expr)
 			)
 
-			test<ast.ExprStatement>(
+			test<ast.ExprStatement<ast.Expr>>(
 				modifySourceCode(`${leftOperand}${operator} ${rightOperand}`),
 				([$]) => isInstanceOf($, ast.ExprStatement),
 				([$]) => isInstanceOfEither($.expression, ast.BinaryOperation, ast.Expr)
 			)
 
-			test<ast.ExprStatement>(
+			test<ast.ExprStatement<ast.Expr>>(
 				modifySourceCode(`${leftOperand} ${operator} ${rightOperand}`),
 				([$]) => isInstanceOf($, ast.ExprStatement),
 				([$]) => isInstanceOfEither($.expression, ast.BinaryOperation, ast.Expr)
@@ -196,25 +196,25 @@ for (const operator of binaryOperators) {
 const unaryOperators = ['++', '--']
 
 for (const operator of unaryOperators) {
-	test<ast.ExprStatement>(
+	test<ast.ExprStatement<ast.Expr>>(
 		`a${operator}`,
 		([$]) => isInstanceOf($, ast.ExprStatement),
 		([$]) => isInstanceOfEither($.expression, ast.UnaryOperation, ast.Expr)
 	)
 
-	test<ast.ExprStatement>(
+	test<ast.ExprStatement<ast.Expr>>(
 		`${operator}a`,
 		([$]) => isInstanceOf($, ast.ExprStatement),
 		([$]) => isInstanceOfEither($.expression, ast.UnaryOperation, ast.Expr)
 	)
 
-	test<ast.ExprStatement>(
+	test<ast.ExprStatement<ast.Expr>>(
 		`(a${operator})`,
 		([$]) => isInstanceOf($, ast.ExprStatement),
 		([$]) => isInstanceOfEither($.expression, ast.UnaryOperation, ast.Expr)
 	)
 
-	test<ast.ExprStatement>(
+	test<ast.ExprStatement<ast.Expr>>(
 		`(${operator}a)`,
 		([$]) => isInstanceOf($, ast.ExprStatement),
 		([$]) => isInstanceOfEither($.expression, ast.UnaryOperation, ast.Expr)

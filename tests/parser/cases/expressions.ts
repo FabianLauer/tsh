@@ -91,7 +91,41 @@ test<ast.ExprStatement>(
 )
 
 
+
+
 /// Binary Operators:
+
+/** Runs all binary operator tests for a certain operator. */
+function runBinaryOperatorTests(
+	operator: string,
+	// This function allows modification of test source code:
+	modifySourceCode: (code: string) => string
+) {
+	test<ast.ExprStatement>(
+		modifySourceCode(`a${operator}b`),
+		([$]) => isInstanceOf($, ast.ExprStatement),
+		([$]) => isInstanceOfEither($.expression, ast.BinaryOperation, ast.Expr)
+	)
+
+	test<ast.ExprStatement>(
+		modifySourceCode(`a ${operator}b`),
+		([$]) => isInstanceOf($, ast.ExprStatement),
+		([$]) => isInstanceOfEither($.expression, ast.BinaryOperation, ast.Expr)
+	)
+
+	test<ast.ExprStatement>(
+		modifySourceCode(`a${operator} b`),
+		([$]) => isInstanceOf($, ast.ExprStatement),
+		([$]) => isInstanceOfEither($.expression, ast.BinaryOperation, ast.Expr)
+	)
+
+	test<ast.ExprStatement>(
+		modifySourceCode(`a ${operator} b`),
+		([$]) => isInstanceOf($, ast.ExprStatement),
+		([$]) => isInstanceOfEither($.expression, ast.BinaryOperation, ast.Expr)
+	)
+}
+
 
 // We don't test any access operators here since they can't be used
 // as assignment operators. See test file `access-operators.ts`.
@@ -100,33 +134,19 @@ let binaryOperators = [
 	'+', '-', '*', '/', '%'
 ]
 
-binaryOperators = binaryOperators.map(operator => `${operator}=`)
+binaryOperators.push(
+	...binaryOperators.map(operator => `${operator}=`)
+)
 
 for (const operator of binaryOperators) {
-	test<ast.ExprStatement>(
-		`a${operator}b`,
-		([$]) => isInstanceOf($, ast.ExprStatement),
-		([$]) => isInstanceOfEither($.expression, ast.BinaryOperation, ast.Expr)
-	)
+	// unmodified tests:
+	runBinaryOperatorTests(operator, _ => _)
 
-	test<ast.ExprStatement>(
-		`a ${operator}b`,
-		([$]) => isInstanceOf($, ast.ExprStatement),
-		([$]) => isInstanceOfEither($.expression, ast.BinaryOperation, ast.Expr)
-	)
-
-	test<ast.ExprStatement>(
-		`a${operator} b`,
-		([$]) => isInstanceOf($, ast.ExprStatement),
-		([$]) => isInstanceOfEither($.expression, ast.BinaryOperation, ast.Expr)
-	)
-
-	test<ast.ExprStatement>(
-		`a ${operator} b`,
-		([$]) => isInstanceOf($, ast.ExprStatement),
-		([$]) => isInstanceOfEither($.expression, ast.BinaryOperation, ast.Expr)
-	)
+	// tests wrapped in parents:
+	runBinaryOperatorTests(operator, _ => `let testVar = (${_})`)
 }
+
+
 
 
 /// Unary Operators:

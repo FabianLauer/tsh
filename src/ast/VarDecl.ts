@@ -8,9 +8,9 @@ interface IVarDeclCreateParams {
 	varName: Token
 
 	/**
-	 * The modifier with which the variable was declared.
+	 * The modifiers with which the variable was declared.
 	 */
-	modifier: VarDeclModifier
+	modifiers: VarDeclModifier.ICombination
 
 	/**
 	 * The variable's type declaration.
@@ -31,7 +31,7 @@ export class VarDecl extends BaseNode {
 	 */
 	public static create(params: IVarDeclCreateParams) {
 		return new VarDecl(
-			params.modifier,
+			params.modifiers,
 			params.varName,
 			params.typeDecl,
 			params.assignment
@@ -44,9 +44,9 @@ export class VarDecl extends BaseNode {
 	 */
 	private constructor(
 		/**
-		 * The modifier with which the variable was declared.
+		 * The modifiers with which the variable was declared.
 		 */
-		public readonly modifier: VarDeclModifier,
+		public readonly modifiers: VarDeclModifier.ICombination,
 		/**
 		 * The name of the variable.
 		 */
@@ -59,7 +59,12 @@ export class VarDecl extends BaseNode {
 		 * The value assigned to the variable.
 		 */
 		public readonly assignment: Expr = Expr.Empty
-	) { super() }
+	) {
+		super()
+
+		// validate the var declaration modifiers
+		VarDeclModifier.throwUnlessCombinationLegal(this.modifiers)
+	}
 }
 
 export default VarDecl

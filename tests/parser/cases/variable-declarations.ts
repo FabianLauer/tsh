@@ -68,7 +68,12 @@ function hasName(varDecl: ast.VarDecl, name: string) {
 }
 
 function expectModifier(modifier: ast.VarDeclModifier) {
-	return ([varDecl]: ast.VarDecl[]) => varDecl.modifier === modifier
+	return ([varDecl]: ast.VarDecl[]) => {
+		return ast.VarDeclModifier.areCombinationsEqual(
+			varDecl.modifiers,
+			ast.VarDeclModifier.combine(modifier)
+		)
+	}
 }
 
 function hasEmptyAssignment([varDecl]: ast.VarDecl[]) {

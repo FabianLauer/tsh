@@ -272,7 +272,7 @@ var_decl:
 	__var_decl_end
 		{
 			$$ = yy.VarDecl.create({
-				modifier: $1,
+				modifiers: yy.VarDeclModifier.combine($1),
 				varName: $2[0],
 				typeDecl: $2[1],
 				assignment: $3

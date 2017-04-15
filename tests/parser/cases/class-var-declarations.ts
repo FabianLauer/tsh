@@ -95,7 +95,7 @@ function isMemberVarDecl(memberName: string) {
 
 function doesMemberHaveModifier(memberName: string, modifier: ast.VarDeclModifier) {
 	return ([classDecl]: [ast.ClassDecl]) =>
-		getMemberByName<ast.VarDecl>(classDecl, memberName).modifier === modifier
+		getMemberByName<ast.VarDecl>(classDecl, memberName).modifiers === modifier
 }
 
 function doesMemberHaveEmptyAssignment(memberName: string) {
@@ -144,7 +144,7 @@ for (const keyword of ['let', 'const']) {
 		([Class]) => Class.name.rawValue === 'TestClass',
 
 		isMemberVarDecl('a'),
-		([Class]) => getMemberByName<ast.VarDecl>(Class, 'a').modifier === modifier
+		([Class]) => getMemberByName<ast.VarDecl>(Class, 'a').modifiers === modifier
 	)
 
 
@@ -158,7 +158,7 @@ for (const keyword of ['let', 'const']) {
 		([Class]) => Class.name.rawValue === 'TestClass',
 
 		isMemberVarDecl('longMemberName'),
-		([Class]) => getMemberByName<ast.VarDecl>(Class, 'longMemberName').modifier === modifier
+		([Class]) => getMemberByName<ast.VarDecl>(Class, 'longMemberName').modifiers === modifier
 	)
 
 

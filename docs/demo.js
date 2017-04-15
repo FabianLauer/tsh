@@ -48,7 +48,7 @@ function main() {
 			'',
 			'func main() -> Void {',
 			'	let person: Person',
-			'	let descr: String = describePerson',
+			'	let descr: String = person.describe',
 			'',
 			'	// parens around conditions are optional:',
 			'	if person {',

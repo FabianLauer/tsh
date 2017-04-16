@@ -6,7 +6,7 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("api"));
 
-},{"api":8}],2:[function(require,module,exports){
+},{"api":9}],2:[function(require,module,exports){
 "use strict";
 function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
@@ -14,7 +14,7 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("ast"));
 
-},{"ast":36}],3:[function(require,module,exports){
+},{"ast":37}],3:[function(require,module,exports){
 "use strict";
 function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
@@ -22,7 +22,7 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("codegen/ecmascript/"));
 
-},{"codegen/ecmascript/":61}],4:[function(require,module,exports){
+},{"codegen/ecmascript/":63}],4:[function(require,module,exports){
 "use strict";
 function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
@@ -30,11 +30,21 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("compiler/parser"));
 
-},{"compiler/parser":63}],5:[function(require,module,exports){
+},{"compiler/parser":65}],5:[function(require,module,exports){
+"use strict";
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(require("../utils/FactoryRegistry"));
+__export(require("../utils/assert"));
+__export(require("../utils/importUtils"));
+
+},{"../utils/FactoryRegistry":66,"../utils/assert":67,"../utils/importUtils":68}],6:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const api_1 = require("@/compiler/api");
@@ -99,7 +109,9 @@ class CompilerApi {
      * @return string The output code.
      */
     compileSourceCode(sourceCode, target) {
-        const sourceUnit = parser_1.parseToSourceUnit(undefined, sourceCode);
+        const sourceUnit = parser_1.parseToSourceUnit(
+        // we create the source unit with a unique name:
+        `SourceUnit-${++CompilerApi.sourceUnitCount}`, sourceCode);
         const codeGenerator = this.createCodeGenerator(target, sourceUnit);
         return codeGenerator.generateCode();
     }
@@ -118,9 +130,13 @@ class CompilerApi {
         }
     }
 }
+/**
+ * An internal counter used to make source unit names as unique as possible.
+ */
+CompilerApi.sourceUnitCount = 0;
 exports.CompilerApi = CompilerApi;
 
-},{"@/compiler/api":1,"@/compiler/codegen/ecmascript":3,"@/compiler/parser":4}],7:[function(require,module,exports){
+},{"@/compiler/api":1,"@/compiler/codegen/ecmascript":3,"@/compiler/parser":4}],8:[function(require,module,exports){
 // tslint:disable:one-line
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -181,7 +197,7 @@ var ICompileTargetIds;
 })(ICompileTargetIds = exports.ICompileTargetIds || (exports.ICompileTargetIds = {}));
 exports.default = ICompileTargetIds;
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 "use strict";
 function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
@@ -191,7 +207,7 @@ __export(require("./CompilerApi"));
 __export(require("./CompileTarget"));
 __export(require("./ICompileTargetIds"));
 
-},{"./CompileTarget":5,"./CompilerApi":6,"./ICompileTargetIds":7}],9:[function(require,module,exports){
+},{"./CompileTarget":6,"./CompilerApi":7,"./ICompileTargetIds":8}],10:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
@@ -220,24 +236,30 @@ class BaseNode {
 exports.BaseNode = BaseNode;
 exports.default = BaseNode;
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const assert_1 = require("./utils/assert");
 const Expr_1 = require("./Expr");
+const Operator_1 = require("./Operator");
 class BinaryOperation extends Expr_1.default {
     constructor(leftOperand, operator, rightOperand) {
         super();
         this.leftOperand = leftOperand;
         this.operator = operator;
         this.rightOperand = rightOperand;
+        assert_1.assertAstNodeParam(leftOperand instanceof Expr_1.default);
+        assert_1.assertAstNodeParam(operator instanceof Operator_1.default);
+        assert_1.assertAstNodeParam(rightOperand instanceof Expr_1.default);
     }
 }
 exports.BinaryOperation = BinaryOperation;
 exports.default = BinaryOperation;
 
-},{"./Expr":15}],11:[function(require,module,exports){
+},{"./Expr":16,"./Operator":23,"./utils/assert":38}],12:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const assert_1 = require("./utils/assert");
 const _1 = require("./");
 class ClassDecl extends _1.BaseNode {
     /**
@@ -255,6 +277,8 @@ class ClassDecl extends _1.BaseNode {
         super();
         this.name = name;
         this.body = body;
+        assert_1.assertAstNodeParam(name instanceof _1.Token);
+        assert_1.assertAstNodeParam(body instanceof _1.Statement);
         this.setParentOf(name, this);
         this.setParentOf(body, this);
     }
@@ -269,9 +293,10 @@ class ClassDecl extends _1.BaseNode {
 exports.ClassDecl = ClassDecl;
 exports.default = ClassDecl;
 
-},{"./":36}],12:[function(require,module,exports){
+},{"./":37,"./utils/assert":38}],13:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const assert_1 = require("./utils/assert");
 const _1 = require("./");
 class Comment extends _1.BaseNode {
     constructor(
@@ -281,12 +306,14 @@ class Comment extends _1.BaseNode {
         lines) {
         super();
         this.lines = lines;
+        assert_1.assertAstNodeParam(Array.isArray(lines));
+        lines.forEach(line => assert_1.assertAstNodeParam(line instanceof _1.Token));
     }
 }
 exports.Comment = Comment;
 exports.default = Comment;
 
-},{"./":36}],13:[function(require,module,exports){
+},{"./":37,"./utils/assert":38}],14:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const IfStatement_1 = require("./IfStatement");
@@ -295,7 +322,7 @@ class ElseIfStatement extends IfStatement_1.default {
 exports.ElseIfStatement = ElseIfStatement;
 exports.default = ElseIfStatement;
 
-},{"./IfStatement":19}],14:[function(require,module,exports){
+},{"./IfStatement":20}],15:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Statement_1 = require("./Statement");
@@ -304,14 +331,17 @@ class ElseStatement extends Statement_1.default {
 exports.ElseStatement = ElseStatement;
 exports.default = ElseStatement;
 
-},{"./Statement":28}],15:[function(require,module,exports){
+},{"./Statement":29}],16:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const assert_1 = require("./utils/assert");
 const _1 = require("./");
 class Expr extends _1.BaseNode {
     constructor(content = undefined) {
         super();
         this.content = content;
+        assert_1.assertAstNodeParam(content instanceof _1.BaseNode ||
+            typeof content === 'undefined');
     }
 }
 /**
@@ -322,9 +352,11 @@ Expr.Empty = new Expr();
 exports.Expr = Expr;
 exports.default = Expr;
 
-},{"./":36}],16:[function(require,module,exports){
+},{"./":37,"./utils/assert":38}],17:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const assert_1 = require("./utils/assert");
+const Expr_1 = require("./Expr");
 const Statement_1 = require("./Statement");
 class ExprStatement extends Statement_1.default {
     constructor(
@@ -334,6 +366,7 @@ class ExprStatement extends Statement_1.default {
         expression) {
         super([expression]);
         this.expression = expression;
+        assert_1.assertAstNodeParam(expression instanceof Expr_1.default);
     }
 }
 // tslint:disable-next-line:variable-name
@@ -342,9 +375,10 @@ ExprStatement.Any = class AnyExprStatement extends ExprStatement {
 exports.ExprStatement = ExprStatement;
 exports.default = ExprStatement;
 
-},{"./Statement":28}],17:[function(require,module,exports){
+},{"./Expr":16,"./Statement":29,"./utils/assert":38}],18:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const assert_1 = require("./utils/assert");
 const _1 = require("./");
 class FuncDecl extends _1.BaseNode {
     /**
@@ -372,6 +406,10 @@ class FuncDecl extends _1.BaseNode {
         this.runtimeParamDecls = runtimeParamDecls;
         this.returnTypeDecl = returnTypeDecl;
         this.body = body;
+        assert_1.assertAstNodeParam(name instanceof _1.Token);
+        assert_1.assertAstNodeParam(runtimeParamDecls instanceof _1.ParamDeclList);
+        assert_1.assertAstNodeParam(returnTypeDecl instanceof _1.TypeExpr);
+        assert_1.assertAstNodeParam(body instanceof _1.Statement);
     }
     /**
      * Creates a new `FuncDecl` instance.
@@ -384,28 +422,34 @@ class FuncDecl extends _1.BaseNode {
 exports.FuncDecl = FuncDecl;
 exports.default = FuncDecl;
 
-},{"./":36}],18:[function(require,module,exports){
+},{"./":37,"./utils/assert":38}],19:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const assert_1 = require("./utils/assert");
 const _1 = require("./");
 class Identifier extends _1.Expr {
     constructor(name) {
         super(name);
         this.name = name;
+        assert_1.assertAstNodeParam(name instanceof _1.Token);
     }
 }
 exports.Identifier = Identifier;
 exports.default = Identifier;
 
-},{"./":36}],19:[function(require,module,exports){
+},{"./":37,"./utils/assert":38}],20:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const assert_1 = require("./utils/assert");
 const Statement_1 = require("./Statement");
+const Expr_1 = require("./Expr");
 class IfStatement extends Statement_1.default {
     constructor(condition, body) {
         super([body]);
         this.condition = condition;
         this.body = body;
+        assert_1.assertAstNodeParam(condition instanceof Expr_1.default);
+        assert_1.assertAstNodeParam(body instanceof Statement_1.default);
         this.setParentOf(condition, this);
         this.setParentOf(body, this);
     }
@@ -413,9 +457,10 @@ class IfStatement extends Statement_1.default {
 exports.IfStatement = IfStatement;
 exports.default = IfStatement;
 
-},{"./Statement":28}],20:[function(require,module,exports){
+},{"./Expr":16,"./Statement":29,"./utils/assert":38}],21:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const assert_1 = require("./utils/assert");
 const _1 = require("./");
 const FuncDecl_1 = require("./FuncDecl");
 class MethodDecl extends FuncDecl_1.FuncDecl {
@@ -447,6 +492,10 @@ class MethodDecl extends FuncDecl_1.FuncDecl {
          */
         body = _1.Statement.Empty) {
         super(name, runtimeParamDecls, returnTypeDecl, body);
+        assert_1.assertAstNodeParam(name instanceof _1.Token);
+        assert_1.assertAstNodeParam(runtimeParamDecls instanceof _1.ParamDeclList);
+        assert_1.assertAstNodeParam(returnTypeDecl instanceof _1.TypeExpr);
+        assert_1.assertAstNodeParam(body instanceof _1.Statement);
     }
     /**
      * Returns the class declaration in which a method was defined.
@@ -461,22 +510,26 @@ class MethodDecl extends FuncDecl_1.FuncDecl {
 exports.MethodDecl = MethodDecl;
 exports.default = MethodDecl;
 
-},{"./":36,"./FuncDecl":17}],21:[function(require,module,exports){
+},{"./":37,"./FuncDecl":18,"./utils/assert":38}],22:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const assert_1 = require("./utils/assert");
 const Expr_1 = require("./Expr");
+const Token_1 = require("./Token");
 class NumericExpr extends Expr_1.default {
     constructor(contentToken) {
         super(contentToken);
         this.contentToken = contentToken;
+        assert_1.assertAstNodeParam(contentToken instanceof Token_1.default);
     }
 }
 exports.NumericExpr = NumericExpr;
 exports.default = NumericExpr;
 
-},{"./Expr":15}],22:[function(require,module,exports){
+},{"./Expr":16,"./Token":31,"./utils/assert":38}],23:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const assert_1 = require("./utils/assert");
 const _1 = require("./");
 class Operator extends _1.BaseNode {
     constructor(
@@ -491,12 +544,14 @@ class Operator extends _1.BaseNode {
         super();
         this.ident = ident;
         this.text = text;
+        assert_1.assertAstNodeParam(_1.OperatorIdent.isValid(ident));
+        assert_1.assertAstNodeParam(text instanceof _1.Token);
     }
 }
 exports.Operator = Operator;
 exports.default = Operator;
 
-},{"./":36}],23:[function(require,module,exports){
+},{"./":37,"./utils/assert":38}],24:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
@@ -506,26 +561,39 @@ var OperatorIdent;
 (function (OperatorIdent) {
     // Access
     OperatorIdent[OperatorIdent["."] = 0] = ".";
+    // Assignment
+    OperatorIdent[OperatorIdent["="] = 1] = "=";
     // Arithmetic Binary
-    OperatorIdent[OperatorIdent["+"] = 1] = "+";
-    OperatorIdent[OperatorIdent["-"] = 2] = "-";
-    OperatorIdent[OperatorIdent["*"] = 3] = "*";
-    OperatorIdent[OperatorIdent["/"] = 4] = "/";
-    OperatorIdent[OperatorIdent["%"] = 5] = "%";
-    OperatorIdent[OperatorIdent["+="] = 6] = "+=";
-    OperatorIdent[OperatorIdent["-="] = 7] = "-=";
-    OperatorIdent[OperatorIdent["*="] = 8] = "*=";
-    OperatorIdent[OperatorIdent["/="] = 9] = "/=";
-    OperatorIdent[OperatorIdent["%="] = 10] = "%=";
+    OperatorIdent[OperatorIdent["+"] = 2] = "+";
+    OperatorIdent[OperatorIdent["-"] = 3] = "-";
+    OperatorIdent[OperatorIdent["*"] = 4] = "*";
+    OperatorIdent[OperatorIdent["/"] = 5] = "/";
+    OperatorIdent[OperatorIdent["%"] = 6] = "%";
+    OperatorIdent[OperatorIdent["+="] = 7] = "+=";
+    OperatorIdent[OperatorIdent["-="] = 8] = "-=";
+    OperatorIdent[OperatorIdent["*="] = 9] = "*=";
+    OperatorIdent[OperatorIdent["/="] = 10] = "/=";
+    OperatorIdent[OperatorIdent["%="] = 11] = "%=";
     // Unary
-    OperatorIdent[OperatorIdent["++"] = 11] = "++";
-    OperatorIdent[OperatorIdent["--"] = 12] = "--";
+    OperatorIdent[OperatorIdent["++"] = 12] = "++";
+    OperatorIdent[OperatorIdent["--"] = 13] = "--";
+})(OperatorIdent = exports.OperatorIdent || (exports.OperatorIdent = {}));
+(function (OperatorIdent) {
+    /**
+     * Checks if a value is a valid `OperatorIdent` value.
+     * @param ident The value to check.
+     */
+    function isValid(ident) {
+        return ident in OperatorIdent;
+    }
+    OperatorIdent.isValid = isValid;
 })(OperatorIdent = exports.OperatorIdent || (exports.OperatorIdent = {}));
 exports.default = OperatorIdent;
 
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const assert_1 = require("./utils/assert");
 const _1 = require("./");
 class ParamDecl extends _1.BaseNode {
     constructor(
@@ -540,14 +608,17 @@ class ParamDecl extends _1.BaseNode {
         super();
         this.name = name;
         this.typeDecl = typeDecl;
+        assert_1.assertAstNodeParam(name instanceof _1.Token);
+        assert_1.assertAstNodeParam(typeDecl instanceof _1.TypeExpr);
     }
 }
 exports.ParamDecl = ParamDecl;
 exports.default = ParamDecl;
 
-},{"./":36}],25:[function(require,module,exports){
+},{"./":37,"./utils/assert":38}],26:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const assert_1 = require("./utils/assert");
 const _1 = require("./");
 class ParamDeclList extends _1.BaseNode {
     constructor(
@@ -559,6 +630,8 @@ class ParamDeclList extends _1.BaseNode {
         decls) {
         super();
         this.decls = decls;
+        assert_1.assertAstNodeParam(Array.isArray(decls));
+        decls.forEach(decl => assert_1.assertAstNodeParam(decl instanceof _1.ParamDecl));
     }
     /**
      * The parameter declarations in the list.
@@ -588,14 +661,16 @@ ParamDeclList.Empty = new ParamDeclList([]);
 exports.ParamDeclList = ParamDeclList;
 exports.default = ParamDeclList;
 
-},{"./":36}],26:[function(require,module,exports){
+},{"./":37,"./utils/assert":38}],27:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const assert_1 = require("./utils/assert");
 const _1 = require("./");
 class ReturnStatement extends _1.BaseNode {
     constructor(returnValue = _1.Expr.Empty) {
         super();
         this.returnValue = returnValue;
+        assert_1.assertAstNodeParam(returnValue instanceof _1.Expr);
     }
 }
 /**
@@ -606,9 +681,10 @@ ReturnStatement.Empty = new ReturnStatement();
 exports.ReturnStatement = ReturnStatement;
 exports.default = ReturnStatement;
 
-},{"./":36}],27:[function(require,module,exports){
+},{"./":37,"./utils/assert":38}],28:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const assert_1 = require("./utils/assert");
 const _1 = require("./");
 class SourceUnit extends _1.BaseNode {
     constructor(
@@ -620,6 +696,10 @@ class SourceUnit extends _1.BaseNode {
         super();
         this.name = name;
         this.items = items;
+        assert_1.assertAstNodeParam(typeof name === 'string');
+        assert_1.assertAstNodeParam(name.length > 0);
+        assert_1.assertAstNodeParam(Array.isArray(items));
+        items.forEach(item => assert_1.assertAstNodeParam(item instanceof _1.BaseNode));
     }
     /**
      * Returns an array of all nodes in the source unit.
@@ -634,16 +714,18 @@ class SourceUnit extends _1.BaseNode {
 exports.SourceUnit = SourceUnit;
 exports.default = SourceUnit;
 
-},{"./":36}],28:[function(require,module,exports){
+},{"./":37,"./utils/assert":38}],29:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const assert_1 = require("./utils/assert");
 const _1 = require("./");
 class Statement extends _1.BaseNode {
     constructor(items) {
         super();
         this.items = items;
-        console.assert(Array.isArray(items), 'Invalid Argument for ast.Statement: must be an array');
-        this.items.forEach(item => this.setParentOf(item, this));
+        assert_1.assertAstNodeParam(Array.isArray(items), 'Invalid Argument for ast.Statement: must be an array');
+        items.forEach(item => assert_1.assertAstNodeParam(item instanceof _1.BaseNode));
+        items.forEach(item => this.setParentOf(item, this));
     }
     /**
      * Returns an array of all nodes in the statement.
@@ -663,22 +745,26 @@ Statement.Empty = new Statement([]);
 exports.Statement = Statement;
 exports.default = Statement;
 
-},{"./":36}],29:[function(require,module,exports){
+},{"./":37,"./utils/assert":38}],30:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const assert_1 = require("./utils/assert");
 const Expr_1 = require("./Expr");
+const Token_1 = require("./Token");
 class StringLiteral extends Expr_1.default {
     constructor(contentToken) {
         super(contentToken);
         this.contentToken = contentToken;
+        assert_1.assertAstNodeParam(contentToken instanceof Token_1.default);
     }
 }
 exports.StringLiteral = StringLiteral;
 exports.default = StringLiteral;
 
-},{"./Expr":15}],30:[function(require,module,exports){
+},{"./Expr":16,"./Token":31,"./utils/assert":38}],31:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const assert_1 = require("./utils/assert");
 const _1 = require("./");
 class Token extends _1.BaseNode {
     constructor(
@@ -688,6 +774,7 @@ class Token extends _1.BaseNode {
         rawValue) {
         super();
         this.rawValue = rawValue;
+        assert_1.assertAstNodeParam(typeof rawValue === 'string');
     }
 }
 /**
@@ -698,7 +785,7 @@ Token.Empty = new Token('');
 exports.Token = Token;
 exports.default = Token;
 
-},{"./":36}],31:[function(require,module,exports){
+},{"./":37,"./utils/assert":38}],32:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const _1 = require("./");
@@ -721,9 +808,10 @@ TypeExpr.Empty = new TypeExpr();
 exports.TypeExpr = TypeExpr;
 exports.default = TypeExpr;
 
-},{"./":36}],32:[function(require,module,exports){
+},{"./":37}],33:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const assert_1 = require("./utils/assert");
 const _1 = require("./");
 class UnaryOperation extends _1.Expr {
     constructor(operand, operator, operatorPosition) {
@@ -731,12 +819,15 @@ class UnaryOperation extends _1.Expr {
         this.operand = operand;
         this.operator = operator;
         this.operatorPosition = operatorPosition;
+        assert_1.assertAstNodeParam(operand instanceof _1.Expr);
+        assert_1.assertAstNodeParam(operator instanceof _1.Operator);
+        assert_1.assertAstNodeParam(_1.UnaryOperatorPosition.isValid(operatorPosition));
     }
 }
 exports.UnaryOperation = UnaryOperation;
 exports.default = UnaryOperation;
 
-},{"./":36}],33:[function(require,module,exports){
+},{"./":37,"./utils/assert":38}],34:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
@@ -747,11 +838,22 @@ var UnaryOperatorPosition;
     UnaryOperatorPosition[UnaryOperatorPosition["Prefix"] = 0] = "Prefix";
     UnaryOperatorPosition[UnaryOperatorPosition["Postfix"] = 1] = "Postfix";
 })(UnaryOperatorPosition = exports.UnaryOperatorPosition || (exports.UnaryOperatorPosition = {}));
+(function (UnaryOperatorPosition) {
+    /**
+     * Checks if a value is a valid `UnaryOperatorPosition`.
+     * @param position The value to check.
+     */
+    function isValid(position) {
+        return position in UnaryOperatorPosition;
+    }
+    UnaryOperatorPosition.isValid = isValid;
+})(UnaryOperatorPosition = exports.UnaryOperatorPosition || (exports.UnaryOperatorPosition = {}));
 exports.default = UnaryOperatorPosition;
 
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const assert_1 = require("./utils/assert");
 const _1 = require("./");
 class VarDecl extends _1.BaseNode {
     /**
@@ -781,6 +883,9 @@ class VarDecl extends _1.BaseNode {
         this.assignment = assignment;
         // validate the var declaration modifiers
         _1.VarDeclModifier.throwUnlessCombinationLegal(this.modifiers);
+        assert_1.assertAstNodeParam(name instanceof _1.Token);
+        assert_1.assertAstNodeParam(typeDecl instanceof _1.TypeExpr);
+        assert_1.assertAstNodeParam(assignment instanceof _1.Expr);
     }
     /**
      * Creates a new `VarDecl` instance.
@@ -793,7 +898,7 @@ class VarDecl extends _1.BaseNode {
 exports.VarDecl = VarDecl;
 exports.default = VarDecl;
 
-},{"./":36}],35:[function(require,module,exports){
+},{"./":37,"./utils/assert":38}],36:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
@@ -910,7 +1015,7 @@ var VarDeclModifier;
 })(VarDeclModifier = exports.VarDeclModifier || (exports.VarDeclModifier = {}));
 exports.default = VarDeclModifier;
 
-},{}],36:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 "use strict";
 function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
@@ -945,7 +1050,35 @@ __export(require("./UnaryOperatorPosition"));
 __export(require("./VarDecl"));
 __export(require("./VarDeclModifier"));
 
-},{"./BaseNode":9,"./BinaryOperation":10,"./ClassDecl":11,"./Comment":12,"./ElseIfStatement":13,"./ElseStatement":14,"./Expr":15,"./ExprStatement":16,"./FuncDecl":17,"./Identifier":18,"./IfStatement":19,"./MethodDecl":20,"./NumericExpr":21,"./Operator":22,"./OperatorIdent":23,"./ParamDecl":24,"./ParamDeclList":25,"./ReturnStatement":26,"./SourceUnit":27,"./Statement":28,"./StringLiteral":29,"./Token":30,"./TypeExpression":31,"./UnaryOperation":32,"./UnaryOperatorPosition":33,"./VarDecl":34,"./VarDeclModifier":35}],37:[function(require,module,exports){
+},{"./BaseNode":10,"./BinaryOperation":11,"./ClassDecl":12,"./Comment":13,"./ElseIfStatement":14,"./ElseStatement":15,"./Expr":16,"./ExprStatement":17,"./FuncDecl":18,"./Identifier":19,"./IfStatement":20,"./MethodDecl":21,"./NumericExpr":22,"./Operator":23,"./OperatorIdent":24,"./ParamDecl":25,"./ParamDeclList":26,"./ReturnStatement":27,"./SourceUnit":28,"./Statement":29,"./StringLiteral":30,"./Token":31,"./TypeExpression":32,"./UnaryOperation":33,"./UnaryOperatorPosition":34,"./VarDecl":35,"./VarDeclModifier":36}],38:[function(require,module,exports){
+///
+/// ast/utils/assert.ts
+/// Utilities for assertions in the AST module.
+///
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const utils_1 = require("@/utils");
+/**
+ * An exception that is thrown if an AST node parameter assertion fails.
+ */
+class AstNodeParamAssertionException extends Error {
+}
+exports.AstNodeParamAssertionException = AstNodeParamAssertionException;
+/**
+ * Asserts a parameter value passed to an AST node.
+ * Throws an `AssertionException` if `condition` is not `true`.
+ * @param condition The condition to assert.
+ * @param message Optional message parts to be included in the `AssertionException`'s message if the assertion fails.
+ * @throws AssertionException
+ */
+function assertAstNodeParam(condition, ...message) {
+    utils_1.configurableAssert(condition, errorMessage => {
+        return new AstNodeParamAssertionException(errorMessage);
+    }, 'AST node parameter assertion failed.', ...message);
+}
+exports.assertAstNodeParam = assertAstNodeParam;
+
+},{"@/utils":5}],39:[function(require,module,exports){
 ///
 /// BaseGenerator.ts
 /// Generic base class for EcmaScript code generators.
@@ -997,7 +1130,7 @@ class BaseGenerator {
 exports.BaseGenerator = BaseGenerator;
 exports.default = BaseGenerator;
 
-},{}],38:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const BaseGenerator_1 = require("./BaseGenerator");
@@ -1017,7 +1150,7 @@ class CodeGenerator extends BaseGenerator_1.BaseGenerator {
 exports.CodeGenerator = CodeGenerator;
 exports.default = CodeGenerator;
 
-},{"./BaseGenerator":37,"./factory":39}],39:[function(require,module,exports){
+},{"./BaseGenerator":39,"./factory":41}],41:[function(require,module,exports){
 ///
 /// factory.ts
 /// Functions to register and instantiate EcmaScript code generators.
@@ -1048,7 +1181,7 @@ exports.register = factory.registerClass.bind(factory);
  */
 exports.createForAstNode = factory.create.bind(factory);
 
-},{"../../utils/FactoryRegistry":64}],40:[function(require,module,exports){
+},{"../../utils/FactoryRegistry":66}],42:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const BaseGenerator_1 = require("../BaseGenerator");
@@ -1067,7 +1200,7 @@ class BaseConditionalStatementCodeGenerator extends BaseGenerator_1.default {
 }
 exports.BaseConditionalStatementCodeGenerator = BaseConditionalStatementCodeGenerator;
 
-},{"../BaseGenerator":37,"../factory":39}],41:[function(require,module,exports){
+},{"../BaseGenerator":39,"../factory":41}],43:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1098,7 +1231,7 @@ BinaryOperationCodeGenerator = __decorate([
 ], BinaryOperationCodeGenerator);
 exports.BinaryOperationCodeGenerator = BinaryOperationCodeGenerator;
 
-},{"../BaseGenerator":37,"../factory":39,"@/compiler/ast":2}],42:[function(require,module,exports){
+},{"../BaseGenerator":39,"../factory":41,"@/compiler/ast":2}],44:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1146,7 +1279,7 @@ ClassDeclCodeGenerator = __decorate([
 ], ClassDeclCodeGenerator);
 exports.ClassDeclCodeGenerator = ClassDeclCodeGenerator;
 
-},{"../BaseGenerator":37,"../factory":39,"@/compiler/ast":2}],43:[function(require,module,exports){
+},{"../BaseGenerator":39,"../factory":41,"@/compiler/ast":2}],45:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1193,7 +1326,7 @@ ClassVarDeclCodeGenerator = __decorate([
 ], ClassVarDeclCodeGenerator);
 exports.ClassVarDeclCodeGenerator = ClassVarDeclCodeGenerator;
 
-},{"../factory":39,"./VarDeclCodeGenerator":59,"@/compiler/ast":2}],44:[function(require,module,exports){
+},{"../factory":41,"./VarDeclCodeGenerator":61,"@/compiler/ast":2}],46:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1221,7 +1354,7 @@ CommentCodeGenerator = __decorate([
 ], CommentCodeGenerator);
 exports.CommentCodeGenerator = CommentCodeGenerator;
 
-},{"../BaseGenerator":37,"../factory":39,"@/compiler/ast":2}],45:[function(require,module,exports){
+},{"../BaseGenerator":39,"../factory":41,"@/compiler/ast":2}],47:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1241,7 +1374,7 @@ ElseIfStatementCodeGenerator = __decorate([
 ], ElseIfStatementCodeGenerator);
 exports.ElseIfStatementCodeGenerator = ElseIfStatementCodeGenerator;
 
-},{"../factory":39,"./BaseConditionalStatementCodeGenerator":40,"@/compiler/ast":2}],46:[function(require,module,exports){
+},{"../factory":41,"./BaseConditionalStatementCodeGenerator":42,"@/compiler/ast":2}],48:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1270,7 +1403,7 @@ ElseStatementCodeGenerator = __decorate([
 ], ElseStatementCodeGenerator);
 exports.ElseStatementCodeGenerator = ElseStatementCodeGenerator;
 
-},{"../BaseGenerator":37,"../factory":39,"@/compiler/ast":2}],47:[function(require,module,exports){
+},{"../BaseGenerator":39,"../factory":41,"@/compiler/ast":2}],49:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1297,7 +1430,7 @@ EmptyStatmenetCodeGenerator = __decorate([
 ], EmptyStatmenetCodeGenerator);
 exports.EmptyStatmenetCodeGenerator = EmptyStatmenetCodeGenerator;
 
-},{"../BaseGenerator":37,"../factory":39,"@/compiler/ast":2}],48:[function(require,module,exports){
+},{"../BaseGenerator":39,"../factory":41,"@/compiler/ast":2}],50:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1330,7 +1463,7 @@ ExprCodeGenerator = __decorate([
 ], ExprCodeGenerator);
 exports.ExprCodeGenerator = ExprCodeGenerator;
 
-},{"../BaseGenerator":37,"../factory":39,"@/compiler/ast":2}],49:[function(require,module,exports){
+},{"../BaseGenerator":39,"../factory":41,"@/compiler/ast":2}],51:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1357,7 +1490,7 @@ ExprCodeGenerator = __decorate([
 ], ExprCodeGenerator);
 exports.ExprCodeGenerator = ExprCodeGenerator;
 
-},{"../BaseGenerator":37,"../factory":39,"@/compiler/ast":2}],50:[function(require,module,exports){
+},{"../BaseGenerator":39,"../factory":41,"@/compiler/ast":2}],52:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1390,7 +1523,7 @@ FuncDeclCodeGenerator = __decorate([
 ], FuncDeclCodeGenerator);
 exports.FuncDeclCodeGenerator = FuncDeclCodeGenerator;
 
-},{"../BaseGenerator":37,"../factory":39,"@/compiler/ast":2}],51:[function(require,module,exports){
+},{"../BaseGenerator":39,"../factory":41,"@/compiler/ast":2}],53:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1410,7 +1543,7 @@ IfStatementCodeGenerator = __decorate([
 ], IfStatementCodeGenerator);
 exports.IfStatementCodeGenerator = IfStatementCodeGenerator;
 
-},{"../factory":39,"./BaseConditionalStatementCodeGenerator":40,"@/compiler/ast":2}],52:[function(require,module,exports){
+},{"../factory":41,"./BaseConditionalStatementCodeGenerator":42,"@/compiler/ast":2}],54:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1448,7 +1581,7 @@ MethodDeclCodeGenerator = __decorate([
 ], MethodDeclCodeGenerator);
 exports.MethodDeclCodeGenerator = MethodDeclCodeGenerator;
 
-},{"../BaseGenerator":37,"../factory":39,"./FuncDeclCodeGenerator":50,"@/compiler/ast":2}],53:[function(require,module,exports){
+},{"../BaseGenerator":39,"../factory":41,"./FuncDeclCodeGenerator":52,"@/compiler/ast":2}],55:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1478,7 +1611,7 @@ OperatorCodeGenerator = __decorate([
 ], OperatorCodeGenerator);
 exports.OperatorCodeGenerator = OperatorCodeGenerator;
 
-},{"../BaseGenerator":37,"../factory":39,"@/compiler/ast":2}],54:[function(require,module,exports){
+},{"../BaseGenerator":39,"../factory":41,"@/compiler/ast":2}],56:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1505,7 +1638,7 @@ ParamDeclListCodeGenerator = __decorate([
 ], ParamDeclListCodeGenerator);
 exports.ParamDeclListCodeGenerator = ParamDeclListCodeGenerator;
 
-},{"../BaseGenerator":37,"../factory":39,"@/compiler/ast":2}],55:[function(require,module,exports){
+},{"../BaseGenerator":39,"../factory":41,"@/compiler/ast":2}],57:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1532,7 +1665,7 @@ ReturnStatementCodeGenerator = __decorate([
 ], ReturnStatementCodeGenerator);
 exports.ReturnStatementCodeGenerator = ReturnStatementCodeGenerator;
 
-},{"../BaseGenerator":37,"../factory":39,"@/compiler/ast":2}],56:[function(require,module,exports){
+},{"../BaseGenerator":39,"../factory":41,"@/compiler/ast":2}],58:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1559,7 +1692,7 @@ StatementCodeGenerator = __decorate([
 ], StatementCodeGenerator);
 exports.StatementCodeGenerator = StatementCodeGenerator;
 
-},{"../BaseGenerator":37,"../factory":39,"@/compiler/ast":2}],57:[function(require,module,exports){
+},{"../BaseGenerator":39,"../factory":41,"@/compiler/ast":2}],59:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1586,7 +1719,7 @@ TokenCodeGenerator = __decorate([
 ], TokenCodeGenerator);
 exports.TokenCodeGenerator = TokenCodeGenerator;
 
-},{"../BaseGenerator":37,"../factory":39,"@/compiler/ast":2}],58:[function(require,module,exports){
+},{"../BaseGenerator":39,"../factory":41,"@/compiler/ast":2}],60:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1622,7 +1755,7 @@ UnaryOperationCodeGenerator = __decorate([
 ], UnaryOperationCodeGenerator);
 exports.UnaryOperationCodeGenerator = UnaryOperationCodeGenerator;
 
-},{"../BaseGenerator":37,"../factory":39,"@/compiler/ast":2}],59:[function(require,module,exports){
+},{"../BaseGenerator":39,"../factory":41,"@/compiler/ast":2}],61:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1660,7 +1793,7 @@ VarDeclCodeGenerator = __decorate([
 ], VarDeclCodeGenerator);
 exports.VarDeclCodeGenerator = VarDeclCodeGenerator;
 
-},{"../BaseGenerator":37,"../factory":39,"@/compiler/ast":2}],60:[function(require,module,exports){
+},{"../BaseGenerator":39,"../factory":41,"@/compiler/ast":2}],62:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 require("./BaseConditionalStatementCodeGenerator");
@@ -1684,7 +1817,7 @@ require("./TokenCodeGenerator");
 require("./UnaryOperationCodeGenerator");
 require("./VarDeclCodeGenerator");
 
-},{"./BaseConditionalStatementCodeGenerator":40,"./BinaryOperationCodeGenerator":41,"./ClassDeclCodeGenerator":42,"./ClassVarDeclCodeGenerator":43,"./CommentCodeGenerator":44,"./ElseIfStatementCodeGenerator":45,"./ElseStatementCodeGenerator":46,"./EmptyStatementCodeGenerator":47,"./ExprCodeGenerator":48,"./ExprStatementCodeGenerator":49,"./FuncDeclCodeGenerator":50,"./IfStatementCodeGenerator":51,"./MethodDeclCodeGenerator":52,"./OperatorCodeGenerator":53,"./ParamDeclListCodeGenerator":54,"./ReturnStatementCodeGenerator":55,"./StatementCodeGenerator":56,"./TokenCodeGenerator":57,"./UnaryOperationCodeGenerator":58,"./VarDeclCodeGenerator":59}],61:[function(require,module,exports){
+},{"./BaseConditionalStatementCodeGenerator":42,"./BinaryOperationCodeGenerator":43,"./ClassDeclCodeGenerator":44,"./ClassVarDeclCodeGenerator":45,"./CommentCodeGenerator":46,"./ElseIfStatementCodeGenerator":47,"./ElseStatementCodeGenerator":48,"./EmptyStatementCodeGenerator":49,"./ExprCodeGenerator":50,"./ExprStatementCodeGenerator":51,"./FuncDeclCodeGenerator":52,"./IfStatementCodeGenerator":53,"./MethodDeclCodeGenerator":54,"./OperatorCodeGenerator":55,"./ParamDeclListCodeGenerator":56,"./ReturnStatementCodeGenerator":57,"./StatementCodeGenerator":58,"./TokenCodeGenerator":59,"./UnaryOperationCodeGenerator":60,"./VarDeclCodeGenerator":61}],63:[function(require,module,exports){
 "use strict";
 function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
@@ -1697,7 +1830,7 @@ require("./generator/");
 // Import and export the public types in this module.
 __export(require("./CodeGenerator"));
 
-},{"./CodeGenerator":38,"./generator/":60}],62:[function(require,module,exports){
+},{"./CodeGenerator":40,"./generator/":62}],64:[function(require,module,exports){
 (function (process){
 /* parser generated by jison 0.4.17 */
 /*
@@ -1795,6 +1928,7 @@ var generatedParser = (function () {
                 case 19:
                 case 20:
                 case 21:
+                case 25:
                 case 26:
                 case 27:
                 case 28:
@@ -1821,6 +1955,7 @@ var generatedParser = (function () {
                 case 46:
                 case 47:
                 case 48:
+                case 72:
                 case 82:
                 case 90:
                 case 92:
@@ -1833,7 +1968,6 @@ var generatedParser = (function () {
                 case 38:
                 case 44:
                 case 45:
-                case 72:
                 case 89:
                     this.$ = $$[$0 - 1];
                     break;
@@ -1841,7 +1975,9 @@ var generatedParser = (function () {
                     this.$ = new yy.BinaryOperation($$[$0 - 2], $$[$0 - 1], $$[$0]);
                     break;
                 case 36:
-                    this.$ = new yy.BinaryOperation(new yy.Expr($$[$0 - 2]), $$[$0 - 1], $$[$0]);
+                    var identifierToken = new yy.Token($$[$0 - 2]);
+                    var identifier = new yy.Identifier(identifierToken);
+                    this.$ = new yy.BinaryOperation(identifier, $$[$0 - 1], $$[$0]);
                     break;
                 case 39:
                     this.$ = new yy.Identifier(new yy.Token($$[$0]));
@@ -2691,7 +2827,7 @@ if (typeof require !== 'undefined' && typeof exports !== 'undefined') {
 }
 
 }).call(this,require('_process'))
-},{"_process":67,"fs":65,"path":66}],63:[function(require,module,exports){
+},{"_process":71,"fs":69,"path":70}],65:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const generatedParser = require("./generatedParser.js");
@@ -2745,7 +2881,7 @@ function parseToSourceUnit(name, sourceCode) {
 }
 exports.parseToSourceUnit = parseToSourceUnit;
 
-},{"../ast":36,"./generatedParser.js":62}],64:[function(require,module,exports){
+},{"../ast":37,"./generatedParser.js":64}],66:[function(require,module,exports){
 ///
 /// FactoryRegistry
 ///
@@ -2853,9 +2989,69 @@ class FactoryRegistry {
 exports.FactoryRegistry = FactoryRegistry;
 exports.default = FactoryRegistry;
 
-},{}],65:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * An exception that is thrown if an assertion fails.
+ */
+class AssertionException extends Error {
+}
+exports.AssertionException = AssertionException;
+/**
+ * Asserts a condition and throws an exception if `condition` is not `true`.
+ * The exception that is thrown when the assertion fails is created by param `createError`.
+ * @param condition The condition to assert.
+ * @param createError A function that creates an exception when the assertion fails.
+ * @param message Optional message parts to be included in the `AssertionException`'s message if the assertion fails.
+ * @throws TError
+ */
+function configurableAssert(condition, createError, ...message) {
+    if (condition) {
+        return;
+    }
+    throw createError(message.join(' '));
+}
+exports.configurableAssert = configurableAssert;
+/**
+ * Asserts a condition. Throws an `AssertionException` if `condition` is not `true`.
+ * @param condition The condition to assert.
+ * @param message Optional message parts to be included in the `AssertionException`'s message if the assertion fails.
+ * @throws AssertionException
+ */
+function assert(condition, ...message) {
+    configurableAssert(condition, errorMessage => new AssertionException(`Assertion failed. ${errorMessage}`), ...message);
+}
+exports.assert = assert;
 
-},{}],66:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const fs_1 = require("fs");
+/**
+ * Import all files from a directory synchronously.
+ * The type parameter `TExports` can be used to describe the format of the imported
+ * files, for example:
+ * @example
+ *     const tests = importFromDirectorySync<{ run: () => void }>(__dirname + '/tests/')
+ *     tests.forEach(test => test.run())
+ * @param directoryPath The directory to import from.
+ * @param filter Optional. A function to filter which files are imported. The function is
+ *               called once per file. When the return value evaluates to `true`, the file
+ *               is imported, otherwise it will be omitted.
+ */
+function importFromDirectorySync(directoryPath, filter = () => true) {
+    return (fs_1.readdirSync(`${directoryPath}/`) || [])
+        .map(filename => `${directoryPath}/${filename}`)
+        .filter(filename => fs_1.statSync(filename).isFile())
+        .filter(filter)
+        .map(filename => require(filename).default);
+}
+exports.importFromDirectorySync = importFromDirectorySync;
+
+},{"fs":69}],69:[function(require,module,exports){
+
+},{}],70:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -3083,7 +3279,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require('_process'))
-},{"_process":67}],67:[function(require,module,exports){
+},{"_process":71}],71:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -3265,5 +3461,5 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}]},{},[6])(6)
+},{}]},{},[7])(7)
 });

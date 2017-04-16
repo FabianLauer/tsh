@@ -60,7 +60,7 @@ atomic_unary_operation:
 
 unary_operation:
 		atomic_unary_operation			{ $$ = $1 }
-	|	'(' atomic_unary_operation ')'	{ $$ = $2 }
+	|	'(' atomic_unary_operation ')'	{ $$ = new yy.PrecedenceExpr($2) }
 ;
 
 
@@ -91,7 +91,7 @@ atomic_binary_operation:
 
 binary_operation:
 		atomic_binary_operation			{ $$ = $1 }
-	|	'(' atomic_binary_operation ')'	{ $$ = $2 }
+	|	'(' atomic_binary_operation ')'	{ $$ = new yy.PrecedenceExpr($2) }
 ;
 
 
@@ -127,7 +127,7 @@ atomic_assignment_expr:
 
 assignment_expr:
 		atomic_assignment_expr			{ $$ = $1 }
-	|	'(' atomic_assignment_expr ')'	{ $$ = $2 }
+	|	'(' atomic_assignment_expr ')'	{ $$ = new yy.PrecedenceExpr($2) }
 ;
 
 
@@ -140,7 +140,7 @@ assignment_expr:
 
 
 
-primary_expr:
+atomic_primary_expr:
 		IDENTIFIER					{ $$ = new yy.Identifier(new yy.Token($1)) }
 	|	CONSTANT					{ $$ = new yy.NumericExpr(new yy.Token($1)) }
 	|	STRING_LITERAL				{
@@ -156,11 +156,15 @@ primary_expr:
 ;
 
 
+primary_expr:
+		atomic_primary_expr				{ $$ = $1 }
+	|	'(' atomic_primary_expr ')'		{ $$ = new yy.PrecedenceExpr($2) }
+;
+
+
 operation:
 		unary_operation				{ $$ = $1 }
 	|	binary_operation			{ $$ = $1 }
-	|	'(' binary_operation ')'	{ $$ = $2 }
-	|	'(' unary_operation ')'		{ $$ = $2 }
 ;
 
 

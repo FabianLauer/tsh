@@ -14,7 +14,7 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("ast"));
 
-},{"ast":37}],3:[function(require,module,exports){
+},{"ast":38}],3:[function(require,module,exports){
 "use strict";
 function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
@@ -22,7 +22,7 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("codegen/ecmascript/"));
 
-},{"codegen/ecmascript/":63}],4:[function(require,module,exports){
+},{"codegen/ecmascript/":66}],4:[function(require,module,exports){
 "use strict";
 function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
@@ -30,7 +30,7 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("compiler/parser"));
 
-},{"compiler/parser":65}],5:[function(require,module,exports){
+},{"compiler/parser":68}],5:[function(require,module,exports){
 "use strict";
 function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
@@ -40,7 +40,7 @@ __export(require("../utils/FactoryRegistry"));
 __export(require("../utils/assert"));
 __export(require("../utils/importUtils"));
 
-},{"../utils/FactoryRegistry":66,"../utils/assert":67,"../utils/importUtils":68}],6:[function(require,module,exports){
+},{"../utils/FactoryRegistry":69,"../utils/assert":70,"../utils/importUtils":71}],6:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 
@@ -256,7 +256,7 @@ class BinaryOperation extends Expr_1.default {
 exports.BinaryOperation = BinaryOperation;
 exports.default = BinaryOperation;
 
-},{"./Expr":16,"./Operator":23,"./utils/assert":38}],12:[function(require,module,exports){
+},{"./Expr":16,"./Operator":23,"./utils/assert":39}],12:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -293,7 +293,7 @@ class ClassDecl extends _1.BaseNode {
 exports.ClassDecl = ClassDecl;
 exports.default = ClassDecl;
 
-},{"./":37,"./utils/assert":38}],13:[function(require,module,exports){
+},{"./":38,"./utils/assert":39}],13:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -313,7 +313,7 @@ class Comment extends _1.BaseNode {
 exports.Comment = Comment;
 exports.default = Comment;
 
-},{"./":37,"./utils/assert":38}],14:[function(require,module,exports){
+},{"./":38,"./utils/assert":39}],14:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const IfStatement_1 = require("./IfStatement");
@@ -331,7 +331,7 @@ class ElseStatement extends Statement_1.default {
 exports.ElseStatement = ElseStatement;
 exports.default = ElseStatement;
 
-},{"./Statement":29}],16:[function(require,module,exports){
+},{"./Statement":30}],16:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -352,7 +352,7 @@ Expr.Empty = new Expr();
 exports.Expr = Expr;
 exports.default = Expr;
 
-},{"./":37,"./utils/assert":38}],17:[function(require,module,exports){
+},{"./":38,"./utils/assert":39}],17:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -375,7 +375,7 @@ ExprStatement.Any = class AnyExprStatement extends ExprStatement {
 exports.ExprStatement = ExprStatement;
 exports.default = ExprStatement;
 
-},{"./Expr":16,"./Statement":29,"./utils/assert":38}],18:[function(require,module,exports){
+},{"./Expr":16,"./Statement":30,"./utils/assert":39}],18:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -422,7 +422,7 @@ class FuncDecl extends _1.BaseNode {
 exports.FuncDecl = FuncDecl;
 exports.default = FuncDecl;
 
-},{"./":37,"./utils/assert":38}],19:[function(require,module,exports){
+},{"./":38,"./utils/assert":39}],19:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -437,7 +437,7 @@ class Identifier extends _1.Expr {
 exports.Identifier = Identifier;
 exports.default = Identifier;
 
-},{"./":37,"./utils/assert":38}],20:[function(require,module,exports){
+},{"./":38,"./utils/assert":39}],20:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -457,7 +457,7 @@ class IfStatement extends Statement_1.default {
 exports.IfStatement = IfStatement;
 exports.default = IfStatement;
 
-},{"./Expr":16,"./Statement":29,"./utils/assert":38}],21:[function(require,module,exports){
+},{"./Expr":16,"./Statement":30,"./utils/assert":39}],21:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -510,7 +510,7 @@ class MethodDecl extends FuncDecl_1.FuncDecl {
 exports.MethodDecl = MethodDecl;
 exports.default = MethodDecl;
 
-},{"./":37,"./FuncDecl":18,"./utils/assert":38}],22:[function(require,module,exports){
+},{"./":38,"./FuncDecl":18,"./utils/assert":39}],22:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -526,7 +526,7 @@ class NumericExpr extends Expr_1.default {
 exports.NumericExpr = NumericExpr;
 exports.default = NumericExpr;
 
-},{"./Expr":16,"./Token":31,"./utils/assert":38}],23:[function(require,module,exports){
+},{"./Expr":16,"./Token":32,"./utils/assert":39}],23:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -551,7 +551,7 @@ class Operator extends _1.BaseNode {
 exports.Operator = Operator;
 exports.default = Operator;
 
-},{"./":37,"./utils/assert":38}],24:[function(require,module,exports){
+},{"./":38,"./utils/assert":39}],24:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
@@ -615,7 +615,7 @@ class ParamDecl extends _1.BaseNode {
 exports.ParamDecl = ParamDecl;
 exports.default = ParamDecl;
 
-},{"./":37,"./utils/assert":38}],26:[function(require,module,exports){
+},{"./":38,"./utils/assert":39}],26:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -661,7 +661,31 @@ ParamDeclList.Empty = new ParamDeclList([]);
 exports.ParamDeclList = ParamDeclList;
 exports.default = ParamDeclList;
 
-},{"./":37,"./utils/assert":38}],27:[function(require,module,exports){
+},{"./":38,"./utils/assert":39}],27:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const assert_1 = require("./utils/assert");
+const Expr_1 = require("./Expr");
+/**
+ * Used to wrap expressions (that includes all kinds of operations) when they need to be
+ * evaluated with precedence over other expressions, just like parens in source code.
+ * Type parameter `TExpr` can be used to specify the wrapped expression's type.
+ */
+class PrecedenceExpr extends Expr_1.default {
+    constructor(
+        /**
+         * The expression that should be evaluated with precedence.
+         */
+        expr) {
+        super(expr);
+        this.expr = expr;
+        assert_1.assertAstNodeParam(expr instanceof Expr_1.default);
+    }
+}
+exports.PrecedenceExpr = PrecedenceExpr;
+exports.default = PrecedenceExpr;
+
+},{"./Expr":16,"./utils/assert":39}],28:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -681,7 +705,7 @@ ReturnStatement.Empty = new ReturnStatement();
 exports.ReturnStatement = ReturnStatement;
 exports.default = ReturnStatement;
 
-},{"./":37,"./utils/assert":38}],28:[function(require,module,exports){
+},{"./":38,"./utils/assert":39}],29:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -714,7 +738,7 @@ class SourceUnit extends _1.BaseNode {
 exports.SourceUnit = SourceUnit;
 exports.default = SourceUnit;
 
-},{"./":37,"./utils/assert":38}],29:[function(require,module,exports){
+},{"./":38,"./utils/assert":39}],30:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -745,7 +769,7 @@ Statement.Empty = new Statement([]);
 exports.Statement = Statement;
 exports.default = Statement;
 
-},{"./":37,"./utils/assert":38}],30:[function(require,module,exports){
+},{"./":38,"./utils/assert":39}],31:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -761,7 +785,7 @@ class StringLiteral extends Expr_1.default {
 exports.StringLiteral = StringLiteral;
 exports.default = StringLiteral;
 
-},{"./Expr":16,"./Token":31,"./utils/assert":38}],31:[function(require,module,exports){
+},{"./Expr":16,"./Token":32,"./utils/assert":39}],32:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -785,7 +809,7 @@ Token.Empty = new Token('');
 exports.Token = Token;
 exports.default = Token;
 
-},{"./":37,"./utils/assert":38}],32:[function(require,module,exports){
+},{"./":38,"./utils/assert":39}],33:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const _1 = require("./");
@@ -808,7 +832,7 @@ TypeExpr.Empty = new TypeExpr();
 exports.TypeExpr = TypeExpr;
 exports.default = TypeExpr;
 
-},{"./":37}],33:[function(require,module,exports){
+},{"./":38}],34:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -827,7 +851,7 @@ class UnaryOperation extends _1.Expr {
 exports.UnaryOperation = UnaryOperation;
 exports.default = UnaryOperation;
 
-},{"./":37,"./utils/assert":38}],34:[function(require,module,exports){
+},{"./":38,"./utils/assert":39}],35:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
@@ -850,7 +874,7 @@ var UnaryOperatorPosition;
 })(UnaryOperatorPosition = exports.UnaryOperatorPosition || (exports.UnaryOperatorPosition = {}));
 exports.default = UnaryOperatorPosition;
 
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -898,7 +922,7 @@ class VarDecl extends _1.BaseNode {
 exports.VarDecl = VarDecl;
 exports.default = VarDecl;
 
-},{"./":37,"./utils/assert":38}],36:[function(require,module,exports){
+},{"./":38,"./utils/assert":39}],37:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
@@ -1015,7 +1039,7 @@ var VarDeclModifier;
 })(VarDeclModifier = exports.VarDeclModifier || (exports.VarDeclModifier = {}));
 exports.default = VarDeclModifier;
 
-},{}],37:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 "use strict";
 function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
@@ -1039,6 +1063,7 @@ __export(require("./Operator"));
 __export(require("./OperatorIdent"));
 __export(require("./ParamDecl"));
 __export(require("./ParamDeclList"));
+__export(require("./PrecedenceExpr"));
 __export(require("./ReturnStatement"));
 __export(require("./SourceUnit"));
 __export(require("./Statement"));
@@ -1050,7 +1075,7 @@ __export(require("./UnaryOperatorPosition"));
 __export(require("./VarDecl"));
 __export(require("./VarDeclModifier"));
 
-},{"./BaseNode":10,"./BinaryOperation":11,"./ClassDecl":12,"./Comment":13,"./ElseIfStatement":14,"./ElseStatement":15,"./Expr":16,"./ExprStatement":17,"./FuncDecl":18,"./Identifier":19,"./IfStatement":20,"./MethodDecl":21,"./NumericExpr":22,"./Operator":23,"./OperatorIdent":24,"./ParamDecl":25,"./ParamDeclList":26,"./ReturnStatement":27,"./SourceUnit":28,"./Statement":29,"./StringLiteral":30,"./Token":31,"./TypeExpression":32,"./UnaryOperation":33,"./UnaryOperatorPosition":34,"./VarDecl":35,"./VarDeclModifier":36}],38:[function(require,module,exports){
+},{"./BaseNode":10,"./BinaryOperation":11,"./ClassDecl":12,"./Comment":13,"./ElseIfStatement":14,"./ElseStatement":15,"./Expr":16,"./ExprStatement":17,"./FuncDecl":18,"./Identifier":19,"./IfStatement":20,"./MethodDecl":21,"./NumericExpr":22,"./Operator":23,"./OperatorIdent":24,"./ParamDecl":25,"./ParamDeclList":26,"./PrecedenceExpr":27,"./ReturnStatement":28,"./SourceUnit":29,"./Statement":30,"./StringLiteral":31,"./Token":32,"./TypeExpression":33,"./UnaryOperation":34,"./UnaryOperatorPosition":35,"./VarDecl":36,"./VarDeclModifier":37}],39:[function(require,module,exports){
 ///
 /// ast/utils/assert.ts
 /// Utilities for assertions in the AST module.
@@ -1078,7 +1103,7 @@ function assertAstNodeParam(condition, ...message) {
 }
 exports.assertAstNodeParam = assertAstNodeParam;
 
-},{"@/utils":5}],39:[function(require,module,exports){
+},{"@/utils":5}],40:[function(require,module,exports){
 ///
 /// BaseGenerator.ts
 /// Generic base class for EcmaScript code generators.
@@ -1130,7 +1155,7 @@ class BaseGenerator {
 exports.BaseGenerator = BaseGenerator;
 exports.default = BaseGenerator;
 
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const BaseGenerator_1 = require("./BaseGenerator");
@@ -1150,7 +1175,7 @@ class CodeGenerator extends BaseGenerator_1.BaseGenerator {
 exports.CodeGenerator = CodeGenerator;
 exports.default = CodeGenerator;
 
-},{"./BaseGenerator":39,"./factory":41}],41:[function(require,module,exports){
+},{"./BaseGenerator":40,"./factory":42}],42:[function(require,module,exports){
 ///
 /// factory.ts
 /// Functions to register and instantiate EcmaScript code generators.
@@ -1181,7 +1206,7 @@ exports.register = factory.registerClass.bind(factory);
  */
 exports.createForAstNode = factory.create.bind(factory);
 
-},{"../../utils/FactoryRegistry":66}],42:[function(require,module,exports){
+},{"../../utils/FactoryRegistry":69}],43:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const BaseGenerator_1 = require("../BaseGenerator");
@@ -1200,7 +1225,7 @@ class BaseConditionalStatementCodeGenerator extends BaseGenerator_1.default {
 }
 exports.BaseConditionalStatementCodeGenerator = BaseConditionalStatementCodeGenerator;
 
-},{"../BaseGenerator":39,"../factory":41}],43:[function(require,module,exports){
+},{"../BaseGenerator":40,"../factory":42}],44:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1231,7 +1256,7 @@ BinaryOperationCodeGenerator = __decorate([
 ], BinaryOperationCodeGenerator);
 exports.BinaryOperationCodeGenerator = BinaryOperationCodeGenerator;
 
-},{"../BaseGenerator":39,"../factory":41,"@/compiler/ast":2}],44:[function(require,module,exports){
+},{"../BaseGenerator":40,"../factory":42,"@/compiler/ast":2}],45:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1279,7 +1304,7 @@ ClassDeclCodeGenerator = __decorate([
 ], ClassDeclCodeGenerator);
 exports.ClassDeclCodeGenerator = ClassDeclCodeGenerator;
 
-},{"../BaseGenerator":39,"../factory":41,"@/compiler/ast":2}],45:[function(require,module,exports){
+},{"../BaseGenerator":40,"../factory":42,"@/compiler/ast":2}],46:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1326,7 +1351,7 @@ ClassVarDeclCodeGenerator = __decorate([
 ], ClassVarDeclCodeGenerator);
 exports.ClassVarDeclCodeGenerator = ClassVarDeclCodeGenerator;
 
-},{"../factory":41,"./VarDeclCodeGenerator":61,"@/compiler/ast":2}],46:[function(require,module,exports){
+},{"../factory":42,"./VarDeclCodeGenerator":64,"@/compiler/ast":2}],47:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1354,7 +1379,7 @@ CommentCodeGenerator = __decorate([
 ], CommentCodeGenerator);
 exports.CommentCodeGenerator = CommentCodeGenerator;
 
-},{"../BaseGenerator":39,"../factory":41,"@/compiler/ast":2}],47:[function(require,module,exports){
+},{"../BaseGenerator":40,"../factory":42,"@/compiler/ast":2}],48:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1374,7 +1399,7 @@ ElseIfStatementCodeGenerator = __decorate([
 ], ElseIfStatementCodeGenerator);
 exports.ElseIfStatementCodeGenerator = ElseIfStatementCodeGenerator;
 
-},{"../factory":41,"./BaseConditionalStatementCodeGenerator":42,"@/compiler/ast":2}],48:[function(require,module,exports){
+},{"../factory":42,"./BaseConditionalStatementCodeGenerator":43,"@/compiler/ast":2}],49:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1403,7 +1428,7 @@ ElseStatementCodeGenerator = __decorate([
 ], ElseStatementCodeGenerator);
 exports.ElseStatementCodeGenerator = ElseStatementCodeGenerator;
 
-},{"../BaseGenerator":39,"../factory":41,"@/compiler/ast":2}],49:[function(require,module,exports){
+},{"../BaseGenerator":40,"../factory":42,"@/compiler/ast":2}],50:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1430,7 +1455,7 @@ EmptyStatmenetCodeGenerator = __decorate([
 ], EmptyStatmenetCodeGenerator);
 exports.EmptyStatmenetCodeGenerator = EmptyStatmenetCodeGenerator;
 
-},{"../BaseGenerator":39,"../factory":41,"@/compiler/ast":2}],50:[function(require,module,exports){
+},{"../BaseGenerator":40,"../factory":42,"@/compiler/ast":2}],51:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1463,7 +1488,7 @@ ExprCodeGenerator = __decorate([
 ], ExprCodeGenerator);
 exports.ExprCodeGenerator = ExprCodeGenerator;
 
-},{"../BaseGenerator":39,"../factory":41,"@/compiler/ast":2}],51:[function(require,module,exports){
+},{"../BaseGenerator":40,"../factory":42,"@/compiler/ast":2}],52:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1490,7 +1515,7 @@ ExprCodeGenerator = __decorate([
 ], ExprCodeGenerator);
 exports.ExprCodeGenerator = ExprCodeGenerator;
 
-},{"../BaseGenerator":39,"../factory":41,"@/compiler/ast":2}],52:[function(require,module,exports){
+},{"../BaseGenerator":40,"../factory":42,"@/compiler/ast":2}],53:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1523,7 +1548,7 @@ FuncDeclCodeGenerator = __decorate([
 ], FuncDeclCodeGenerator);
 exports.FuncDeclCodeGenerator = FuncDeclCodeGenerator;
 
-},{"../BaseGenerator":39,"../factory":41,"@/compiler/ast":2}],53:[function(require,module,exports){
+},{"../BaseGenerator":40,"../factory":42,"@/compiler/ast":2}],54:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1543,7 +1568,7 @@ IfStatementCodeGenerator = __decorate([
 ], IfStatementCodeGenerator);
 exports.IfStatementCodeGenerator = IfStatementCodeGenerator;
 
-},{"../factory":41,"./BaseConditionalStatementCodeGenerator":42,"@/compiler/ast":2}],54:[function(require,module,exports){
+},{"../factory":42,"./BaseConditionalStatementCodeGenerator":43,"@/compiler/ast":2}],55:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1581,7 +1606,7 @@ MethodDeclCodeGenerator = __decorate([
 ], MethodDeclCodeGenerator);
 exports.MethodDeclCodeGenerator = MethodDeclCodeGenerator;
 
-},{"../BaseGenerator":39,"../factory":41,"./FuncDeclCodeGenerator":52,"@/compiler/ast":2}],55:[function(require,module,exports){
+},{"../BaseGenerator":40,"../factory":42,"./FuncDeclCodeGenerator":53,"@/compiler/ast":2}],56:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1611,7 +1636,7 @@ OperatorCodeGenerator = __decorate([
 ], OperatorCodeGenerator);
 exports.OperatorCodeGenerator = OperatorCodeGenerator;
 
-},{"../BaseGenerator":39,"../factory":41,"@/compiler/ast":2}],56:[function(require,module,exports){
+},{"../BaseGenerator":40,"../factory":42,"@/compiler/ast":2}],57:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1638,7 +1663,34 @@ ParamDeclListCodeGenerator = __decorate([
 ], ParamDeclListCodeGenerator);
 exports.ParamDeclListCodeGenerator = ParamDeclListCodeGenerator;
 
-},{"../BaseGenerator":39,"../factory":41,"@/compiler/ast":2}],57:[function(require,module,exports){
+},{"../BaseGenerator":40,"../factory":42,"@/compiler/ast":2}],58:[function(require,module,exports){
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const BaseGenerator_1 = require("../BaseGenerator");
+const factory_1 = require("../factory");
+const ast_1 = require("@/compiler/ast");
+let PrecedenceExprCodeGenerator = class PrecedenceExprCodeGenerator extends BaseGenerator_1.default {
+    /**
+     * Generates code for a given syntax tree.
+     * This method is automatically called by the `BaseGenerator` class whenever necessary.
+     * @param ast The syntax tree to generate code for.
+     */
+    generateCodeConcrete(astNode) {
+        return ['(', factory_1.createForAstNode(astNode.expr), ')'];
+    }
+};
+PrecedenceExprCodeGenerator = __decorate([
+    factory_1.register(node => node instanceof ast_1.PrecedenceExpr ? Infinity : 0)
+], PrecedenceExprCodeGenerator);
+exports.PrecedenceExprCodeGenerator = PrecedenceExprCodeGenerator;
+
+},{"../BaseGenerator":40,"../factory":42,"@/compiler/ast":2}],59:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1665,7 +1717,7 @@ ReturnStatementCodeGenerator = __decorate([
 ], ReturnStatementCodeGenerator);
 exports.ReturnStatementCodeGenerator = ReturnStatementCodeGenerator;
 
-},{"../BaseGenerator":39,"../factory":41,"@/compiler/ast":2}],58:[function(require,module,exports){
+},{"../BaseGenerator":40,"../factory":42,"@/compiler/ast":2}],60:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1692,7 +1744,34 @@ StatementCodeGenerator = __decorate([
 ], StatementCodeGenerator);
 exports.StatementCodeGenerator = StatementCodeGenerator;
 
-},{"../BaseGenerator":39,"../factory":41,"@/compiler/ast":2}],59:[function(require,module,exports){
+},{"../BaseGenerator":40,"../factory":42,"@/compiler/ast":2}],61:[function(require,module,exports){
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const BaseGenerator_1 = require("../BaseGenerator");
+const factory_1 = require("../factory");
+const ast_1 = require("@/compiler/ast");
+let StringLiteralCodeGenerator = class StringLiteralCodeGenerator extends BaseGenerator_1.default {
+    /**
+     * Generates code for a given syntax tree.
+     * This method is automatically called by the `BaseGenerator` class whenever necessary.
+     * @param ast The syntax tree to generate code for.
+     */
+    generateCodeConcrete(astNode) {
+        return `"${astNode.contentToken.rawValue}"`;
+    }
+};
+StringLiteralCodeGenerator = __decorate([
+    factory_1.register(node => node instanceof ast_1.StringLiteral ? Infinity : 0)
+], StringLiteralCodeGenerator);
+exports.StringLiteralCodeGenerator = StringLiteralCodeGenerator;
+
+},{"../BaseGenerator":40,"../factory":42,"@/compiler/ast":2}],62:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1719,7 +1798,7 @@ TokenCodeGenerator = __decorate([
 ], TokenCodeGenerator);
 exports.TokenCodeGenerator = TokenCodeGenerator;
 
-},{"../BaseGenerator":39,"../factory":41,"@/compiler/ast":2}],60:[function(require,module,exports){
+},{"../BaseGenerator":40,"../factory":42,"@/compiler/ast":2}],63:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1755,7 +1834,7 @@ UnaryOperationCodeGenerator = __decorate([
 ], UnaryOperationCodeGenerator);
 exports.UnaryOperationCodeGenerator = UnaryOperationCodeGenerator;
 
-},{"../BaseGenerator":39,"../factory":41,"@/compiler/ast":2}],61:[function(require,module,exports){
+},{"../BaseGenerator":40,"../factory":42,"@/compiler/ast":2}],64:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1793,7 +1872,7 @@ VarDeclCodeGenerator = __decorate([
 ], VarDeclCodeGenerator);
 exports.VarDeclCodeGenerator = VarDeclCodeGenerator;
 
-},{"../BaseGenerator":39,"../factory":41,"@/compiler/ast":2}],62:[function(require,module,exports){
+},{"../BaseGenerator":40,"../factory":42,"@/compiler/ast":2}],65:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 require("./BaseConditionalStatementCodeGenerator");
@@ -1811,13 +1890,15 @@ require("./IfStatementCodeGenerator");
 require("./MethodDeclCodeGenerator");
 require("./OperatorCodeGenerator");
 require("./ParamDeclListCodeGenerator");
+require("./PrecedenceExprCodeGenerator");
 require("./ReturnStatementCodeGenerator");
 require("./StatementCodeGenerator");
+require("./StringLiteralCodeGenerator");
 require("./TokenCodeGenerator");
 require("./UnaryOperationCodeGenerator");
 require("./VarDeclCodeGenerator");
 
-},{"./BaseConditionalStatementCodeGenerator":42,"./BinaryOperationCodeGenerator":43,"./ClassDeclCodeGenerator":44,"./ClassVarDeclCodeGenerator":45,"./CommentCodeGenerator":46,"./ElseIfStatementCodeGenerator":47,"./ElseStatementCodeGenerator":48,"./EmptyStatementCodeGenerator":49,"./ExprCodeGenerator":50,"./ExprStatementCodeGenerator":51,"./FuncDeclCodeGenerator":52,"./IfStatementCodeGenerator":53,"./MethodDeclCodeGenerator":54,"./OperatorCodeGenerator":55,"./ParamDeclListCodeGenerator":56,"./ReturnStatementCodeGenerator":57,"./StatementCodeGenerator":58,"./TokenCodeGenerator":59,"./UnaryOperationCodeGenerator":60,"./VarDeclCodeGenerator":61}],63:[function(require,module,exports){
+},{"./BaseConditionalStatementCodeGenerator":43,"./BinaryOperationCodeGenerator":44,"./ClassDeclCodeGenerator":45,"./ClassVarDeclCodeGenerator":46,"./CommentCodeGenerator":47,"./ElseIfStatementCodeGenerator":48,"./ElseStatementCodeGenerator":49,"./EmptyStatementCodeGenerator":50,"./ExprCodeGenerator":51,"./ExprStatementCodeGenerator":52,"./FuncDeclCodeGenerator":53,"./IfStatementCodeGenerator":54,"./MethodDeclCodeGenerator":55,"./OperatorCodeGenerator":56,"./ParamDeclListCodeGenerator":57,"./PrecedenceExprCodeGenerator":58,"./ReturnStatementCodeGenerator":59,"./StatementCodeGenerator":60,"./StringLiteralCodeGenerator":61,"./TokenCodeGenerator":62,"./UnaryOperationCodeGenerator":63,"./VarDeclCodeGenerator":64}],66:[function(require,module,exports){
 "use strict";
 function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
@@ -1830,7 +1911,7 @@ require("./generator/");
 // Import and export the public types in this module.
 __export(require("./CodeGenerator"));
 
-},{"./CodeGenerator":40,"./generator/":62}],64:[function(require,module,exports){
+},{"./CodeGenerator":41,"./generator/":65}],67:[function(require,module,exports){
 (function (process){
 /* parser generated by jison 0.4.17 */
 /*
@@ -1907,12 +1988,12 @@ __export(require("./CodeGenerator"));
 */
 var generatedParser = (function () {
     var o = function (k, v, o, l) { for (o = o || {}, l = k.length; l--; o[k[l]] = v)
-        ; return o; }, $V0 = [1, 11], $V1 = [1, 12], $V2 = [1, 8], $V3 = [1, 13], $V4 = [1, 14], $V5 = [1, 4, 5, 10, 82, 94], $V6 = [1, 18], $V7 = [4, 5], $V8 = [1, 4, 5, 10, 12, 13, 17, 42, 44, 45, 53, 55, 61, 65, 67, 68, 75, 82, 94], $V9 = [2, 91], $Va = [1, 25], $Vb = [18, 80], $Vc = [2, 84], $Vd = [1, 28], $Ve = [2, 4], $Vf = [1, 31], $Vg = [2, 93], $Vh = [1, 34], $Vi = [1, 36], $Vj = [10, 65, 67, 68, 75, 82], $Vk = [1, 44], $Vl = [1, 4, 5, 10, 65, 67, 68, 75, 82, 94], $Vm = [1, 60], $Vn = [1, 61], $Vo = [4, 10, 65, 67, 68, 75, 82], $Vp = [10, 12, 13, 17, 42, 44, 45, 53, 61, 65, 67, 68], $Vq = [1, 68], $Vr = [1, 97], $Vs = [1, 98], $Vt = [1, 92], $Vu = [1, 87], $Vv = [1, 88], $Vw = [1, 89], $Vx = [1, 86], $Vy = [1, 81], $Vz = [4, 10, 12, 13, 17, 42, 44, 45, 53, 61, 65, 67, 68], $VA = [4, 5, 10, 12, 13, 17, 42, 44, 45, 53, 55, 61, 65, 67, 68, 75, 82], $VB = [2, 76], $VC = [1, 100], $VD = [4, 5, 10, 12, 13, 17, 30, 42, 44, 45, 53, 55, 61, 65, 67, 68, 75, 82], $VE = [4, 5, 10, 65, 67, 68, 75, 82], $VF = [4, 5, 10, 12, 13, 17, 42, 44, 45, 53, 55, 61, 65, 67, 68], $VG = [10, 12, 13, 17, 42, 44, 45, 53, 55, 61, 65, 67, 68], $VH = [1, 108], $VI = [1, 109], $VJ = [1, 110], $VK = [1, 111], $VL = [1, 112], $VM = [1, 113], $VN = [4, 5, 10, 12, 13, 17, 18, 20, 21, 22, 23, 24, 25, 42, 44, 45, 53, 55, 61, 64, 65, 67, 68, 75, 82], $VO = [2, 39], $VP = [2, 42], $VQ = [2, 43], $VR = [2, 37], $VS = [2, 14], $VT = [2, 23], $VU = [12, 13, 17, 42, 44, 45], $VV = [20, 21, 22, 23, 24, 25], $VW = [4, 5, 10, 12, 13, 17, 18, 42, 44, 45, 53, 55, 61, 64, 65, 67, 68, 75, 82];
+        ; return o; }, $V0 = [1, 11], $V1 = [1, 12], $V2 = [1, 8], $V3 = [1, 13], $V4 = [1, 14], $V5 = [1, 4, 5, 10, 83, 95], $V6 = [1, 18], $V7 = [4, 5], $V8 = [1, 4, 5, 10, 12, 13, 17, 42, 45, 46, 54, 56, 62, 66, 68, 69, 76, 83, 95], $V9 = [2, 91], $Va = [1, 25], $Vb = [18, 81], $Vc = [2, 84], $Vd = [1, 28], $Ve = [2, 4], $Vf = [1, 31], $Vg = [2, 93], $Vh = [1, 34], $Vi = [1, 36], $Vj = [10, 66, 68, 69, 76, 83], $Vk = [1, 44], $Vl = [1, 4, 5, 10, 66, 68, 69, 76, 83, 95], $Vm = [1, 60], $Vn = [1, 61], $Vo = [4, 10, 66, 68, 69, 76, 83], $Vp = [10, 12, 13, 17, 42, 45, 46, 54, 62, 66, 68, 69], $Vq = [1, 68], $Vr = [1, 98], $Vs = [1, 99], $Vt = [1, 88], $Vu = [1, 92], $Vv = [1, 93], $Vw = [1, 94], $Vx = [1, 86], $Vy = [1, 81], $Vz = [4, 10, 12, 13, 17, 42, 45, 46, 54, 62, 66, 68, 69], $VA = [4, 5, 10, 12, 13, 17, 42, 45, 46, 54, 56, 62, 66, 68, 69, 76, 83], $VB = [2, 76], $VC = [1, 101], $VD = [4, 5, 10, 12, 13, 17, 30, 42, 45, 46, 54, 56, 62, 66, 68, 69, 76, 83], $VE = [4, 5, 10, 66, 68, 69, 76, 83], $VF = [4, 5, 10, 12, 13, 17, 42, 45, 46, 54, 56, 62, 66, 68, 69], $VG = [10, 12, 13, 17, 42, 45, 46, 54, 56, 62, 66, 68, 69], $VH = [1, 109], $VI = [1, 110], $VJ = [1, 111], $VK = [1, 112], $VL = [1, 113], $VM = [1, 114], $VN = [4, 5, 10, 12, 13, 17, 18, 20, 21, 22, 23, 24, 25, 42, 45, 46, 54, 56, 62, 65, 66, 68, 69, 76, 83], $VO = [2, 42], $VP = [2, 37], $VQ = [2, 39], $VR = [2, 14], $VS = [2, 23], $VT = [1, 139], $VU = [12, 13, 17, 42, 45, 46], $VV = [1, 156], $VW = [20, 21, 22, 23, 24, 25], $VX = [4, 5, 10, 12, 13, 17, 18, 42, 45, 46, 54, 56, 62, 65, 66, 68, 69, 76, 83];
     var parser = { trace: function trace() { },
         yy: {},
-        symbols_: { "error": 2, "nl_or_eof": 3, "NL": 4, "EOF": 5, "maybe_nl": 6, "maybe_nls": 7, "maybe_nl_or_eof": 8, "comment": 9, "SL_COMMENT": 10, "unary_operator": 11, "INC_OP": 12, "DEC_OP": 13, "atomic_unary_operation": 14, "primary_expr": 15, "unary_operation": 16, "(": 17, ")": 18, "binary_operator": 19, ".": 20, "+": 21, "-": 22, "*": 23, "/": 24, "%": 25, "atomic_binary_operation": 26, "expression": 27, "binary_operation": 28, "assignment_operator": 29, "=": 30, "MUL_ASSIGN": 31, "DIV_ASSIGN": 32, "MOD_ASSIGN": 33, "ADD_ASSIGN": 34, "SUB_ASSIGN": 35, "LEFT_ASSIGN": 36, "RIGHT_ASSIGN": 37, "AND_ASSIGN": 38, "XOR_ASSIGN": 39, "OR_ASSIGN": 40, "atomic_assignment_expr": 41, "IDENTIFIER": 42, "assignment_expr": 43, "CONSTANT": 44, "STRING_LITERAL": 45, "operation": 46, "expression_statement": 47, "type_expr": 48, "conditional_body": 49, "statement": 50, "compound_statement": 51, "conditional_if_statement": 52, "IF": 53, "conditional_else_if_statement": 54, "ELSE": 55, "conditional_maybe_else_if_statements": 56, "conditional_else_statement": 57, "conditional_maybe_else_statement": 58, "conditional_statement": 59, "return_statement": 60, "RETURN": 61, "var_decl": 62, "statements": 63, "{": 64, "}": 65, "var_decl_modifier": 66, "LET": 67, "CONST": 68, "var_decl_type_decl": 69, ":": 70, "var_decl_name_and_maybe_type_decl": 71, "var_decl_maybe_assignment": 72, "var_decl_end": 73, "static_var_decl_modifier": 74, "STATIC": 75, "static_var_decl": 76, "param_decl_type_expr": 77, "param_decl": 78, "param_decl_list": 79, ",": 80, "func_ident": 81, "FUNCTION": 82, "func_param_decl_list": 83, "func_return_expr": 84, "ARR": 85, "func_body": 86, "func_decl_end": 87, "func_decl": 88, "method_decl": 89, "class_body_statement": 90, "class_body_statements": 91, "class_body_compound_statement": 92, "class_ident": 93, "CLASS": 94, "class_body": 95, "class_decl": 96, "root_grammar": 97, "root_grammar_list": 98, "root": 99, "$accept": 0, "$end": 1 },
-        terminals_: { 2: "error", 4: "NL", 5: "EOF", 10: "SL_COMMENT", 12: "INC_OP", 13: "DEC_OP", 17: "(", 18: ")", 20: ".", 21: "+", 22: "-", 23: "*", 24: "/", 25: "%", 30: "=", 31: "MUL_ASSIGN", 32: "DIV_ASSIGN", 33: "MOD_ASSIGN", 34: "ADD_ASSIGN", 35: "SUB_ASSIGN", 36: "LEFT_ASSIGN", 37: "RIGHT_ASSIGN", 38: "AND_ASSIGN", 39: "XOR_ASSIGN", 40: "OR_ASSIGN", 42: "IDENTIFIER", 44: "CONSTANT", 45: "STRING_LITERAL", 53: "IF", 55: "ELSE", 61: "RETURN", 64: "{", 65: "}", 67: "LET", 68: "CONST", 70: ":", 75: "STATIC", 80: ",", 82: "FUNCTION", 85: "ARR", 94: "CLASS" },
-        productions_: [0, [3, 1], [3, 1], [6, 1], [6, 0], [7, 1], [7, 2], [8, 1], [8, 1], [9, 2], [11, 1], [11, 1], [14, 2], [14, 2], [16, 1], [16, 3], [19, 1], [19, 1], [19, 1], [19, 1], [19, 1], [19, 1], [26, 3], [28, 1], [28, 3], [29, 1], [29, 1], [29, 1], [29, 1], [29, 1], [29, 1], [29, 1], [29, 1], [29, 1], [29, 1], [29, 1], [41, 3], [43, 1], [43, 3], [15, 1], [15, 1], [15, 1], [46, 1], [46, 1], [46, 3], [46, 3], [27, 1], [27, 1], [27, 1], [47, 2], [48, 1], [49, 1], [49, 1], [52, 4], [54, 5], [56, 1], [56, 2], [57, 3], [58, 1], [58, 1], [59, 4], [60, 3], [50, 1], [50, 1], [50, 1], [50, 1], [50, 1], [63, 1], [63, 2], [51, 5], [66, 1], [66, 1], [69, 2], [69, 0], [71, 2], [72, 2], [72, 0], [73, 1], [62, 4], [74, 2], [74, 2], [76, 4], [77, 2], [77, 0], [78, 0], [78, 2], [79, 1], [79, 3], [81, 2], [83, 3], [84, 2], [84, 0], [86, 1], [86, 0], [87, 1], [88, 5], [89, 5], [90, 1], [90, 1], [90, 1], [90, 1], [91, 1], [91, 2], [92, 5], [93, 2], [95, 1], [95, 0], [96, 3], [97, 1], [97, 1], [97, 1], [97, 1], [98, 1], [98, 2], [99, 1]],
+        symbols_: { "error": 2, "nl_or_eof": 3, "NL": 4, "EOF": 5, "maybe_nl": 6, "maybe_nls": 7, "maybe_nl_or_eof": 8, "comment": 9, "SL_COMMENT": 10, "unary_operator": 11, "INC_OP": 12, "DEC_OP": 13, "atomic_unary_operation": 14, "primary_expr": 15, "unary_operation": 16, "(": 17, ")": 18, "binary_operator": 19, ".": 20, "+": 21, "-": 22, "*": 23, "/": 24, "%": 25, "atomic_binary_operation": 26, "expression": 27, "binary_operation": 28, "assignment_operator": 29, "=": 30, "MUL_ASSIGN": 31, "DIV_ASSIGN": 32, "MOD_ASSIGN": 33, "ADD_ASSIGN": 34, "SUB_ASSIGN": 35, "LEFT_ASSIGN": 36, "RIGHT_ASSIGN": 37, "AND_ASSIGN": 38, "XOR_ASSIGN": 39, "OR_ASSIGN": 40, "atomic_assignment_expr": 41, "IDENTIFIER": 42, "assignment_expr": 43, "atomic_primary_expr": 44, "CONSTANT": 45, "STRING_LITERAL": 46, "operation": 47, "expression_statement": 48, "type_expr": 49, "conditional_body": 50, "statement": 51, "compound_statement": 52, "conditional_if_statement": 53, "IF": 54, "conditional_else_if_statement": 55, "ELSE": 56, "conditional_maybe_else_if_statements": 57, "conditional_else_statement": 58, "conditional_maybe_else_statement": 59, "conditional_statement": 60, "return_statement": 61, "RETURN": 62, "var_decl": 63, "statements": 64, "{": 65, "}": 66, "var_decl_modifier": 67, "LET": 68, "CONST": 69, "var_decl_type_decl": 70, ":": 71, "var_decl_name_and_maybe_type_decl": 72, "var_decl_maybe_assignment": 73, "var_decl_end": 74, "static_var_decl_modifier": 75, "STATIC": 76, "static_var_decl": 77, "param_decl_type_expr": 78, "param_decl": 79, "param_decl_list": 80, ",": 81, "func_ident": 82, "FUNCTION": 83, "func_param_decl_list": 84, "func_return_expr": 85, "ARR": 86, "func_body": 87, "func_decl_end": 88, "func_decl": 89, "method_decl": 90, "class_body_statement": 91, "class_body_statements": 92, "class_body_compound_statement": 93, "class_ident": 94, "CLASS": 95, "class_body": 96, "class_decl": 97, "root_grammar": 98, "root_grammar_list": 99, "root": 100, "$accept": 0, "$end": 1 },
+        terminals_: { 2: "error", 4: "NL", 5: "EOF", 10: "SL_COMMENT", 12: "INC_OP", 13: "DEC_OP", 17: "(", 18: ")", 20: ".", 21: "+", 22: "-", 23: "*", 24: "/", 25: "%", 30: "=", 31: "MUL_ASSIGN", 32: "DIV_ASSIGN", 33: "MOD_ASSIGN", 34: "ADD_ASSIGN", 35: "SUB_ASSIGN", 36: "LEFT_ASSIGN", 37: "RIGHT_ASSIGN", 38: "AND_ASSIGN", 39: "XOR_ASSIGN", 40: "OR_ASSIGN", 42: "IDENTIFIER", 45: "CONSTANT", 46: "STRING_LITERAL", 54: "IF", 56: "ELSE", 62: "RETURN", 65: "{", 66: "}", 68: "LET", 69: "CONST", 71: ":", 76: "STATIC", 81: ",", 83: "FUNCTION", 86: "ARR", 95: "CLASS" },
+        productions_: [0, [3, 1], [3, 1], [6, 1], [6, 0], [7, 1], [7, 2], [8, 1], [8, 1], [9, 2], [11, 1], [11, 1], [14, 2], [14, 2], [16, 1], [16, 3], [19, 1], [19, 1], [19, 1], [19, 1], [19, 1], [19, 1], [26, 3], [28, 1], [28, 3], [29, 1], [29, 1], [29, 1], [29, 1], [29, 1], [29, 1], [29, 1], [29, 1], [29, 1], [29, 1], [29, 1], [41, 3], [43, 1], [43, 3], [44, 1], [44, 1], [44, 1], [15, 1], [15, 3], [47, 1], [47, 1], [27, 1], [27, 1], [27, 1], [48, 2], [49, 1], [50, 1], [50, 1], [53, 4], [55, 5], [57, 1], [57, 2], [58, 3], [59, 1], [59, 1], [60, 4], [61, 3], [51, 1], [51, 1], [51, 1], [51, 1], [51, 1], [64, 1], [64, 2], [52, 5], [67, 1], [67, 1], [70, 2], [70, 0], [72, 2], [73, 2], [73, 0], [74, 1], [63, 4], [75, 2], [75, 2], [77, 4], [78, 2], [78, 0], [79, 0], [79, 2], [80, 1], [80, 3], [82, 2], [84, 3], [85, 2], [85, 0], [87, 1], [87, 0], [88, 1], [89, 5], [90, 5], [91, 1], [91, 1], [91, 1], [91, 1], [92, 1], [92, 2], [93, 5], [94, 2], [96, 1], [96, 0], [97, 3], [98, 1], [98, 1], [98, 1], [98, 1], [99, 1], [99, 2], [100, 1]],
         performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
             /* this == yyval */
             var $0 = $$.length - 1;
@@ -1951,7 +2032,8 @@ var generatedParser = (function () {
                 case 23:
                 case 37:
                 case 42:
-                case 43:
+                case 44:
+                case 45:
                 case 46:
                 case 47:
                 case 48:
@@ -1966,10 +2048,8 @@ var generatedParser = (function () {
                 case 15:
                 case 24:
                 case 38:
-                case 44:
-                case 45:
-                case 89:
-                    this.$ = $$[$0 - 1];
+                case 43:
+                    this.$ = new yy.PrecedenceExpr($$[$0 - 1]);
                     break;
                 case 22:
                     this.$ = new yy.BinaryOperation($$[$0 - 2], $$[$0 - 1], $$[$0]);
@@ -2092,6 +2172,9 @@ var generatedParser = (function () {
                 case 104:
                     this.$ = yy.createToken($$[$0]);
                     break;
+                case 89:
+                    this.$ = $$[$0 - 1];
+                    break;
                 case 95:
                     this.$ = yy.FuncDecl.create({
                         funcName: $$[$0 - 4],
@@ -2134,7 +2217,7 @@ var generatedParser = (function () {
                     break;
             }
         },
-        table: [{ 3: 7, 4: $V0, 5: $V1, 9: 4, 10: $V2, 81: 9, 82: $V3, 88: 5, 93: 10, 94: $V4, 96: 6, 97: 3, 98: 2, 99: 1 }, { 1: [3] }, { 1: [2, 114], 3: 7, 4: $V0, 5: $V1, 9: 4, 10: $V2, 81: 9, 82: $V3, 88: 5, 93: 10, 94: $V4, 96: 6, 97: 15 }, o($V5, [2, 112]), o($V5, [2, 108]), o($V5, [2, 109]), o($V5, [2, 110]), o($V5, [2, 111]), { 3: 16, 4: $V0, 5: $V1 }, { 17: $V6, 83: 17 }, o($V7, [2, 106], { 95: 19, 92: 20, 64: [1, 21] }), o($V8, [2, 1]), o($V8, [2, 2]), { 42: [1, 22] }, { 42: [1, 23] }, o($V5, [2, 113]), o($V8, [2, 9]), o([1, 4, 5, 10, 64, 82, 94], $V9, { 84: 24, 85: $Va }), o($Vb, $Vc, { 79: 26, 78: 27, 42: $Vd }), { 3: 29, 4: $V0, 5: $V1 }, o($V7, [2, 105]), o([5, 10, 65, 67, 68, 75, 82], $Ve, { 6: 30, 4: $Vf }), { 17: [2, 88] }, o([4, 5, 64], [2, 104]), o($V5, $Vg, { 86: 32, 51: 33, 64: $Vh }), { 42: $Vi, 48: 35 }, { 18: [1, 37], 80: [1, 38] }, o($Vb, [2, 86]), o($Vb, [2, 83], { 77: 39, 70: [1, 40] }), o($V5, [2, 107]), o($Vj, $Ve, { 91: 41, 8: 42, 7: 43, 6: 45, 4: $Vf, 5: $Vk }), o($V8, [2, 3]), o([1, 10, 82, 94], $Ve, { 7: 43, 6: 45, 87: 46, 8: 47, 4: $Vf, 5: $Vk }), o($Vl, [2, 92]), o([5, 10, 12, 13, 17, 42, 44, 45, 53, 61, 65, 67, 68], $Ve, { 6: 48, 4: $Vf }), o([1, 4, 5, 10, 64, 65, 67, 68, 75, 82, 94], [2, 90]), o([1, 4, 5, 10, 12, 13, 17, 18, 30, 42, 44, 45, 53, 55, 61, 64, 65, 67, 68, 75, 80, 82, 94], [2, 50]), o([1, 4, 5, 10, 64, 65, 67, 68, 75, 82, 85, 94], [2, 89]), o($Vb, $Vc, { 78: 49, 42: $Vd }), o($Vb, [2, 85]), { 42: $Vi, 48: 50 }, { 4: $Vf, 6: 51, 9: 53, 10: $V2, 62: 54, 65: $Ve, 66: 57, 67: $Vm, 68: $Vn, 74: 58, 75: [1, 62], 76: 55, 81: 59, 82: $V3, 89: 56, 90: 52 }, o($Vo, [2, 101]), o([1, 5, 10, 12, 13, 17, 42, 44, 45, 53, 55, 61, 65, 67, 68, 75, 82, 94], [2, 7], { 6: 63, 4: $Vf }), o($V8, [2, 8]), o($V8, [2, 5]), o($V5, [2, 95]), o($Vl, [2, 94]), o($Vp, $Ve, { 7: 43, 6: 45, 63: 64, 8: 65, 4: $Vf, 5: $Vk }), o($Vb, [2, 87]), o($Vb, [2, 82]), { 65: [1, 66] }, o($Vo, [2, 102]), o($Vo, [2, 97]), o($Vo, [2, 98]), o($Vo, [2, 99]), o($Vo, [2, 100]), { 42: $Vq, 71: 67 }, { 42: $Vq, 71: 69 }, { 17: $V6, 83: 70 }, { 42: [2, 70] }, { 42: [2, 71] }, { 67: [1, 71], 68: [1, 72] }, o($V8, [2, 6]), { 4: $Vf, 6: 73, 9: 75, 10: $V2, 11: 96, 12: $Vr, 13: $Vs, 14: 94, 15: 83, 16: 90, 17: $Vt, 26: 95, 27: 80, 28: 91, 41: 93, 42: $Vu, 43: 85, 44: $Vv, 45: $Vw, 46: 84, 47: 76, 50: 74, 52: 82, 53: $Vx, 59: 79, 60: 78, 61: $Vy, 62: 77, 65: $Ve, 66: 57, 67: $Vm, 68: $Vn }, o($Vz, [2, 67]), o($V7, [2, 103]), o($VA, $VB, { 72: 99, 30: $VC }), o($VD, [2, 73], { 69: 101, 70: [1, 102] }), o($VE, $VB, { 72: 103, 30: $VC }), o([4, 5, 10, 64, 65, 67, 68, 75, 82], $V9, { 84: 104, 85: $Va }), { 42: [2, 79] }, { 42: [2, 80] }, { 65: [1, 105] }, o($Vz, [2, 68]), o($VF, [2, 62]), o($VF, [2, 63]), o($VF, [2, 64]), o($VF, [2, 65]), o($VF, [2, 66]), o($VG, $Ve, { 7: 43, 6: 45, 8: 106, 19: 107, 4: $Vf, 5: $Vk, 20: $VH, 21: $VI, 22: $VJ, 23: $VK, 24: $VL, 25: $VM }), { 11: 96, 12: $Vr, 13: $Vs, 14: 94, 15: 83, 16: 90, 17: $Vt, 26: 95, 27: 114, 28: 91, 41: 93, 42: $Vu, 43: 85, 44: $Vv, 45: $Vw, 46: 84 }, o($VG, $Ve, { 7: 43, 6: 45, 56: 115, 8: 116, 4: $Vf, 5: $Vk }), o([4, 5, 10, 17, 18, 20, 21, 22, 23, 24, 25, 42, 44, 45, 53, 55, 61, 64, 65, 67, 68, 75, 82], [2, 46], { 11: 117, 12: $Vr, 13: $Vs }), o($VN, [2, 47]), o($VN, [2, 48]), { 11: 96, 12: $Vr, 13: $Vs, 14: 94, 15: 83, 16: 90, 17: $Vt, 26: 95, 27: 118, 28: 91, 41: 93, 42: $Vu, 43: 85, 44: $Vv, 45: $Vw, 46: 84 }, o($VN, $VO, { 29: 119, 30: [1, 120], 31: [1, 121], 32: [1, 122], 33: [1, 123], 34: [1, 124], 35: [1, 125], 36: [1, 126], 37: [1, 127], 38: [1, 128], 39: [1, 129], 40: [1, 130] }), o($VN, [2, 40]), o($VN, [2, 41]), o($VN, $VP), o($VN, $VQ), { 11: 96, 12: $Vr, 13: $Vs, 14: 134, 15: 83, 16: 132, 17: $Vt, 26: 135, 27: 136, 28: 131, 41: 133, 42: $Vu, 43: 85, 44: $Vv, 45: $Vw, 46: 84 }, o($VN, $VR), o($VN, $VS), o($VN, $VT), { 15: 137, 42: [1, 138], 44: $Vv, 45: $Vw }, o($VN, [2, 10]), o($VN, [2, 11]), o([10, 12, 13, 17, 42, 44, 45, 53, 55, 61, 65, 67, 68, 75, 82], $Ve, { 7: 43, 6: 45, 73: 139, 8: 140, 4: $Vf, 5: $Vk }), { 11: 96, 12: $Vr, 13: $Vs, 14: 94, 15: 83, 16: 90, 17: $Vt, 26: 95, 27: 141, 28: 91, 41: 93, 42: $Vu, 43: 85, 44: $Vv, 45: $Vw, 46: 84 }, o($VD, [2, 74]), { 42: $Vi, 48: 142 }, o($Vj, $Ve, { 7: 43, 6: 45, 8: 140, 73: 143, 4: $Vf, 5: $Vk }), o($VE, $Vg, { 51: 33, 86: 144, 64: $Vh }), o($V8, [2, 69]), o($VF, [2, 49]), { 11: 96, 12: $Vr, 13: $Vs, 14: 94, 15: 83, 16: 90, 17: $Vt, 26: 95, 27: 145, 28: 91, 41: 93, 42: $Vu, 43: 85, 44: $Vv, 45: $Vw, 46: 84 }, o($VU, [2, 16]), o($VU, [2, 17]), o($VU, [2, 18]), o($VU, [2, 19]), o($VU, [2, 20]), o($VU, [2, 21]), o($VG, $Ve, { 7: 43, 6: 45, 19: 107, 8: 146, 4: $Vf, 5: $Vk, 20: $VH, 21: $VI, 22: $VJ, 23: $VK, 24: $VL, 25: $VM }), o($Vp, $Ve, { 7: 43, 6: 45, 58: 147, 54: 148, 57: 149, 8: 150, 4: $Vf, 5: $Vk, 55: [1, 151] }), o($VF, [2, 55]), o($VN, [2, 12]), { 9: 75, 10: $V2, 11: 96, 12: $Vr, 13: $Vs, 14: 94, 15: 83, 16: 90, 17: $Vt, 19: 107, 20: $VH, 21: $VI, 22: $VJ, 23: $VK, 24: $VL, 25: $VM, 26: 95, 27: 80, 28: 91, 41: 93, 42: $Vu, 43: 85, 44: $Vv, 45: $Vw, 46: 84, 47: 76, 49: 152, 50: 153, 51: 154, 52: 82, 53: $Vx, 59: 79, 60: 78, 61: $Vy, 62: 77, 64: $Vh, 66: 57, 67: $Vm, 68: $Vn }, { 11: 96, 12: $Vr, 13: $Vs, 14: 94, 15: 83, 16: 90, 17: $Vt, 26: 95, 27: 155, 28: 91, 41: 93, 42: $Vu, 43: 85, 44: $Vv, 45: $Vw, 46: 84 }, o($VU, [2, 25]), o($VU, [2, 26]), o($VU, [2, 27]), o($VU, [2, 28]), o($VU, [2, 29]), o($VU, [2, 30]), o($VU, [2, 31]), o($VU, [2, 32]), o($VU, [2, 33]), o($VU, [2, 34]), o($VU, [2, 35]), o($VV, $VQ, { 18: [1, 156] }), o($VV, $VP, { 18: [1, 157] }), o($VV, $VR, { 18: [1, 158] }), o($VV, $VS, { 18: [1, 159] }), o($VV, $VT, { 18: [1, 160] }), { 19: 107, 20: $VH, 21: $VI, 22: $VJ, 23: $VK, 24: $VL, 25: $VM }, o($VN, [2, 13]), o($VN, $VO), o($VA, [2, 78]), o($VA, [2, 77]), o($VA, [2, 75], { 19: 107, 20: $VH, 21: $VI, 22: $VJ, 23: $VK, 24: $VL, 25: $VM }), o($VD, [2, 72]), o($Vo, [2, 81]), o($Vj, $Ve, { 7: 43, 6: 45, 8: 47, 87: 161, 4: $Vf, 5: $Vk }), o($VW, [2, 22], { 19: 107, 20: $VH, 21: $VI, 22: $VJ, 23: $VK, 24: $VL, 25: $VM }), o($VF, [2, 61]), o($VG, $Ve, { 7: 43, 6: 45, 8: 162, 4: $Vf, 5: $Vk }), o($VF, [2, 56]), o($VF, [2, 58]), o($VF, [2, 59]), { 9: 75, 10: $V2, 11: 96, 12: $Vr, 13: $Vs, 14: 94, 15: 83, 16: 90, 17: $Vt, 26: 95, 27: 80, 28: 91, 41: 93, 42: $Vu, 43: 85, 44: $Vv, 45: $Vw, 46: 84, 47: 76, 49: 164, 50: 153, 51: 154, 52: 82, 53: [1, 163], 59: 79, 60: 78, 61: $Vy, 62: 77, 64: $Vh, 66: 57, 67: $Vm, 68: $Vn }, o($VG, $Ve, { 7: 43, 6: 45, 8: 165, 4: $Vf, 5: $Vk }), o($VF, [2, 51]), o($VF, [2, 52]), o($VW, [2, 36], { 19: 107, 20: $VH, 21: $VI, 22: $VJ, 23: $VK, 24: $VL, 25: $VM }), o($VN, [2, 44]), o($VN, [2, 45]), o($VN, [2, 38]), o($VN, [2, 15]), o($VN, [2, 24]), o($Vo, [2, 96]), o($VF, [2, 60]), { 11: 96, 12: $Vr, 13: $Vs, 14: 94, 15: 83, 16: 90, 17: $Vt, 26: 95, 27: 166, 28: 91, 41: 93, 42: $Vu, 43: 85, 44: $Vv, 45: $Vw, 46: 84 }, o($VG, $Ve, { 7: 43, 6: 45, 8: 167, 4: $Vf, 5: $Vk }), o($VF, [2, 53]), { 9: 75, 10: $V2, 11: 96, 12: $Vr, 13: $Vs, 14: 94, 15: 83, 16: 90, 17: $Vt, 19: 107, 20: $VH, 21: $VI, 22: $VJ, 23: $VK, 24: $VL, 25: $VM, 26: 95, 27: 80, 28: 91, 41: 93, 42: $Vu, 43: 85, 44: $Vv, 45: $Vw, 46: 84, 47: 76, 49: 168, 50: 153, 51: 154, 52: 82, 53: $Vx, 59: 79, 60: 78, 61: $Vy, 62: 77, 64: $Vh, 66: 57, 67: $Vm, 68: $Vn }, o($VF, [2, 57]), o($VG, $Ve, { 7: 43, 6: 45, 8: 169, 4: $Vf, 5: $Vk }), o($VF, [2, 54])],
+        table: [{ 3: 7, 4: $V0, 5: $V1, 9: 4, 10: $V2, 82: 9, 83: $V3, 89: 5, 94: 10, 95: $V4, 97: 6, 98: 3, 99: 2, 100: 1 }, { 1: [3] }, { 1: [2, 114], 3: 7, 4: $V0, 5: $V1, 9: 4, 10: $V2, 82: 9, 83: $V3, 89: 5, 94: 10, 95: $V4, 97: 6, 98: 15 }, o($V5, [2, 112]), o($V5, [2, 108]), o($V5, [2, 109]), o($V5, [2, 110]), o($V5, [2, 111]), { 3: 16, 4: $V0, 5: $V1 }, { 17: $V6, 84: 17 }, o($V7, [2, 106], { 96: 19, 93: 20, 65: [1, 21] }), o($V8, [2, 1]), o($V8, [2, 2]), { 42: [1, 22] }, { 42: [1, 23] }, o($V5, [2, 113]), o($V8, [2, 9]), o([1, 4, 5, 10, 65, 83, 95], $V9, { 85: 24, 86: $Va }), o($Vb, $Vc, { 80: 26, 79: 27, 42: $Vd }), { 3: 29, 4: $V0, 5: $V1 }, o($V7, [2, 105]), o([5, 10, 66, 68, 69, 76, 83], $Ve, { 6: 30, 4: $Vf }), { 17: [2, 88] }, o([4, 5, 65], [2, 104]), o($V5, $Vg, { 87: 32, 52: 33, 65: $Vh }), { 42: $Vi, 49: 35 }, { 18: [1, 37], 81: [1, 38] }, o($Vb, [2, 86]), o($Vb, [2, 83], { 78: 39, 71: [1, 40] }), o($V5, [2, 107]), o($Vj, $Ve, { 92: 41, 8: 42, 7: 43, 6: 45, 4: $Vf, 5: $Vk }), o($V8, [2, 3]), o([1, 10, 83, 95], $Ve, { 7: 43, 6: 45, 88: 46, 8: 47, 4: $Vf, 5: $Vk }), o($Vl, [2, 92]), o([5, 10, 12, 13, 17, 42, 45, 46, 54, 62, 66, 68, 69], $Ve, { 6: 48, 4: $Vf }), o([1, 4, 5, 10, 65, 66, 68, 69, 76, 83, 95], [2, 90]), o([1, 4, 5, 10, 12, 13, 17, 18, 30, 42, 45, 46, 54, 56, 62, 65, 66, 68, 69, 76, 81, 83, 95], [2, 50]), o([1, 4, 5, 10, 65, 66, 68, 69, 76, 83, 86, 95], [2, 89]), o($Vb, $Vc, { 79: 49, 42: $Vd }), o($Vb, [2, 85]), { 42: $Vi, 49: 50 }, { 4: $Vf, 6: 51, 9: 53, 10: $V2, 63: 54, 66: $Ve, 67: 57, 68: $Vm, 69: $Vn, 75: 58, 76: [1, 62], 77: 55, 82: 59, 83: $V3, 90: 56, 91: 52 }, o($Vo, [2, 101]), o([1, 5, 10, 12, 13, 17, 42, 45, 46, 54, 56, 62, 66, 68, 69, 76, 83, 95], [2, 7], { 6: 63, 4: $Vf }), o($V8, [2, 8]), o($V8, [2, 5]), o($V5, [2, 95]), o($Vl, [2, 94]), o($Vp, $Ve, { 7: 43, 6: 45, 64: 64, 8: 65, 4: $Vf, 5: $Vk }), o($Vb, [2, 87]), o($Vb, [2, 82]), { 66: [1, 66] }, o($Vo, [2, 102]), o($Vo, [2, 97]), o($Vo, [2, 98]), o($Vo, [2, 99]), o($Vo, [2, 100]), { 42: $Vq, 72: 67 }, { 42: $Vq, 72: 69 }, { 17: $V6, 84: 70 }, { 42: [2, 70] }, { 42: [2, 71] }, { 68: [1, 71], 69: [1, 72] }, o($V8, [2, 6]), { 4: $Vf, 6: 73, 9: 75, 10: $V2, 11: 97, 12: $Vr, 13: $Vs, 14: 95, 15: 83, 16: 89, 17: $Vt, 26: 96, 27: 80, 28: 90, 41: 91, 42: $Vu, 43: 85, 44: 87, 45: $Vv, 46: $Vw, 47: 84, 48: 76, 51: 74, 53: 82, 54: $Vx, 60: 79, 61: 78, 62: $Vy, 63: 77, 66: $Ve, 67: 57, 68: $Vm, 69: $Vn }, o($Vz, [2, 67]), o($V7, [2, 103]), o($VA, $VB, { 73: 100, 30: $VC }), o($VD, [2, 73], { 70: 102, 71: [1, 103] }), o($VE, $VB, { 73: 104, 30: $VC }), o([4, 5, 10, 65, 66, 68, 69, 76, 83], $V9, { 85: 105, 86: $Va }), { 42: [2, 79] }, { 42: [2, 80] }, { 66: [1, 106] }, o($Vz, [2, 68]), o($VF, [2, 62]), o($VF, [2, 63]), o($VF, [2, 64]), o($VF, [2, 65]), o($VF, [2, 66]), o($VG, $Ve, { 7: 43, 6: 45, 8: 107, 19: 108, 4: $Vf, 5: $Vk, 20: $VH, 21: $VI, 22: $VJ, 23: $VK, 24: $VL, 25: $VM }), { 11: 97, 12: $Vr, 13: $Vs, 14: 95, 15: 83, 16: 89, 17: $Vt, 26: 96, 27: 115, 28: 90, 41: 91, 42: $Vu, 43: 85, 44: 87, 45: $Vv, 46: $Vw, 47: 84 }, o($VG, $Ve, { 7: 43, 6: 45, 57: 116, 8: 117, 4: $Vf, 5: $Vk }), o([4, 5, 10, 17, 18, 20, 21, 22, 23, 24, 25, 42, 45, 46, 54, 56, 62, 65, 66, 68, 69, 76, 83], [2, 46], { 11: 118, 12: $Vr, 13: $Vs }), o($VN, [2, 47]), o($VN, [2, 48]), { 11: 97, 12: $Vr, 13: $Vs, 14: 95, 15: 83, 16: 89, 17: $Vt, 26: 96, 27: 119, 28: 90, 41: 91, 42: $Vu, 43: 85, 44: 87, 45: $Vv, 46: $Vw, 47: 84 }, o($VN, $VO), { 11: 97, 12: $Vr, 13: $Vs, 14: 122, 15: 83, 16: 89, 17: $Vt, 26: 123, 27: 124, 28: 90, 41: 121, 42: $Vu, 43: 85, 44: 120, 45: $Vv, 46: $Vw, 47: 84 }, o($VN, [2, 44]), o($VN, [2, 45]), o($VN, $VP), o($VN, $VQ, { 29: 125, 30: [1, 126], 31: [1, 127], 32: [1, 128], 33: [1, 129], 34: [1, 130], 35: [1, 131], 36: [1, 132], 37: [1, 133], 38: [1, 134], 39: [1, 135], 40: [1, 136] }), o($VN, [2, 40]), o($VN, [2, 41]), o($VN, $VR), o($VN, $VS), { 15: 137, 17: [1, 138], 42: $VT, 44: 87, 45: $Vv, 46: $Vw }, o($VN, [2, 10]), o($VN, [2, 11]), o([10, 12, 13, 17, 42, 45, 46, 54, 56, 62, 66, 68, 69, 76, 83], $Ve, { 7: 43, 6: 45, 74: 140, 8: 141, 4: $Vf, 5: $Vk }), { 11: 97, 12: $Vr, 13: $Vs, 14: 95, 15: 83, 16: 89, 17: $Vt, 26: 96, 27: 142, 28: 90, 41: 91, 42: $Vu, 43: 85, 44: 87, 45: $Vv, 46: $Vw, 47: 84 }, o($VD, [2, 74]), { 42: $Vi, 49: 143 }, o($Vj, $Ve, { 7: 43, 6: 45, 8: 141, 74: 144, 4: $Vf, 5: $Vk }), o($VE, $Vg, { 52: 33, 87: 145, 65: $Vh }), o($V8, [2, 69]), o($VF, [2, 49]), { 11: 97, 12: $Vr, 13: $Vs, 14: 95, 15: 83, 16: 89, 17: $Vt, 26: 96, 27: 146, 28: 90, 41: 91, 42: $Vu, 43: 85, 44: 87, 45: $Vv, 46: $Vw, 47: 84 }, o($VU, [2, 16]), o($VU, [2, 17]), o($VU, [2, 18]), o($VU, [2, 19]), o($VU, [2, 20]), o($VU, [2, 21]), o($VG, $Ve, { 7: 43, 6: 45, 19: 108, 8: 147, 4: $Vf, 5: $Vk, 20: $VH, 21: $VI, 22: $VJ, 23: $VK, 24: $VL, 25: $VM }), o($Vp, $Ve, { 7: 43, 6: 45, 59: 148, 55: 149, 58: 150, 8: 151, 4: $Vf, 5: $Vk, 56: [1, 152] }), o($VF, [2, 55]), o($VN, [2, 12]), { 9: 75, 10: $V2, 11: 97, 12: $Vr, 13: $Vs, 14: 95, 15: 83, 16: 89, 17: $Vt, 19: 108, 20: $VH, 21: $VI, 22: $VJ, 23: $VK, 24: $VL, 25: $VM, 26: 96, 27: 80, 28: 90, 41: 91, 42: $Vu, 43: 85, 44: 87, 45: $Vv, 46: $Vw, 47: 84, 48: 76, 50: 153, 51: 154, 52: 155, 53: 82, 54: $Vx, 60: 79, 61: 78, 62: $Vy, 63: 77, 65: $Vh, 67: 57, 68: $Vm, 69: $Vn }, o([12, 13, 20, 21, 22, 23, 24, 25], $VO, { 18: $VV }), o($VW, $VP, { 18: [1, 157] }), o($VW, $VR, { 18: [1, 158] }), o($VW, $VS, { 18: [1, 159] }), { 19: 108, 20: $VH, 21: $VI, 22: $VJ, 23: $VK, 24: $VL, 25: $VM }, { 11: 97, 12: $Vr, 13: $Vs, 14: 95, 15: 83, 16: 89, 17: $Vt, 26: 96, 27: 160, 28: 90, 41: 91, 42: $Vu, 43: 85, 44: 87, 45: $Vv, 46: $Vw, 47: 84 }, o($VU, [2, 25]), o($VU, [2, 26]), o($VU, [2, 27]), o($VU, [2, 28]), o($VU, [2, 29]), o($VU, [2, 30]), o($VU, [2, 31]), o($VU, [2, 32]), o($VU, [2, 33]), o($VU, [2, 34]), o($VU, [2, 35]), o($VN, [2, 13]), { 42: $VT, 44: 161, 45: $Vv, 46: $Vw }, o($VN, $VQ), o($VA, [2, 78]), o($VA, [2, 77]), o($VA, [2, 75], { 19: 108, 20: $VH, 21: $VI, 22: $VJ, 23: $VK, 24: $VL, 25: $VM }), o($VD, [2, 72]), o($Vo, [2, 81]), o($Vj, $Ve, { 7: 43, 6: 45, 8: 47, 88: 162, 4: $Vf, 5: $Vk }), o($VX, [2, 22], { 19: 108, 20: $VH, 21: $VI, 22: $VJ, 23: $VK, 24: $VL, 25: $VM }), o($VF, [2, 61]), o($VG, $Ve, { 7: 43, 6: 45, 8: 163, 4: $Vf, 5: $Vk }), o($VF, [2, 56]), o($VF, [2, 58]), o($VF, [2, 59]), { 9: 75, 10: $V2, 11: 97, 12: $Vr, 13: $Vs, 14: 95, 15: 83, 16: 89, 17: $Vt, 26: 96, 27: 80, 28: 90, 41: 91, 42: $Vu, 43: 85, 44: 87, 45: $Vv, 46: $Vw, 47: 84, 48: 76, 50: 165, 51: 154, 52: 155, 53: 82, 54: [1, 164], 60: 79, 61: 78, 62: $Vy, 63: 77, 65: $Vh, 67: 57, 68: $Vm, 69: $Vn }, o($VG, $Ve, { 7: 43, 6: 45, 8: 166, 4: $Vf, 5: $Vk }), o($VF, [2, 51]), o($VF, [2, 52]), o($VN, [2, 43]), o($VN, [2, 38]), o($VN, [2, 15]), o($VN, [2, 24]), o($VX, [2, 36], { 19: 108, 20: $VH, 21: $VI, 22: $VJ, 23: $VK, 24: $VL, 25: $VM }), { 18: $VV }, o($Vo, [2, 96]), o($VF, [2, 60]), { 11: 97, 12: $Vr, 13: $Vs, 14: 95, 15: 83, 16: 89, 17: $Vt, 26: 96, 27: 167, 28: 90, 41: 91, 42: $Vu, 43: 85, 44: 87, 45: $Vv, 46: $Vw, 47: 84 }, o($VG, $Ve, { 7: 43, 6: 45, 8: 168, 4: $Vf, 5: $Vk }), o($VF, [2, 53]), { 9: 75, 10: $V2, 11: 97, 12: $Vr, 13: $Vs, 14: 95, 15: 83, 16: 89, 17: $Vt, 19: 108, 20: $VH, 21: $VI, 22: $VJ, 23: $VK, 24: $VL, 25: $VM, 26: 96, 27: 80, 28: 90, 41: 91, 42: $Vu, 43: 85, 44: 87, 45: $Vv, 46: $Vw, 47: 84, 48: 76, 50: 169, 51: 154, 52: 155, 53: 82, 54: $Vx, 60: 79, 61: 78, 62: $Vy, 63: 77, 65: $Vh, 67: 57, 68: $Vm, 69: $Vn }, o($VF, [2, 57]), o($VG, $Ve, { 7: 43, 6: 45, 8: 170, 4: $Vf, 5: $Vk }), o($VF, [2, 54])],
         defaultActions: { 22: [2, 88], 60: [2, 70], 61: [2, 71], 71: [2, 79], 72: [2, 80] },
         parseError: function parseError(str, hash) {
             if (hash.recoverable) {
@@ -2599,28 +2682,28 @@ var generatedParser = (function () {
                         return 10;
                         break;
                     case 1:
-                        return 82;
+                        return 83;
                         break;
                     case 2:
-                        return 94;
+                        return 95;
                         break;
                     case 3:
-                        return 67;
-                        break;
-                    case 4:
                         return 68;
                         break;
+                    case 4:
+                        return 69;
+                        break;
                     case 5:
-                        return 75;
+                        return 76;
                         break;
                     case 6:
-                        return 61;
+                        return 62;
                         break;
                     case 7:
-                        return 53;
+                        return 54;
                         break;
                     case 8:
-                        return 55;
+                        return 56;
                         break;
                     case 9:
                         return 4;
@@ -2629,28 +2712,28 @@ var generatedParser = (function () {
                         return 42;
                         break;
                     case 11:
-                        return 44;
+                        return 45;
                         break;
                     case 12:
-                        return 44;
+                        return 45;
                         break;
                     case 13:
-                        return 44;
+                        return 45;
                         break;
                     case 14:
-                        return 44;
+                        return 45;
                         break;
                     case 15:
-                        return 44;
+                        return 45;
                         break;
                     case 16:
-                        return 44;
+                        return 45;
                         break;
                     case 17:
-                        return 44;
+                        return 45;
                         break;
                     case 18:
-                        return 45;
+                        return 46;
                         break;
                     case 19:
                         return 37;
@@ -2695,7 +2778,7 @@ var generatedParser = (function () {
                         return 13;
                         break;
                     case 33:
-                        return 85;
+                        return 86;
                         break;
                     case 34:
                         return 'AND_OP';
@@ -2827,7 +2910,7 @@ if (typeof require !== 'undefined' && typeof exports !== 'undefined') {
 }
 
 }).call(this,require('_process'))
-},{"_process":71,"fs":69,"path":70}],65:[function(require,module,exports){
+},{"_process":74,"fs":72,"path":73}],68:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const generatedParser = require("./generatedParser.js");
@@ -2881,7 +2964,7 @@ function parseToSourceUnit(name, sourceCode) {
 }
 exports.parseToSourceUnit = parseToSourceUnit;
 
-},{"../ast":37,"./generatedParser.js":64}],66:[function(require,module,exports){
+},{"../ast":38,"./generatedParser.js":67}],69:[function(require,module,exports){
 ///
 /// FactoryRegistry
 ///
@@ -2989,7 +3072,7 @@ class FactoryRegistry {
 exports.FactoryRegistry = FactoryRegistry;
 exports.default = FactoryRegistry;
 
-},{}],67:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
@@ -3024,7 +3107,7 @@ function assert(condition, ...message) {
 }
 exports.assert = assert;
 
-},{}],68:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = require("fs");
@@ -3049,9 +3132,9 @@ function importFromDirectorySync(directoryPath, filter = () => true) {
 }
 exports.importFromDirectorySync = importFromDirectorySync;
 
-},{"fs":69}],69:[function(require,module,exports){
+},{"fs":72}],72:[function(require,module,exports){
 
-},{}],70:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -3279,7 +3362,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require('_process'))
-},{"_process":71}],71:[function(require,module,exports){
+},{"_process":74}],74:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 

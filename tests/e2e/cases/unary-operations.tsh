@@ -1,0 +1,6 @@
+func unaryOperations() {
+	a++
+	++a
+	a--
+	--a
+}

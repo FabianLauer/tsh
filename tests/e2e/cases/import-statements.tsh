@@ -1,0 +1,11 @@
+
+import "./alpha"
+import "./beta"
+
+// another one
+import "./gamma"
+
+func main() -> Void { }
+
+// and yet another one:
+import "../../../../delta/./../someFile.123.abc"

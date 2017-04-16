@@ -152,8 +152,11 @@ string_literal: STRING_LITERAL	{
 ;
 
 
+identifier: IDENTIFIER				{ $$ = new yy.Identifier(new yy.Token($1)) };
+
+
 atomic_primary_expr:
-		IDENTIFIER					{ $$ = new yy.Identifier(new yy.Token($1)) }
+		identifier					{ $$ = $1 }
 	|	CONSTANT					{ $$ = new yy.NumericExpr(new yy.Token($1)) }
 	|	string_literal				{ $$ = $1 }
 ;
@@ -488,6 +491,17 @@ import_statement: IMPORT string_literal nl_or_eof
 
 
 /* ------------------------------------------------------------------------------- */
+/* ----------- EXPORT STATEMENT -------------------------------------------------- */
+/* ------------------------------------------------------------------------------- */
+
+
+import_statement: EXPORT identifier nl_or_eof
+	{ $$ = new yy.ExportStatement($2) }
+;
+
+
+
+/* ------------------------------------------------------------------------------- */
 /* ----------- ROOT -------------------------------------------------------------- */
 /* ------------------------------------------------------------------------------- */
 
@@ -498,6 +512,7 @@ root_grammar:
 	|	func_decl
 	|	class_decl
 	|	import_statement
+	|	export_statement
 	|	nl_or_eof
 ;
 

@@ -118,7 +118,7 @@ for (let i = 0; i <= 10; i++) {
 	)
 
 	test<ast.ExprStatement<any>>(
-		`${i}.${i * 0.1234}`,
+		`${i * 0.1234}`,
 		([$]) => isInstanceOf($, ast.ExprStatement),
 		([$]) => isInstanceOf($.expression, ast.NumericExpr)
 	)

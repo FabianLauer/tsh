@@ -1,3 +1,4 @@
+import { assertAstNodeParam } from './utils/assert'
 import { BaseNode } from './'
 
 export class Expr extends BaseNode {
@@ -5,6 +6,10 @@ export class Expr extends BaseNode {
 		public readonly content: BaseNode = undefined
 	) {
 		super()
+		assertAstNodeParam(
+			content instanceof BaseNode ||
+			typeof content === 'undefined'
+		)
 	}
 
 

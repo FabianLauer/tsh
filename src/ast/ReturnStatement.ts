@@ -1,9 +1,13 @@
+import { assertAstNodeParam } from './utils/assert'
 import { BaseNode, Expr } from './'
 
 export class ReturnStatement extends BaseNode {
 	public constructor(
 		public readonly returnValue: Expr = Expr.Empty
-	) { super() }
+	) {
+		super()
+		assertAstNodeParam(returnValue instanceof Expr)
+	}
 
 
 	/**

@@ -1,3 +1,4 @@
+import { assertAstNodeParam } from './utils/assert'
 import { BaseNode, Token, TypeExpr } from './'
 
 export class ParamDecl extends BaseNode {
@@ -13,6 +14,8 @@ export class ParamDecl extends BaseNode {
 		public readonly typeDecl: TypeExpr = TypeExpr.Empty
 	) {
 		super()
+		assertAstNodeParam(name instanceof Token)
+		assertAstNodeParam(typeDecl instanceof TypeExpr)
 	}
 }
 

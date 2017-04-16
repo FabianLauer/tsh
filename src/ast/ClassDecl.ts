@@ -1,3 +1,4 @@
+import { assertAstNodeParam } from './utils/assert'
 import { BaseNode, Token, Statement } from './'
 
 
@@ -41,6 +42,10 @@ export class ClassDecl extends BaseNode {
 		public readonly body: Statement = Statement.Empty
 	) {
 		super()
+
+		assertAstNodeParam(name instanceof Token)
+		assertAstNodeParam(body instanceof Statement)
+
 		this.setParentOf(name, this)
 		this.setParentOf(body, this)
 	}

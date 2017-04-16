@@ -1,3 +1,4 @@
+import { assertAstNodeParam } from './utils/assert'
 import { BaseNode, Token, OperatorIdent } from './'
 
 export class Operator extends BaseNode {
@@ -10,7 +11,11 @@ export class Operator extends BaseNode {
 		 * The operator's original source code.
 		 */
 		public readonly text: Token = Token.Empty
-	) { super() }
+	) {
+		super()
+		assertAstNodeParam(OperatorIdent.isValid(ident))
+		assertAstNodeParam(text instanceof Token)
+	}
 }
 
 export default Operator

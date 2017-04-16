@@ -1,3 +1,4 @@
+import { assertAstNodeParam } from './utils/assert'
 import { BaseNode, Token, Statement, TypeExpr, ParamDeclList } from './'
 
 
@@ -59,7 +60,13 @@ export class FuncDecl extends BaseNode {
 		 * The function body.
 		 */
 		public readonly body: Statement = Statement.Empty
-	) { super() }
+	) {
+		super()
+		assertAstNodeParam(name instanceof Token)
+		assertAstNodeParam(runtimeParamDecls instanceof ParamDeclList)
+		assertAstNodeParam(returnTypeDecl instanceof TypeExpr)
+		assertAstNodeParam(body instanceof Statement)
+	}
 }
 
 export default FuncDecl

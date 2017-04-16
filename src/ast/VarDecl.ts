@@ -1,3 +1,4 @@
+import { assertAstNodeParam } from './utils/assert'
 import { BaseNode, Token, Expr, TypeExpr, VarDeclModifier } from './'
 
 
@@ -64,6 +65,10 @@ export class VarDecl extends BaseNode {
 
 		// validate the var declaration modifiers
 		VarDeclModifier.throwUnlessCombinationLegal(this.modifiers)
+
+		assertAstNodeParam(name instanceof Token)
+		assertAstNodeParam(typeDecl instanceof TypeExpr)
+		assertAstNodeParam(assignment instanceof Expr)
 	}
 }
 

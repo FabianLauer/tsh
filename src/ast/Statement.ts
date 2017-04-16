@@ -1,3 +1,4 @@
+import { assertAstNodeParam } from './utils/assert'
 import { BaseNode } from './'
 
 export class Statement extends BaseNode {
@@ -5,11 +6,14 @@ export class Statement extends BaseNode {
 		private readonly items: BaseNode[]
 	) {
 		super()
-		console.assert(
+
+		assertAstNodeParam(
 			Array.isArray(items),
 			'Invalid Argument for ast.Statement: must be an array'
 		)
-		this.items.forEach(item => this.setParentOf(item, this))
+		items.forEach(item => assertAstNodeParam(item instanceof BaseNode))
+
+		items.forEach(item => this.setParentOf(item, this))
 	}
 
 

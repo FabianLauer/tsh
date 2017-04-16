@@ -1,3 +1,4 @@
+import { assertAstNodeParam } from './utils/assert'
 import { BaseNode } from './'
 
 export class Token extends BaseNode {
@@ -6,7 +7,10 @@ export class Token extends BaseNode {
 		 * The raw value of this token in source code.
 		 */
 		public readonly rawValue: string
-	) { super() }
+	) {
+		super()
+		assertAstNodeParam(typeof rawValue === 'string')
+	}
 
 
 	/**

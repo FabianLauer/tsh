@@ -1,3 +1,4 @@
+import { assertAstNodeParam } from './utils/assert'
 import { Token, Statement, TypeExpr, ParamDeclList, ClassDecl } from './'
 import { IFuncDeclCreateParams, FuncDecl } from './FuncDecl'
 
@@ -47,6 +48,10 @@ export class MethodDecl extends FuncDecl {
 			returnTypeDecl,
 			body
 		)
+		assertAstNodeParam(name instanceof Token)
+		assertAstNodeParam(runtimeParamDecls instanceof ParamDeclList)
+		assertAstNodeParam(returnTypeDecl instanceof TypeExpr)
+		assertAstNodeParam(body instanceof Statement)
 	}
 
 

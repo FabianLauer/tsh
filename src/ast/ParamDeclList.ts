@@ -1,3 +1,4 @@
+import { assertAstNodeParam } from './utils/assert'
 import { BaseNode, ParamDecl } from './'
 
 export class ParamDeclList extends BaseNode {
@@ -8,7 +9,11 @@ export class ParamDeclList extends BaseNode {
 		 * declarations in source code.
 		 */
 		private readonly decls: ParamDecl[]
-	) { super() }
+	) {
+		super()
+		assertAstNodeParam(Array.isArray(decls))
+		decls.forEach(decl => assertAstNodeParam(decl instanceof ParamDecl))
+	}
 
 
 	/**

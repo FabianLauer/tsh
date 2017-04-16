@@ -1,3 +1,4 @@
+import { assertAstNodeParam } from './utils/assert'
 import Expr from './Expr'
 import Statement from './Statement'
 
@@ -10,7 +11,10 @@ export class ExprStatement<TExpr extends Expr> extends Statement {
 		 * The expression wrapped by this expression statement.
 		 */
 		public readonly expression: TExpr
-	) { super([expression]) }
+	) {
+		super([expression])
+		assertAstNodeParam(expression instanceof Expr)
+	}
 }
 
 export default ExprStatement

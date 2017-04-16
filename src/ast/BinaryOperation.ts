@@ -1,3 +1,4 @@
+import { assertAstNodeParam } from './utils/assert'
 import Expr from './Expr'
 import Operator from './Operator'
 
@@ -6,7 +7,12 @@ export class BinaryOperation extends Expr {
 		public readonly leftOperand: Expr,
 		public readonly operator: Operator,
 		public readonly rightOperand: Expr
-	) { super() }
+	) {
+		super()
+		assertAstNodeParam(leftOperand instanceof Expr)
+		assertAstNodeParam(operator instanceof Operator)
+		assertAstNodeParam(rightOperand instanceof Expr)
+	}
 }
 
 export default BinaryOperation

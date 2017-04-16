@@ -1,3 +1,4 @@
+import { assertAstNodeParam } from './utils/assert'
 import { BaseNode } from './'
 
 export class SourceUnit extends BaseNode {
@@ -8,7 +9,13 @@ export class SourceUnit extends BaseNode {
 		 */
 		public readonly name: string,
 		private readonly items: BaseNode[]
-	) { super() }
+	) {
+		super()
+		assertAstNodeParam(typeof name === 'string')
+		assertAstNodeParam(name.length > 0)
+		assertAstNodeParam(Array.isArray(items))
+		items.forEach(item => assertAstNodeParam(item instanceof BaseNode))
+	}
 
 
 	/**

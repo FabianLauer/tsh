@@ -86,7 +86,7 @@ switch (yystate) {
 case 9:
  this.$ = new yy.Comment([new yy.Token($$[$0-1])]) 
 break;
-case 10: case 11: case 16: case 17: case 18: case 19: case 20: case 21: case 26: case 27: case 28: case 29: case 30: case 31: case 32: case 33: case 34: case 35:
+case 10: case 11: case 16: case 17: case 18: case 19: case 20: case 21: case 25: case 26: case 27: case 28: case 29: case 30: case 31: case 32: case 33: case 34: case 35:
  this.$ = yy.getOperatorFromToken($$[$0]) 
 break;
 case 12:
@@ -105,7 +105,11 @@ case 22:
  this.$ = new yy.BinaryOperation($$[$0-2], $$[$0-1], $$[$0]) 
 break;
 case 36:
- this.$ = new yy.BinaryOperation(new yy.Expr($$[$0-2]), $$[$0-1], $$[$0]) 
+
+			var identifierToken = new yy.Token($$[$0-2])
+			var identifier = new yy.Identifier(identifierToken)
+			this.$ = new yy.BinaryOperation(identifier, $$[$0-1], $$[$0])
+		
 break;
 case 39:
  this.$ = new yy.Identifier(new yy.Token($$[$0])) 

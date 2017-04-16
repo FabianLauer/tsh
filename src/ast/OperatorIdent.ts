@@ -5,6 +5,9 @@ export enum OperatorIdent {
 	// Access
 	'.',
 
+	// Assignment
+	'=',
+
 	// Arithmetic Binary
 	'+',	'-',	'*',	'/',	'%',
 	'+=',	'-=', 	'*=',	'/=',	'%=',

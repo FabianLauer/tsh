@@ -101,7 +101,7 @@ binary_operation:
 /* --------------------------------- */
 
 assignment_operator:
-		'='
+		'='				{ $$ = yy.getOperatorFromToken($1) }
 	|	MUL_ASSIGN		{ $$ = yy.getOperatorFromToken($1) }
 	|	DIV_ASSIGN		{ $$ = yy.getOperatorFromToken($1) }
 	|	MOD_ASSIGN		{ $$ = yy.getOperatorFromToken($1) }
@@ -117,7 +117,11 @@ assignment_operator:
 
 atomic_assignment_expr:
 	IDENTIFIER assignment_operator expression
-		{ $$ = new yy.BinaryOperation(new yy.Expr($1), $2, $3) }
+		{
+			var identifierToken = new yy.Token($1)
+			var identifier = new yy.Identifier(identifierToken)
+			$$ = new yy.BinaryOperation(identifier, $2, $3)
+		}
 ;
 
 

@@ -1618,7 +1618,7 @@ let UnaryOperationCodeGenerator = class UnaryOperationCodeGenerator extends Base
     }
 };
 UnaryOperationCodeGenerator = __decorate([
-    factory_1.register(node => node instanceof ast_1.UnaryOperation ? 1 : 0)
+    factory_1.register(node => node instanceof ast_1.UnaryOperation ? Infinity : 0)
 ], UnaryOperationCodeGenerator);
 exports.UnaryOperationCodeGenerator = UnaryOperationCodeGenerator;
 
@@ -1811,7 +1811,7 @@ var generatedParser = (function () {
                     this.$ = new yy.UnaryOperation($$[$0 - 1], $$[$0], yy.UnaryOperatorPosition.Postfix);
                     break;
                 case 13:
-                    this.$ = new yy.UnaryOperation($$[$0 - 1], $$[$0], yy.UnaryOperatorPosition.Prefix);
+                    this.$ = new yy.UnaryOperation($$[$0], $$[$0 - 1], yy.UnaryOperatorPosition.Prefix);
                     break;
                 case 14:
                 case 23:

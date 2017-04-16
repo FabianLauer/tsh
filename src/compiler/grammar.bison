@@ -139,11 +139,7 @@ assignment_expr:
 /* ------------------------------------------------------------------------------- */
 
 
-
-atomic_primary_expr:
-		IDENTIFIER					{ $$ = new yy.Identifier(new yy.Token($1)) }
-	|	CONSTANT					{ $$ = new yy.NumericExpr(new yy.Token($1)) }
-	|	STRING_LITERAL				{
+string_literal: STRING_LITERAL	{
 		/*
 			We replace the quotes by slicing them away. This is trivial since the quotes
 			are *always* the first and last character in the `STRING_LITERAL` terminal.
@@ -153,6 +149,13 @@ atomic_primary_expr:
 		var content = new yy.Token(($1).trim().slice(1, -1))
 		$$ = new yy.StringLiteral(content)
 	}
+;
+
+
+atomic_primary_expr:
+		IDENTIFIER					{ $$ = new yy.Identifier(new yy.Token($1)) }
+	|	CONSTANT					{ $$ = new yy.NumericExpr(new yy.Token($1)) }
+	|	string_literal				{ $$ = $1 }
 ;
 
 
@@ -472,6 +475,18 @@ class_decl:
 
 
 
+
+/* ------------------------------------------------------------------------------- */
+/* ----------- IMPORT STATEMENT -------------------------------------------------- */
+/* ------------------------------------------------------------------------------- */
+
+
+import_statement: IMPORT string_literal nl_or_eof
+	{ $$ = new yy.ImportStatement($2) }
+;
+
+
+
 /* ------------------------------------------------------------------------------- */
 /* ----------- ROOT -------------------------------------------------------------- */
 /* ------------------------------------------------------------------------------- */
@@ -482,6 +497,7 @@ root_grammar:
 		comment
 	|	func_decl
 	|	class_decl
+	|	import_statement
 	|	nl_or_eof
 ;
 

@@ -1,0 +1,11 @@
+
+export a
+export abc
+
+// another one
+export alpha
+
+func foo() -> Void { }
+
+// and yet another one:
+export foo

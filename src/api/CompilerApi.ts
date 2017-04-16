@@ -105,10 +105,20 @@ export class CompilerApi implements ICompilerApi {
 	 * @return string The output code.
 	 */
 	public compileSourceCode(sourceCode: string, target: CompileTarget): string {
-		const sourceUnit = parseToSourceUnit(undefined, sourceCode)
+		const sourceUnit = parseToSourceUnit(
+			// we create the source unit with a unique name:
+			`SourceUnit-${++CompilerApi.sourceUnitCount}`,
+			sourceCode
+		)
 		const codeGenerator = this.createCodeGenerator(target, sourceUnit)
 		return codeGenerator.generateCode()
 	}
+
+
+	/**
+	 * An internal counter used to make source unit names as unique as possible.
+	 */
+	private static sourceUnitCount = 0
 
 
 	/**

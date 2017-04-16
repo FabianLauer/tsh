@@ -93,7 +93,7 @@ case 12:
  this.$ = new yy.UnaryOperation($$[$0-1], $$[$0], yy.UnaryOperatorPosition.Postfix) 
 break;
 case 13:
- this.$ = new yy.UnaryOperation($$[$0-1], $$[$0], yy.UnaryOperatorPosition.Prefix) 
+ this.$ = new yy.UnaryOperation($$[$0], $$[$0-1], yy.UnaryOperatorPosition.Prefix) 
 break;
 case 14: case 23: case 37: case 42: case 43: case 46: case 47: case 48: case 82: case 90: case 92: case 105: case 112:
  this.$ = $$[$0] 

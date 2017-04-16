@@ -54,7 +54,7 @@ atomic_unary_operation:
 	
 	/* prefix: */
 	|	unary_operator primary_expr
-			{ $$ = new yy.UnaryOperation($1, $2, yy.UnaryOperatorPosition.Prefix) }
+			{ $$ = new yy.UnaryOperation($2, $1, yy.UnaryOperatorPosition.Prefix) }
 ;
 
 

@@ -293,7 +293,7 @@ __var_decl_modifier:
 		LET			{ $$ = yy.getVarDeclModifierByKeyword($1) }
 	|	CONST		{ $$ = yy.getVarDeclModifierByKeyword($1) }
 ;
-__var_decl_type_decl: ":" type_expr	{ $$ = $1 } | ;
+__var_decl_type_decl: ":" type_expr	{ $$ = $2 } | ;
 
 __var_decl_name_and_maybe_type_decl:
 	IDENTIFIER __var_decl_type_decl

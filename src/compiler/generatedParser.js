@@ -95,10 +95,10 @@ break;
 case 13:
  this.$ = new yy.UnaryOperation($$[$0], $$[$0-1], yy.UnaryOperatorPosition.Prefix) 
 break;
-case 14: case 23: case 37: case 42: case 43: case 46: case 47: case 48: case 82: case 90: case 92: case 105: case 112:
+case 14: case 23: case 37: case 42: case 43: case 46: case 47: case 48: case 72: case 82: case 90: case 92: case 105: case 112:
  this.$ = $$[$0] 
 break;
-case 15: case 24: case 38: case 44: case 45: case 72: case 89:
+case 15: case 24: case 38: case 44: case 45: case 89:
  this.$ = $$[$0-1] 
 break;
 case 22:

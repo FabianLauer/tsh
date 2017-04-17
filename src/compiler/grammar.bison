@@ -189,6 +189,12 @@ primary_expr:
 ;
 
 
+anon_func_expr:
+		anon_func_decl				{ $$ = $1 }
+	|	'(' anon_func_decl ')'		{ $$ = new yy.PrecedenceExpr($2) }
+;
+
+
 operation:
 		unary_operation				{ $$ = $1 }
 	|	binary_operation			{ $$ = $1 }
@@ -200,6 +206,7 @@ expression:
 	|	operation					{ $$ = $1 }
 	|	assignment_expr				{ $$ = $1 }
 	|	func_call_expr				{ $$ = $1 }
+	|	anon_func_expr				{ $$ = $1 }
 ;
 
 
@@ -452,6 +459,23 @@ func_decl:
 		{
 			$$ = yy.FuncDecl.create({
 				funcName: $1,
+				runtimeParamDecls: $2,
+				returnTypeDecl: $3,
+				funcBody: $4
+			})
+		}
+;
+
+
+__anon_func_ident: FUNCTION;
+anon_func_decl:
+		__anon_func_ident
+		__func_param_decl_list
+		__func_return_expr
+		__func_body
+		__func_decl_end
+		{
+			$$ = yy.AnonFuncDecl.create({
 				runtimeParamDecls: $2,
 				returnTypeDecl: $3,
 				funcBody: $4

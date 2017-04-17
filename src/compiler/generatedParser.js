@@ -108,7 +108,15 @@ case 41:
  this.$ = new yy.FuncCall($$[$0-2], new yy.ExprList([])) 
 break;
 case 42:
- this.$ = new yy.FuncCall($$[$0-1], new yy.ExprList($$[$0].expr.expressions)) 
+
+			var params;
+			if ($$[$0].expr instanceof yy.ExprList) {
+				params = new yy.ExprList($$[$0].expr.expressions)
+			} else {
+				params = new yy.ExprList([$$[$0].expr])
+			}
+			this.$ = new yy.FuncCall($$[$0-1], params)
+		
 break;
 case 43:
 

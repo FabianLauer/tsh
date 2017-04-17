@@ -142,7 +142,15 @@ func_call_expr:
 		identifier '(' ')'
 		{ $$ = new yy.FuncCall($1, new yy.ExprList([])) }
 	|	identifier precedence_expr_list
-		{ $$ = new yy.FuncCall($1, new yy.ExprList($2.expr.expressions)) }
+		{
+			var params;
+			if ($2.expr instanceof yy.ExprList) {
+				params = new yy.ExprList($2.expr.expressions)
+			} else {
+				params = new yy.ExprList([$2.expr])
+			}
+			$$ = new yy.FuncCall($1, params)
+		}
 ;
 
 

@@ -1,5 +1,6 @@
 import { assertAstNodeParam } from './utils/assert'
-import { BaseNode, Token, Statement, TypeExpr, ParamDeclList } from './'
+import { Token, Statement, TypeExpr, ParamDeclList } from './'
+import Expr from './Expr'
 
 
 export interface IAnonFuncDeclCreateParams {
@@ -25,7 +26,7 @@ export interface IAnonFuncDeclCreateParams {
 }
 
 
-export class AnonFuncDecl extends BaseNode {
+export class AnonFuncDecl extends Expr {
 	/**
 	 * Creates a new `FuncDecl` instance.
 	 * @param params Parameters for the function declaration.

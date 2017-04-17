@@ -1,31 +1,16 @@
 import { assertAstNodeParam } from './utils/assert'
-import { BaseNode, Token, Statement, TypeExpr, ParamDeclList } from './'
+import { IAnonFuncDeclCreateParams, AnonFuncDecl, Token, Statement, TypeExpr, ParamDeclList } from './'
 
 
-export interface IFuncDeclCreateParams {
+export interface IFuncDeclCreateParams extends IAnonFuncDeclCreateParams {
 	/**
 	 * The name of the function itself.
 	 */
 	funcName: Token
-
-	/**
-	 * The function's runtime parameter declaration list.
-	 */
-	runtimeParamDecls?: ParamDeclList
-
-	/**
-	 * The function's return type declaration.
-	 */
-	returnTypeDecl?: TypeExpr
-
-	/**
-	 * The function body.
-	 */
-	funcBody?: Statement
 }
 
 
-export class FuncDecl extends BaseNode {
+export class FuncDecl extends AnonFuncDecl {
 	/**
 	 * Creates a new `FuncDecl` instance.
 	 * @param params Parameters for the function declaration.
@@ -51,17 +36,18 @@ export class FuncDecl extends BaseNode {
 		/**
 		 * The function's runtime parameter declaration list.
 		 */
-		public readonly runtimeParamDecls: ParamDeclList = ParamDeclList.Empty,
+		runtimeParamDecls: ParamDeclList = ParamDeclList.Empty,
 		/**
 		 * The function's return type declaration.
 		 */
-		public readonly returnTypeDecl: TypeExpr = TypeExpr.Empty,
+		returnTypeDecl: TypeExpr = TypeExpr.Empty,
 		/**
 		 * The function body.
 		 */
-		public readonly body: Statement = Statement.Empty
+		body: Statement = Statement.Empty
 	) {
-		super()
+		super(runtimeParamDecls, returnTypeDecl, body)
+
 		assertAstNodeParam(name instanceof Token)
 		assertAstNodeParam(runtimeParamDecls instanceof ParamDeclList)
 		assertAstNodeParam(returnTypeDecl instanceof TypeExpr)

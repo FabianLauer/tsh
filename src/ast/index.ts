@@ -1,5 +1,7 @@
 /// AST Node Types
 export * from './BaseNode'
+
+export * from './AnonFuncDecl'
 export * from './BinaryOperation'
 export * from './ClassDecl'
 export * from './Comment'

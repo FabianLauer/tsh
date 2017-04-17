@@ -88,6 +88,42 @@ for (let i = 1; i < 25; i++) {
 		([$]) => -1 === $.expression.expr.expressions.findIndex(expr => !(expr instanceof ast.NumericExpr))
 	)
 
+	// a + (1, 2, 3, ...)
+	test<ast.ExprStatement<ast.BinaryOperation>>(
+		`a + (${integers})`,
+		([$]) => isInstanceOf($, ast.ExprStatement),
+		([$]) => isInstanceOf($.expression, ast.BinaryOperation),
+		([$]) => isInstanceOf($.expression.rightOperand, ast.PrecedenceExpr),
+		([$]) => {
+			const rightOperand = (<ast.PrecedenceExpr<any>>$.expression.rightOperand)
+			const list = (<ast.ExprList<ast.NumericExpr[]>>rightOperand.expr)
+			return list.expressions.length === numExprs
+		},
+		([$]) => {
+			const rightOperand = (<ast.PrecedenceExpr<any>>$.expression.rightOperand)
+			const list = (<ast.ExprList<ast.NumericExpr[]>>rightOperand.expr)
+			return -1 === list.expressions.findIndex(expr => !(expr instanceof ast.NumericExpr))
+		}
+	)
+
+	// a = (1, 2, 3, ...)
+	test<ast.ExprStatement<ast.BinaryOperation>>(
+		`a = (${integers})`,
+		([$]) => isInstanceOf($, ast.ExprStatement),
+		([$]) => isInstanceOf($.expression, ast.BinaryOperation),
+		([$]) => isInstanceOf($.expression.rightOperand, ast.PrecedenceExpr),
+		([$]) => {
+			const rightOperand = (<ast.PrecedenceExpr<any>>$.expression.rightOperand)
+			const list = (<ast.ExprList<ast.NumericExpr[]>>rightOperand.expr)
+			return list.expressions.length === numExprs
+		},
+		([$]) => {
+			const rightOperand = (<ast.PrecedenceExpr<any>>$.expression.rightOperand)
+			const list = (<ast.ExprList<ast.NumericExpr[]>>rightOperand.expr)
+			return -1 === list.expressions.findIndex(expr => !(expr instanceof ast.NumericExpr))
+		}
+	)
+
 
 	/// String Literals
 
@@ -115,6 +151,42 @@ for (let i = 1; i < 25; i++) {
 		([$]) => -1 === $.expression.expr.expressions.findIndex(expr => !(expr instanceof ast.StringLiteral))
 	)
 
+	// a + ("a", "b", "c", ...)
+	test<ast.ExprStatement<ast.BinaryOperation>>(
+		`a + (${stringLiterals})`,
+		([$]) => isInstanceOf($, ast.ExprStatement),
+		([$]) => isInstanceOf($.expression, ast.BinaryOperation),
+		([$]) => isInstanceOf($.expression.rightOperand, ast.PrecedenceExpr),
+		([$]) => {
+			const rightOperand = (<ast.PrecedenceExpr<any>>$.expression.rightOperand)
+			const list = (<ast.ExprList<ast.StringLiteral[]>>rightOperand.expr)
+			return list.expressions.length === numExprs
+		},
+		([$]) => {
+			const rightOperand = (<ast.PrecedenceExpr<any>>$.expression.rightOperand)
+			const list = (<ast.ExprList<ast.StringLiteral[]>>rightOperand.expr)
+			return -1 === list.expressions.findIndex(expr => !(expr instanceof ast.StringLiteral))
+		}
+	)
+
+	// a = ("a", "b", "c", ...)
+	test<ast.ExprStatement<ast.BinaryOperation>>(
+		`a = (${stringLiterals})`,
+		([$]) => isInstanceOf($, ast.ExprStatement),
+		([$]) => isInstanceOf($.expression, ast.BinaryOperation),
+		([$]) => isInstanceOf($.expression.rightOperand, ast.PrecedenceExpr),
+		([$]) => {
+			const rightOperand = (<ast.PrecedenceExpr<any>>$.expression.rightOperand)
+			const list = (<ast.ExprList<ast.StringLiteral[]>>rightOperand.expr)
+			return list.expressions.length === numExprs
+		},
+		([$]) => {
+			const rightOperand = (<ast.PrecedenceExpr<any>>$.expression.rightOperand)
+			const list = (<ast.ExprList<ast.StringLiteral[]>>rightOperand.expr)
+			return -1 === list.expressions.findIndex(expr => !(expr instanceof ast.StringLiteral))
+		}
+	)
+
 
 	/// Identifiers
 
@@ -137,5 +209,41 @@ for (let i = 1; i < 25; i++) {
 		([$]) => isInstanceOf($.expression.expr, ast.ExprList),
 		([$]) => $.expression.expr.expressions.length === numExprs,
 		([$]) => -1 === $.expression.expr.expressions.findIndex(expr => !(expr instanceof ast.Identifier))
+	)
+
+	// a + (a, b, c, ...)
+	test<ast.ExprStatement<ast.BinaryOperation>>(
+		`a + (${identifiers})`,
+		([$]) => isInstanceOf($, ast.ExprStatement),
+		([$]) => isInstanceOf($.expression, ast.BinaryOperation),
+		([$]) => isInstanceOf($.expression.rightOperand, ast.PrecedenceExpr),
+		([$]) => {
+			const rightOperand = (<ast.PrecedenceExpr<any>>$.expression.rightOperand)
+			const list = (<ast.ExprList<ast.Identifier[]>>rightOperand.expr)
+			return list.expressions.length === numExprs
+		},
+		([$]) => {
+			const rightOperand = (<ast.PrecedenceExpr<any>>$.expression.rightOperand)
+			const list = (<ast.ExprList<ast.Identifier[]>>rightOperand.expr)
+			return -1 === list.expressions.findIndex(expr => !(expr instanceof ast.Identifier))
+		}
+	)
+
+	// a = (a, b, c, ...)
+	test<ast.ExprStatement<ast.BinaryOperation>>(
+		`a = (${identifiers})`,
+		([$]) => isInstanceOf($, ast.ExprStatement),
+		([$]) => isInstanceOf($.expression, ast.BinaryOperation),
+		([$]) => isInstanceOf($.expression.rightOperand, ast.PrecedenceExpr),
+		([$]) => {
+			const rightOperand = (<ast.PrecedenceExpr<any>>$.expression.rightOperand)
+			const list = (<ast.ExprList<ast.Identifier[]>>rightOperand.expr)
+			return list.expressions.length === numExprs
+		},
+		([$]) => {
+			const rightOperand = (<ast.PrecedenceExpr<any>>$.expression.rightOperand)
+			const list = (<ast.ExprList<ast.Identifier[]>>rightOperand.expr)
+			return -1 === list.expressions.findIndex(expr => !(expr instanceof ast.Identifier))
+		}
 	)
 }

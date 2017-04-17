@@ -110,11 +110,18 @@ namespace('demo', function () {
 	})
 
 
+	desc('Compiles the demo\'s main file.')
+	task('compile', () => {
+		sh `ts-node scripts/compileFromFile.ts ./docs/demo.tsh ./docs/demo.js`
+	})
+
+
 	desc('Fully updates the existing demo.')
 	task('update', () => {
 		jake('demo', 'clean')
 		jake('demo', 'update-static-js')
 		jake('demo', 'update-compiler-js')
+		jake('demo', 'compile')
 	})
 
 })

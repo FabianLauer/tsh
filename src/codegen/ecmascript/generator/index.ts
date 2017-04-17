@@ -1,3 +1,4 @@
+import './AnonFuncDeclCodeGenerator'
 import './BaseConditionalStatementCodeGenerator'
 import './BinaryOperationCodeGenerator'
 import './ClassDeclCodeGenerator'

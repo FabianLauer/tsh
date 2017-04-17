@@ -181,8 +181,40 @@ expression:
 ;
 
 
+expr_list:
+		expression {
+			const exprs = []
+			if (typeof $1 !== 'undefined') {
+				exprs.push($1)
+			}
+			$$ = new yy.ExprList(exprs)
+		}
+	|	expr_list "," expression
+		{
+			$$ = new yy.ExprList($1.expressions.concat($3))
+		}
+;
+
+
+precedence_expr_list: '(' expr_list ')'	{
+		if ($2.expressions.length === 1) {
+			$$ = new yy.PrecedenceExpr($2.expressions[0])
+		} else {
+			$$ = new yy.PrecedenceExpr($2)
+		}
+	}
+;
+
+
 expression_statement:
-	expression maybe_nl_or_eof		{ $$ = new yy.ExprStatement($1) }
+		expr_list maybe_nl_or_eof		{
+		if ($1.expressions.length === 1) {
+			$$ = new yy.ExprStatement($1.expressions[0])
+		} else {
+			$$ = new yy.ExprStatement($1)
+		}
+	}
+	|	precedence_expr_list maybe_nl_or_eof		{ $$ = new yy.ExprStatement($1) }
 ;
 
 
@@ -375,7 +407,7 @@ param_decl_list:
 			}
 			$$ = yy.ParamDeclList.fromParamDecls(decls)
 		}
-	|	param_decl_list "," __param_decl
+	|	param_decl_list "," param_decl
 		{
 			$$ = yy.ParamDeclList.fromParamDecls(
 				$1.paramDecls.concat($3)

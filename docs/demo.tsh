@@ -1,0 +1,109 @@
+class RequireConfigPaths {
+	const vs = "monaco-editor/vs"
+}
+
+class RequireConfig {
+	const paths = RequireConfigPaths()
+}
+
+/// The main function of the demo.
+func main() -> Void {
+	require.config(RequireConfig())
+	require(window.createJSArray('vs/editor/editor.main'), func () {
+		startDemo(monaco)
+	})
+}
+
+
+func startDemo(monaco: Any) -> Void {
+	const sourceEditor = createEditor(monaco, "source-container", "swift", false, getSampleCode())
+
+	const compiledEditor = createEditor(monaco, "compiled-container", "javascript", true, "")
+
+	const recompile = func() {
+		compile(sourceEditor, compiledEditor)
+	}
+
+	// compile once on start
+	recompile()
+
+	// bind events
+	sourceEditor.onDidType(recompile)
+	sourceEditor.onDidPaste(recompile)
+	sourceEditor.onDidBlurEditor(recompile)
+	sourceEditor.onDidChangeModelContent(recompile)
+}
+
+
+class MonacoEditorOptions {
+	let value: String
+	let language: String
+	let readOnly: Bool
+
+	const lineNumbers = true
+	const roundedSelection = false
+	const scrollBeyondLastLine = true
+	const theme = "vs-light"
+	const fontSize = 11
+	const wordWrap = true
+	const folding = true
+}
+
+
+func createEditor(monaco: Any, containerId: String, language: String, readOnly: Bool, content: String) -> Any {
+	const options = MonacoEditorOptions()
+
+	options.value = content
+	options.language = language
+	options.readOnly = readOnly
+
+	return monaco.editor.create(document.getElementById(containerId), options)
+}
+
+
+func compile(sourceEditor: Any, compiledEditor: Any) -> Void {
+	clearCompileProblems()
+
+	tryCatch(func() {
+		const api = compiler.CompilerApi.create()
+		return api.compileSourceCode(sourceEditor.getValue(), 0)
+	}, func(compiledCode) {
+		compiledEditor.setValue(tryBeautifyJavaScript(compiledCode))
+	}, func(err: Error) {
+		renderCompileProblem(err)
+	})
+}
+
+
+func tryBeautifyJavaScript(jsCode) -> String {
+	return tryCatch(func() {
+		return window.js_beautify(jsCode)
+	}, func(formattedCode) {
+		return formattedCode
+	}, func() {
+		return jsCode
+	})
+}
+
+
+func getProblemsPanelContentElement() -> HTMLElement {
+	return document.getElementById("problems-panel-content")
+}
+
+
+func clearCompileProblems() -> Void {
+	const problemsPanelContent = getProblemsPanelContentElement()
+	problemsPanelContent.innerHTML = ""
+	const content = document.createElement("span")
+	content.innerText = "No problems."
+	problemsPanelContent.appendChild(content)
+}
+
+
+func renderCompileProblem(error) -> Void {
+	const problemsPanelContent = getProblemsPanelContentElement()
+	problemsPanelContent.innerHTML = ""
+	let problem = document.createElement("pre")
+	problem.innerText = error.message
+	problemsPanelContent.appendChild(problem)
+}

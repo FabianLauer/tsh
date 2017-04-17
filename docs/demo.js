@@ -1,167 +1,150 @@
-require.config({ paths: { 'vs': 'monaco-editor/vs' } });
-require(['vs/editor/editor.main'], function () {
-	main(monaco)
-});
 
+		/** @class RequireConfigPaths */
+		var RequireConfigPaths = (function() {
+			/** @constructor */
+			function RequireConfigPaths() {
+				this.vs = "monaco-editor/vs";
 
-function main() {
-	var sourceEditor = createEditor(
-		monaco,
-		'source-container',
-		'swift',
-		false,
-		[
-			'//',
-			'//                          DEMO',
-			'//           - https://github.com/FabianLauer/tsh -',
-			'//',
-			'// Any code you enter in this window will be compiled to JavaScript on the fly.',
-			'// ',
-			'',
-			'',
-			'// import modules:',
-			'import "fs"',
-			'import "http"',
-			'',
-			'// import files:',
-			'import "./otherFile"',
-			'import "../../yet/another/file"',
-			'',
-			'',
-			'class Person {',
-			'	// Unlike Swift, `let` variables are mutable.',
-			'	// Use `const` for immutable variables and class variables.',
-			'	const name',
-			'	let spouse: Person',
-			'',
-			'	static const defaultAge: Int = 0',
-			'	let age = defaultAge',
-			'',
-			'	func describe() -> String {',
-			'		return "Person ${name} is ${age} years old."',
-			'	}',
-			'',
-			'	// types are optional:',
-			'	func noTypes(a, b, c) {',
-			'		// ...',
-			'	}',
-			'	// and even implementations can be omitted:',
-			'	func someTypes(a: String, b, c: Int)',
-			'	func allTypes(a: String, b, c: Int) -> Int',
-			'}',
-			'',
-			'// this will make `Person` available when this file is imported',
-			'export Person',
-			'',
-			'func main() -> Void {',
-			'	let person: Person = Person()',
-			'	let descr: String = person.describe()',
-			'',
-			'	// parens around conditions are optional:',
-			'	if person {',
-			'		// ...',
-			'	} else if descr {',
-			'		// ...',
-			'	} else {',
-			'		// ...',
-			'	}',
-			'}',
-			'',
-			'// Callback functions are always anonymous.',
-			'// Their implementation can be omitted too.',
-			'func asyncCode() -> Any {',
-			'	// this function can be called at runtime:',
-			'	let someCallback = func() -> Void',
-			'	',
-			'	// that\'s okay!',
-			'	someCallback()',
-			'',
-			'	// funcs can be passed as parameters',
-			'	fs.readFile("names.json", func(err: Error, content: String) -> Void {',
-			'		if err {',
-			'			return undef',
-			'		} else {',
-			'			doMoreWork(JSON.parse(content.toString("utf8"), someCallback))',
-			'		}',
-			'	})',
-			'}',
-			''
-		].join('\n')
-	);
+			}
 
-	var compiledEditor = createEditor(
-		monaco,
-		'compiled-container',
-		'javascript',
-		true,
-		[].join('\n')
-	);
+			
 
-	var recompile = function () { compile(sourceEditor, compiledEditor); }
+			
 
-	// compile once on start
-	recompile();
+			return function() {
+				return new RequireConfigPaths();
+			};
+		})();
 
-	// bind events
-	sourceEditor.onDidType(recompile);
-	sourceEditor.onDidPaste(recompile);
-	sourceEditor.onDidBlurEditor(recompile);
-	sourceEditor.onDidChangeModelContent(recompile);
-}
+		
+		/** @class RequireConfig */
+		var RequireConfig = (function() {
+			/** @constructor */
+			function RequireConfig() {
+				this.paths = RequireConfigPaths();
 
+			}
 
-function compile(sourceEditor, compiledEditor) {
-	try {
-		var compiled = compiler.CompilerApi.create()
-			.compileSourceCode(sourceEditor.getValue(), 0);
-		compiledEditor.setValue(tryBeautifyJavaScript(compiled));
-	} catch(err) {
-		renderCompileProblem(err);
-		return
-	}
-	clearCompileProblems();
-}
+			
 
+			
 
-function tryBeautifyJavaScript(js) {
-	if (typeof window.js_beautify === 'function') {
-		return window.js_beautify(js);
-	}
-	return js;
-}
+			return function() {
+				return new RequireConfig();
+			};
+		})();
 
+		
+		function main() {
+			require.config(RequireConfig());
+require(window.createJSArray('vs/editor/editor.main'), (function () {
+			startDemo(monaco);
 
-function createEditor(monaco, containerId, language, readonly, content) {
-	return monaco.editor.create(document.getElementById(containerId), {
-		value: content,
-		language: language,
-		lineNumbers: true,
-		roundedSelection: false,
-		scrollBeyondLastLine: true,
-		readOnly: !!readonly,
-		theme: 'vs-light',
-		fontSize: 11,
-		wordWrap: true,
-		folding: true
-	});
-}
+		}));
 
+		}
+		
+		function startDemo(monaco) {
+			var sourceEditor = createEditor(monaco, "source-container", "swift", false, getSampleCode());
+var compiledEditor = createEditor(monaco, "compiled-container", "javascript", true, "");
+var recompile = (function () {
+			compile(sourceEditor, compiledEditor);
 
+		});
+recompile();
+sourceEditor.onDidType(recompile);
+sourceEditor.onDidPaste(recompile);
+sourceEditor.onDidBlurEditor(recompile);
+sourceEditor.onDidChangeModelContent(recompile);
 
-var problemsPanelContent = document.getElementById('problems-panel-content');
+		}
+		
+		/** @class MonacoEditorOptions */
+		var MonacoEditorOptions = (function() {
+			/** @constructor */
+			function MonacoEditorOptions() {
+				this.value;
+this.language;
+this.readOnly;
+this.lineNumbers = true;
+this.roundedSelection = false;
+this.scrollBeyondLastLine = true;
+this.theme = "vs-light";
+this.fontSize = 11;
+this.wordWrap = true;
+this.folding = true;
 
+			}
 
-function clearCompileProblems() {
-	problemsPanelContent.innerHTML = '';
-	var content = document.createElement('span');
-	content.innerText = 'No problems.';
-	problemsPanelContent.appendChild(content);
-}
+			
 
+			
 
-function renderCompileProblem(error) {
-	problemsPanelContent.innerHTML = '';
-	var problem = document.createElement('pre');
-	problem.innerText = error.message;
-	problemsPanelContent.appendChild(problem);
-}
+			return function() {
+				return new MonacoEditorOptions();
+			};
+		})();
+
+		
+		function createEditor(monaco, containerId, language, readOnly, content) {
+			var options = MonacoEditorOptions();
+options.value = content;
+options.language = language;
+options.readOnly = readOnly;
+return monaco.editor.create(document.getElementById(containerId), options);
+
+		}
+		
+		function compile(sourceEditor, compiledEditor) {
+			clearCompileProblems();
+tryCatch((function () {
+			var api = compiler.CompilerApi.create();
+return api.compileSourceCode(sourceEditor.getValue(), 0);
+
+		}), (function (compiledCode) {
+			compiledEditor.setValue(tryBeautifyJavaScript(compiledCode));
+
+		}), (function (err) {
+			renderCompileProblem(err);
+
+		}));
+
+		}
+		
+		function tryBeautifyJavaScript(jsCode) {
+			return tryCatch((function () {
+			return window.js_beautify(jsCode);
+
+		}), (function (formattedCode) {
+			return formattedCode;
+
+		}), (function () {
+			return jsCode;
+
+		}));
+
+		}
+		
+		function getProblemsPanelContentElement() {
+			return document.getElementById("problems-panel-content");
+
+		}
+		
+		function clearCompileProblems() {
+			var problemsPanelContent = getProblemsPanelContentElement();
+problemsPanelContent.innerHTML = "";
+var content = document.createElement("span");
+content.innerText = "No problems.";
+problemsPanelContent.appendChild(content);
+
+		}
+		
+		function renderCompileProblem(error) {
+			var problemsPanelContent = getProblemsPanelContentElement();
+problemsPanelContent.innerHTML = "";
+var problem = document.createElement("pre");
+problem.innerText = error.message;
+problemsPanelContent.appendChild(problem);
+
+		}
+		

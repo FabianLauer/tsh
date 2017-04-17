@@ -1463,7 +1463,9 @@ let ClassDeclCodeGenerator = class ClassDeclCodeGenerator extends BaseGenerator_
 
 			${methodDecls.map(factory_1.createForAstNode).join('')}
 
-			return ${className};
+			return function() {
+				return new ${className}();
+			};
 		})();
 
 		`;

@@ -1,33 +1,142 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Demo</title>
-		<meta charset="utf-8" />
-		<link rel="stylesheet" type="text/css" href="./demo.css" />
-	</head>
-	<body>
-		<section id="editor-panel" class="panel">
-			<div id="source-container" class="editor"></div>
-			<div id="compiled-container" class="editor"></div>
-		</section>
 
-		<section id="problems-panel" class="panel">
-			<h3>Problems</h3>
-			<div id="problems-panel-content"></div>
-		</section>
+<head>
+	<title>Demo</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" type="text/css" href="./demo.css" />
+</head>
 
+<body>
+	<section id="editor-panel" class="panel">
+		<div id="source-container" class="editor"></div>
+		<div id="compiled-container" class="editor"></div>
+	</section>
 
-		<!-- Fork me on GitHub -->
-		<a class="github-ribbon" href="https://github.com/FabianLauer/tsh">
-			<img src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
-		</a>
+	<section id="problems-panel" class="panel">
+		<h3>Problems</h3>
+		<div id="problems-panel-content"></div>
+	</section>
 
 
-		<!-- JS -->
-		<script src="./static/compiler.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.6.12/beautify.min.js"></script>
-		<script src="monaco-editor/vs/loader.js"></script>
-		<script src="./demo.js"></script>
+	<!-- Fork me on GitHub -->
+	<a class="github-ribbon" href="https://github.com/FabianLauer/tsh">
+		<img src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67"
+		 alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
+	</a>
 
-	</body>
+
+	<!-- JS -->
+	<script src="./static/compiler.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.6.12/beautify.min.js"></script>
+	<script src="monaco-editor/vs/loader.js"></script>
+	<script src="./demo.js"></script>
+	<script>
+		// Call the main function:
+		main();
+
+
+		/// Functions needed by `demo.js`:
+
+
+		function createJSArray(item) {
+			return new Array(item)
+		}
+
+
+		function tryCatch(func, onSuccess, onError) {
+			var result;
+			try {
+				result = func()
+			} catch (err) {
+				return onError(err)
+			}
+			return onSuccess(result)
+		}
+
+
+		function getSampleCode() {
+			return [
+				'//',
+				'//                          DEMO',
+				'//           - https://github.com/FabianLauer/tsh -',
+				'//',
+				'// Any code you enter in this window will be compiled to JavaScript on the fly.',
+				'// By the way, the JS code that runs this demo was origininally written in TSH.',
+				'//',
+				'',
+				'',
+				'// import modules:',
+				'import "fs"',
+				'import "http"',
+				'',
+				'// import files:',
+				'import "./otherFile"',
+				'import "../../yet/another/file"',
+				'',
+				'',
+				'class Person {',
+				'	// Unlike Swift, `let` variables are mutable.',
+				'	// Use `const` for immutable variables and class variables.',
+				'	const name',
+				'	let spouse: Person',
+				'',
+				'	static const defaultAge: Int = 0',
+				'	let age = defaultAge',
+				'',
+				'	func describe() -> String {',
+				'		return "Person ${name} is ${age} years old."',
+				'	}',
+				'',
+				'	// types are optional:',
+				'	func noTypes(a, b, c) {',
+				'		// ...',
+				'	}',
+				'	// and even implementations can be omitted:',
+				'	func someTypes(a: String, b, c: Int)',
+				'	func allTypes(a: String, b, c: Int) -> Int',
+				'}',
+				'',
+				'// this will make `Person` available when this file is imported',
+				'export Person',
+				'',
+				'func main() -> Void {',
+				'	let person: Person = Person()',
+				'	let descr: String = person.describe()',
+				'',
+				'	// parens around conditions are optional:',
+				'	if person {',
+				'		// ...',
+				'	} else if descr {',
+				'		// ...',
+				'	} else {',
+				'		// ...',
+				'	}',
+				'}',
+				'',
+				'// Callback functions are always anonymous.',
+				'// Their implementation can be omitted too.',
+				'func asyncCode() -> Any {',
+				'	// this function can be called at runtime:',
+				'	let someCallback = func() -> Void',
+				'	',
+				'	// that\'s okay!',
+				'	someCallback()',
+				'',
+				'	// funcs can be passed as parameters',
+				'	fs.readFile("names.json", func(err: Error, content: String) -> Void {',
+				'		if err {',
+				'			return undef',
+				'		} else {',
+				'			doMoreWork(JSON.parse(content.toString("utf8"), someCallback))',
+				'		}',
+				'	})',
+				'}',
+				''
+			].join('\n')
+		}
+	</script>
+
+</body>
+
 </html>

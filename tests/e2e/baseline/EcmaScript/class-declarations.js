@@ -4,7 +4,9 @@ var Alpha = (function() {
 	function Alpha() {
 	}
 
-	return Alpha;
+	return function() {
+		return new Alpha();
+	};
 })();
 
 
@@ -16,7 +18,9 @@ var Beta = (function() {
 		this.bar;
 	}
 
-	return Beta;
+	return function() {
+		return new Beta();
+	};
 })();
 
 
@@ -38,7 +42,9 @@ var Gamma = (function() {
 	Gamma.prototype.delta = function delta(a, b, c, d, e) {
 	}
 
-	return Gamma;
+	return function() {
+		return new Gamma();
+	};
 })();
 
 
@@ -53,7 +59,9 @@ var Delta = (function() {
 	Delta.fibo;
 	Delta.nacci;
 
-	return Delta;
+	return function() {
+		return new Delta();
+	};
 })();
 
 
@@ -69,5 +77,7 @@ var Epsilon = (function() {
 	Epsilon.prototype.a = function a() {
 	}
 
-	return Epsilon;
+	return function() {
+		return new Epsilon();
+	};
 })();

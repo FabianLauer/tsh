@@ -44,7 +44,9 @@ export class ClassDeclCodeGenerator extends BaseGenerator<ClassDecl> {
 
 			${methodDecls.map(createForAstNode).join('')}
 
-			return ${className};
+			return function() {
+				return new ${className}();
+			};
 		})();
 
 		`

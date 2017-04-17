@@ -10,10 +10,16 @@ export class BinaryOperationCodeGenerator extends BaseGenerator<BinaryOperation>
 	 * @param ast The syntax tree to generate code for.
 	 */
 	protected generateCodeConcrete(astNode: BinaryOperation) {
+		let operatorCode = createForAstNode(astNode.operator).toString()
+
+		if (operatorCode !== '.') {
+			operatorCode = ` ${operatorCode} `
+		}
+
 		return [
 			createForAstNode(astNode.leftOperand),
-			createForAstNode(astNode.operator),
+			operatorCode,
 			createForAstNode(astNode.rightOperand)
-		].join(' ')
+		].join('')
 	}
 }

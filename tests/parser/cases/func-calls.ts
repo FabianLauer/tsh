@@ -70,6 +70,18 @@ test<[ast.FuncCall]>(
 )
 
 test<[ast.FuncCall]>(
+	`a(1)`,
+	([$]) => isInstanceOf($, ast.FuncCall),
+	([$]) => $.parameterList.expressions.length === 1
+)
+
+test<[ast.FuncCall]>(
+	`alpha(1)`,
+	([$]) => isInstanceOf($, ast.FuncCall),
+	([$]) => $.parameterList.expressions.length === 1
+)
+
+test<[ast.FuncCall]>(
 	`alpha(1, 2, 3)`,
 	([$]) => isInstanceOf($, ast.FuncCall),
 	([$]) => $.parameterList.expressions.length === 3

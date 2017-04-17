@@ -1,0 +1,34 @@
+func main() {
+	func()
+	func() -> Void
+
+	func(a)
+	func(a: Int)
+	func(a) -> String
+	func(a: Int) -> String
+
+	func(a, b)
+	func(a: Int, b)
+	func(a, b) -> String
+	func(a: Int, b) -> String
+	func(a, b: String) -> String
+	func(a: Int, b: String) -> String
+
+	func () { }
+	(func (a, b, c) { return a })
+
+	func() {
+		return func() -> Void
+	}
+	(func() {
+		return func() -> Void
+	})
+
+	const a = func() {
+		return func() -> Void
+	}
+
+	abc(func())
+	abc((func()))
+	abc(func() { return func() })
+}

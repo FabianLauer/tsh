@@ -84,7 +84,9 @@ binary_operator:
 
 
 atomic_binary_operation:
-	expression binary_operator expression
+		expression binary_operator expression
+		{ $$ = new yy.BinaryOperation($1, $2, $3) }
+	|	expression binary_operator precedence_expr_list
 		{ $$ = new yy.BinaryOperation($1, $2, $3) }
 ;
 
@@ -116,12 +118,10 @@ assignment_operator:
 
 
 atomic_assignment_expr:
-	IDENTIFIER assignment_operator expression
-		{
-			var identifierToken = new yy.Token($1)
-			var identifier = new yy.Identifier(identifierToken)
-			$$ = new yy.BinaryOperation(identifier, $2, $3)
-		}
+		identifier assignment_operator expression
+		{ $$ = new yy.BinaryOperation($1, $2, $3) }
+	|	identifier assignment_operator precedence_expr_list
+		{ $$ = new yy.BinaryOperation($1, $2, $3) }
 ;
 
 

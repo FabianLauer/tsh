@@ -4,7 +4,8 @@
         "node_modules/**",
         "tools/**",
         "typings/**",
-        "docs/**"
+        "docs/**",
+        "tests/e2e/baseline/TypeScriptDeclarations/**"
     ],
     "compilerOptions": {
         // Build Config

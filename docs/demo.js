@@ -96,18 +96,39 @@ return monaco.editor.create(document.getElementById(containerId), options);
 		}
 		
 		function compile(sourceEditor, compiledEditor) {
-			clearCompileProblems();
+			var COMPILE_TARGET_JS = 0;
+var COMPILE_TARGET_TSD = 1;
+clearCompileProblems();
+var sourceCode = sourceEditor.getValue();
+var code = "";
 tryCatch((function () {
-			var api = compiler.CompilerApi.create();
-return api.compileSourceCode(sourceEditor.getValue(), 0);
+			return compileToTarget(sourceCode, COMPILE_TARGET_JS);
 
 		}), (function (compiledCode) {
-			compiledEditor.setValue(tryBeautifyJavaScript(compiledCode));
+			code += compiledCode;
 
 		}), (function (err) {
 			renderCompileProblem(err);
 
 		}));
+tryCatch((function () {
+			return compileToTarget(sourceCode, COMPILE_TARGET_TSD);
+
+		}), (function (compiledCode) {
+			compiledCode = compiledCode.replace(_new(RegExp, "\t+", "g"), "  ");
+code += "\n/* --- TypeScript Declarations --- */\n";
+code += "/*\n\n" + compiledCode + "\n*/";
+
+		}), (function () {
+			
+		}));
+compiledEditor.setValue(tryBeautifyJavaScript(code));
+
+		}
+		
+		function compileToTarget(sourceCode, compileTarget) {
+			var api = compiler.CompilerApi.create();
+return api.compileSourceCode(sourceCode, compileTarget);
 
 		}
 		

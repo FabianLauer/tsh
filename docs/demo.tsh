@@ -62,16 +62,40 @@ func createEditor(monaco: Any, containerId: String, language: String, readOnly: 
 
 
 func compile(sourceEditor: Any, compiledEditor: Any) -> Void {
+	const COMPILE_TARGET_JS = 0
+	const COMPILE_TARGET_TSD = 1
+
 	clearCompileProblems()
 
+	let sourceCode = sourceEditor.getValue()
+
+	let code = ""
+
+	// compile to JS
 	tryCatch(func() {
-		const api = compiler.CompilerApi.create()
-		return api.compileSourceCode(sourceEditor.getValue(), 0)
+		return compileToTarget(sourceCode, COMPILE_TARGET_JS)
 	}, func(compiledCode) {
-		compiledEditor.setValue(tryBeautifyJavaScript(compiledCode))
+		code += compiledCode
 	}, func(err: Error) {
 		renderCompileProblem(err)
 	})
+
+	tryCatch(func() {
+		return compileToTarget(sourceCode, COMPILE_TARGET_TSD)
+	}, func(compiledCode) {
+		compiledCode = compiledCode.replace(_new(RegExp, "\t+", "g"), "  ")
+
+		code += "\n/* --- TypeScript Declarations --- */\n"
+		code += "/*\n\n" + compiledCode + "\n*/"
+	}, func())
+
+	compiledEditor.setValue(tryBeautifyJavaScript(code))
+}
+
+
+func compileToTarget(sourceCode: String, compileTarget: CompileTarget) -> Void {
+	const api = compiler.CompilerApi.create()
+	return api.compileSourceCode(sourceCode, compileTarget)
 }
 
 

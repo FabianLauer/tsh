@@ -1,8 +1,12 @@
+import { assertAstNodeParam } from './utils/assert'
 import { Expr, Token } from './'
 
 export class TypeExpr extends Expr {
-	private constructor() {
+	private constructor(
+		public readonly typeIdentifier: Token
+	) {
 		super()
+		assertAstNodeParam(typeIdentifier instanceof Token)
 	}
 
 
@@ -10,7 +14,7 @@ export class TypeExpr extends Expr {
 	 * Creates a type expression from an identifier.
 	 */
 	public static fromIdentifier(identifier: Token) {
-		return new TypeExpr()
+		return new TypeExpr(identifier)
 	}
 
 
@@ -18,7 +22,7 @@ export class TypeExpr extends Expr {
 	 * A type expression with no content whatsoever.
 	 */
 	// tslint:disable-next-line:variable-name
-	public static readonly Empty = new TypeExpr()
+	public static readonly Empty = new TypeExpr(Token.Empty)
 }
 
 export default TypeExpr

@@ -2,5 +2,6 @@
  * Enumerates all available compile targets.
  */
 export const enum CompileTarget {
-	EcmaScript
+	EcmaScript,
+	TypeScriptDeclarations
 }

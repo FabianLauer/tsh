@@ -3,6 +3,7 @@ import { parseToSourceUnit } from '@/compiler/parser'
 import { SourceUnit } from '@/compiler/ast'
 import { ICodeGenerator } from '@/compiler/codegen/base'
 import { CodeGenerator as EcmaScriptCodeGenerator } from '@/compiler/codegen/ecmascript'
+import { CodeGenerator as TypeScriptDeclarationsCodeGenerator } from '@/compiler/codegen/typescriptDeclarations'
 
 /**
  * A programming interface to the compiler that is easy to use.
@@ -30,7 +31,8 @@ export class CompilerApi implements ICompilerApi {
 	 * An array containing all compile target IDs.
 	 */
 	private readonly compileTargetIds: ICompileTargetIds.Any[] = [
-		ICompileTargetIds.create(CompileTarget.EcmaScript, 'ES5')
+		ICompileTargetIds.create(CompileTarget.EcmaScript, 'ES5'),
+		ICompileTargetIds.create(CompileTarget.TypeScriptDeclarations, 'TSD')
 	]
 
 
@@ -136,6 +138,8 @@ export class CompilerApi implements ICompilerApi {
 				throw new Error(`No code generator for compile target ${target} exists.`)
 			case CompileTarget.EcmaScript:
 				return new EcmaScriptCodeGenerator(sourceUnit)
+			case CompileTarget.TypeScriptDeclarations:
+				return new TypeScriptDeclarationsCodeGenerator(sourceUnit)
 		}
 	}
 }

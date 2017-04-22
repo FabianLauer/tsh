@@ -32,7 +32,7 @@ export function assertThrows(fn: Function, ...message: any[]) {
 		caughtException = err
 	}
 	assert(
-		caughtException !== 'undefined' && caughtException !== null,
+		typeof caughtException !== 'undefined' && caughtException !== null,
 		['Expected function to throw but it didn\t.', ...message]
 	)
 }

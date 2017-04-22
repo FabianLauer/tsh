@@ -56,6 +56,12 @@ namespace('test', function () {
 		sh `mocha build/tests/all.js --grep api ${MOCHA_FLAGS}`
 	})
 
+
+	desc('Runs all static analysis tests.')
+	task('analysis', () => {
+		sh `mocha build/tests/all.js --grep analysis ${MOCHA_FLAGS}`
+	})
+
 })
 
 
@@ -81,6 +87,13 @@ namespace('dev', function () {
 	task('api', () => {
 		jake('build', 'compiler')
 		jake('test', 'api')
+	})
+
+
+	desc('Compiles the compiler, then runs static analysis tests.')
+	task('analysis', () => {
+		jake('build', 'compiler')
+		jake('test', 'analysis')
 	})
 
 })

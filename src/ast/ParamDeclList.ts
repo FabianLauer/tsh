@@ -1,7 +1,7 @@
 import { assertAstNodeParam } from './utils/assert'
-import { BaseNode, ParamDecl } from './'
+import { BaseNode, IContainerNode, ParamDecl } from './'
 
-export class ParamDeclList extends BaseNode {
+export class ParamDeclList extends BaseNode implements IContainerNode<ParamDecl[]> {
 	private constructor(
 		/**
 		 * The parameter declarations in the list.
@@ -45,6 +45,21 @@ export class ParamDeclList extends BaseNode {
 	 */
 	public static fromParamDecls(decls: ParamDecl[]) {
 		return new ParamDeclList(decls)
+	}
+
+
+	///
+	/// `IContainerNode` Implementation:
+	///
+
+	// tslint:disable-next-line:variable-name
+	public readonly __IContainerNodeBrand__ = IContainerNode.BRAND
+
+	/**
+	 * Returns all child nodes of a container node.
+	 */
+	public getChildNodes() {
+		return [].concat(this.paramDecls)
 	}
 }
 

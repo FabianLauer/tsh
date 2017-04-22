@@ -1,7 +1,7 @@
 import { assertAstNodeParam } from './utils/assert'
-import { BaseNode } from './'
+import { BaseNode, IContainerNode } from './'
 
-export class Statement extends BaseNode {
+export class Statement extends BaseNode implements IContainerNode.Any {
 	public constructor(
 		private readonly items: BaseNode[]
 	) {
@@ -34,6 +34,22 @@ export class Statement extends BaseNode {
 
 	public getNodeAtIndex(index: number) {
 		return this.items[index]
+	}
+
+
+	///
+	/// `IContainerNode` Implementation:
+	///
+
+
+	// tslint:disable-next-line:variable-name
+	public readonly __IContainerNodeBrand__ = IContainerNode.BRAND
+
+	/**
+	 * Returns all child nodes of a container node.
+	 */
+	public getChildNodes() {
+		return [].concat(this.nodes)
 	}
 }
 

@@ -1,3 +1,6 @@
+/// Interfaces
+export * from './IContainerNode'
+
 /// AST Node Types
 export * from './BaseNode'
 
@@ -34,5 +37,5 @@ export * from './UnaryOperatorPosition'
 export * from './VarDecl'
 export * from './VarDeclModifier'
 
-/// Interfaces
+/// AST Node Type Interfaces
 export * from './IConditionalStatement'

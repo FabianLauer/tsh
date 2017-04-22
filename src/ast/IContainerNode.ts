@@ -4,7 +4,7 @@ import BaseNode from './BaseNode'
  * Describes nodes that contain an arbitrary number of other nodes.
  * Used to create a common interface for different kinds of container nodes, such as `Statement`, `*DeclList`, etc.
  */
-export interface IContainerNode<TChildNodes extends BaseNode[]> {
+export interface IContainerNode<TChildNodes extends BaseNode[]> extends BaseNode {
 	/**
 	 * IContainerNode brand. This must be set to `IContainerNode.BRAND`.
 	 */

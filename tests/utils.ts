@@ -33,6 +33,6 @@ export function assertThrows(fn: Function, ...message: any[]) {
 	}
 	assert(
 		typeof caughtException !== 'undefined' && caughtException !== null,
-		['Expected function to throw but it didn\t.', ...message]
+		'Expected function to throw but it didn\t.', ...message
 	)
 }

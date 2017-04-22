@@ -1,14 +1,9 @@
 import { assertAstNodeParam } from './utils/assert'
-import { Token, Statement, TypeExpr, ParamDeclList } from './'
+import { Statement, TypeExpr, ParamDeclList } from './'
 import Expr from './Expr'
 
 
 export interface IAnonFuncDeclCreateParams {
-	/**
-	 * The name of the function itself.
-	 */
-	funcName: Token
-
 	/**
 	 * The function's runtime parameter declaration list.
 	 */

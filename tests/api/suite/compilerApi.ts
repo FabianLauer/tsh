@@ -210,7 +210,7 @@ function runTestSuite(dependencies: ITestSuiteDependencies) {
 		/** The human readable name of the compile target tested in a loop iteration. */
 		const compileTargetName = dependencies.getHumanReadableCompileTargetId(compileTargetID)
 
-		it(`should throw: compileSourceCode(undef, ${compileTargetName}`, () => {
+		it(`should throw: compileSourceCode(undef, ${compileTargetName})`, () => {
 			const api = dependencies.createCompilerApi()
 			assertThrows(() => api.compileSourceCode(undefined, compileTargetID))
 		})

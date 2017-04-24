@@ -26,7 +26,14 @@ maybe_nl_or_eof:
 ;
 
 
-comment: SL_COMMENT nl_or_eof { $$ = new yy.Comment([new yy.Token($1)]) };
+comment: SL_COMMENT nl_or_eof {
+	const commentContent = new yy.Token(
+		$1,
+		@1.first_line, @1.first_column,
+		@1.last_line, @1.last_column
+	)
+	$$ = new yy.Comment([commentContent])
+};
 
 
 
@@ -167,18 +174,36 @@ string_literal: STRING_LITERAL	{
 			The `.trim()` before the `.slice(...)` shouldn't be necessary, but we're
 			rather safe than sorry.
 		*/
-		var content = new yy.Token(($1).trim().slice(1, -1))
-		$$ = new yy.StringLiteral(content)
+		const stringLiteralContent = new yy.Token(
+			($1).trim().slice(1, -1),
+			@1.first_line, @1.first_column,
+			@1.last_line, @1.last_column
+		)
+		$$ = new yy.StringLiteral(stringLiteralContent)
 	}
 ;
 
 
-identifier: IDENTIFIER				{ $$ = new yy.Identifier(new yy.Token($1)) };
+identifier: IDENTIFIER {
+	const identifierContent = new yy.Token(
+		$1,
+		@1.first_line, @1.first_column,
+		@1.last_line, @1.last_column
+	)
+	$$ = new yy.Identifier(identifierContent)
+};
 
 
 atomic_primary_expr:
 		identifier					{ $$ = $1 }
-	|	CONSTANT					{ $$ = new yy.NumericExpr(new yy.Token($1)) }
+	|	CONSTANT					{
+		const atomicPrimaryExprContent = new yy.Token(
+			$1,
+			@1.first_line, @1.first_column,
+			@1.last_line, @1.last_column
+		)
+		$$ = new yy.NumericExpr(atomicPrimaryExprContent)
+	}
 	|	string_literal				{ $$ = $1 }
 ;
 
@@ -248,7 +273,14 @@ expression_statement:
 
 
 type_expr:
-	IDENTIFIER { $$ = yy.TypeExpr.fromIdentifier(new yy.Token($1)) }
+	IDENTIFIER {
+		const typeExprIdentifierContent = new yy.Token(
+			$1,
+			@1.first_line, @1.first_column,
+			@1.last_line, @1.last_column
+		)
+		$$ = yy.TypeExpr.fromIdentifier(typeExprIdentifierContent)
+	}
 ;
 
 
@@ -366,9 +398,14 @@ __var_decl_modifier:
 ;
 __var_decl_type_decl: ":" type_expr	{ $$ = $2 } | ;
 
-__var_decl_name_and_maybe_type_decl:
-	IDENTIFIER __var_decl_type_decl
-		{ $$ = [new yy.Token($1), $2] }
+__var_decl_name_and_maybe_type_decl: IDENTIFIER __var_decl_type_decl {
+	const identifierToken = new yy.Token(
+		$1,
+		@1.first_line, @1.first_column,
+		@1.last_line, @1.last_column
+	)
+	$$ = [identifierToken, $2]
+}
 ;
 
 __var_decl_maybe_assignment: '=' expression { $$ = new yy.Expr($2) } | ;
@@ -426,7 +463,14 @@ __param_decl_type_expr:
 ;
 __param_decl:
 	|	IDENTIFIER __param_decl_type_expr
-			{ $$ = new yy.ParamDecl(new yy.Token($1), $2) }
+			{
+				const nameToken = new yy.Token(
+					$1,
+					@1.first_line, @1.first_column,
+					@1.last_line, @1.last_column
+				)
+				$$ = new yy.ParamDecl(nameToken, $2)
+			}
 ;
 param_decl_list:
 		param_decl {
@@ -445,7 +489,13 @@ param_decl_list:
 ;
 
 
-__func_ident: FUNCTION IDENTIFIER { $$ = new yy.Token($2) };
+__func_ident: FUNCTION IDENTIFIER {
+	$$ = new yy.Token(
+		$2,
+		@2.first_line, @2.first_column,
+		@2.last_line, @2.last_column
+	)
+};
 __func_param_decl_list: "(" param_decl_list ")" { $$ = $2 };
 __func_return_expr: ARR type_expr { $$ = $2 } | ;
 __func_body: compound_statement { $$ = $1 } | ;
@@ -540,7 +590,13 @@ __class_body_compound_statement:
 		}
 ;
 
-__class_ident: CLASS IDENTIFIER { $$ = new yy.Token($2) };
+__class_ident: CLASS IDENTIFIER {
+	$$ = new yy.Token(
+		$2,
+		@2.first_line, @2.first_column,
+		@2.last_line, @2.last_column
+	)
+};
 __class_body: __class_body_compound_statement { $$ = $1 } | ;
 class_decl:
 		__class_ident

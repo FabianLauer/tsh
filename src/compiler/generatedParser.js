@@ -84,7 +84,14 @@ performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* actio
 var $0 = $$.length - 1;
 switch (yystate) {
 case 9:
- this.$ = new yy.Comment([new yy.Token($$[$0-1])]) 
+
+	const commentContent = new yy.Token(
+		$$[$0-1],
+		_$[$0-1].first_line, _$[$0-1].first_column,
+		_$[$0-1].last_line, _$[$0-1].last_column
+	)
+	this.$ = new yy.Comment([commentContent])
+
 break;
 case 10: case 11: case 16: case 17: case 18: case 19: case 20: case 21: case 26: case 27: case 28: case 29: case 30: case 31: case 32: case 33: case 34: case 35: case 36:
  this.$ = yy.getOperatorFromToken($$[$0]) 
@@ -126,15 +133,33 @@ case 43:
 			The `.trim()` before the `.slice(...)` shouldn't be necessary, but we're
 			rather safe than sorry.
 		*/
-		var content = new yy.Token(($$[$0]).trim().slice(1, -1))
-		this.$ = new yy.StringLiteral(content)
+		const stringLiteralContent = new yy.Token(
+			($$[$0]).trim().slice(1, -1),
+			_$[$0].first_line, _$[$0].first_column,
+			_$[$0].last_line, _$[$0].last_column
+		)
+		this.$ = new yy.StringLiteral(stringLiteralContent)
 	
 break;
 case 44:
- this.$ = new yy.Identifier(new yy.Token($$[$0])) 
+
+	const identifierContent = new yy.Token(
+		$$[$0],
+		_$[$0].first_line, _$[$0].first_column,
+		_$[$0].last_line, _$[$0].last_column
+	)
+	this.$ = new yy.Identifier(identifierContent)
+
 break;
 case 46:
- this.$ = new yy.NumericExpr(new yy.Token($$[$0])) 
+
+		const atomicPrimaryExprContent = new yy.Token(
+			$$[$0],
+			_$[$0].first_line, _$[$0].first_column,
+			_$[$0].last_line, _$[$0].last_column
+		)
+		this.$ = new yy.NumericExpr(atomicPrimaryExprContent)
+	
 break;
 case 59:
 
@@ -172,7 +197,14 @@ case 63:
  this.$ = new yy.ExprStatement($$[$0-1]) 
 break;
 case 64:
- this.$ = yy.TypeExpr.fromIdentifier(new yy.Token($$[$0])) 
+
+		const typeExprIdentifierContent = new yy.Token(
+			$$[$0],
+			_$[$0].first_line, _$[$0].first_column,
+			_$[$0].last_line, _$[$0].last_column
+		)
+		this.$ = yy.TypeExpr.fromIdentifier(typeExprIdentifierContent)
+	
 break;
 case 67:
  this.$ = new yy.IfStatement($$[$0-2], $$[$0-1]) 
@@ -229,7 +261,14 @@ case 84: case 85: case 93: case 94:
  this.$ = yy.getVarDeclModifierByKeyword($$[$0]) 
 break;
 case 88:
- this.$ = [new yy.Token($$[$0-1]), $$[$0]] 
+
+	const identifierToken = new yy.Token(
+		$$[$0-1],
+		_$[$0-1].first_line, _$[$0-1].first_column,
+		_$[$0-1].last_line, _$[$0-1].last_column
+	)
+	this.$ = [identifierToken, $$[$0]]
+
 break;
 case 89:
  this.$ = new yy.Expr($$[$0]) 
@@ -255,7 +294,14 @@ case 95:
 		
 break;
 case 99:
- this.$ = new yy.ParamDecl(new yy.Token($$[$0-1]), $$[$0]) 
+
+				const nameToken = new yy.Token(
+					$$[$0-1],
+					_$[$0-1].first_line, _$[$0-1].first_column,
+					_$[$0-1].last_line, _$[$0-1].last_column
+				)
+				this.$ = new yy.ParamDecl(nameToken, $$[$0])
+			
 break;
 case 100:
 
@@ -274,7 +320,13 @@ case 101:
 		
 break;
 case 102: case 120:
- this.$ = new yy.Token($$[$0]) 
+
+	this.$ = new yy.Token(
+		$$[$0],
+		_$[$0].first_line, _$[$0].first_column,
+		_$[$0].last_line, _$[$0].last_column
+	)
+
 break;
 case 103:
  this.$ = $$[$0-1] 

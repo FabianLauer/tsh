@@ -368,7 +368,7 @@ __var_decl_type_decl: ":" type_expr	{ $$ = $2 } | ;
 
 __var_decl_name_and_maybe_type_decl:
 	IDENTIFIER __var_decl_type_decl
-		{ $$ = [yy.createToken($1), $2] }
+		{ $$ = [new yy.Token($1), $2] }
 ;
 
 __var_decl_maybe_assignment: '=' expression { $$ = new yy.Expr($2) } | ;
@@ -445,7 +445,7 @@ param_decl_list:
 ;
 
 
-__func_ident: FUNCTION IDENTIFIER { $$ = yy.createToken($2) };
+__func_ident: FUNCTION IDENTIFIER { $$ = new yy.Token($2) };
 __func_param_decl_list: "(" param_decl_list ")" { $$ = $2 };
 __func_return_expr: ARR type_expr { $$ = $2 } | ;
 __func_body: compound_statement { $$ = $1 } | ;
@@ -540,7 +540,7 @@ __class_body_compound_statement:
 		}
 ;
 
-__class_ident: CLASS IDENTIFIER { $$ = yy.createToken($2) };
+__class_ident: CLASS IDENTIFIER { $$ = new yy.Token($2) };
 __class_body: __class_body_compound_statement { $$ = $1 } | ;
 class_decl:
 		__class_ident

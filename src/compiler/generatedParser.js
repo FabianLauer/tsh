@@ -229,7 +229,7 @@ case 84: case 85: case 93: case 94:
  this.$ = yy.getVarDeclModifierByKeyword($$[$0]) 
 break;
 case 88:
- this.$ = [yy.createToken($$[$0-1]), $$[$0]] 
+ this.$ = [new yy.Token($$[$0-1]), $$[$0]] 
 break;
 case 89:
  this.$ = new yy.Expr($$[$0]) 
@@ -274,7 +274,7 @@ case 101:
 		
 break;
 case 102: case 120:
- this.$ = yy.createToken($$[$0]) 
+ this.$ = new yy.Token($$[$0]) 
 break;
 case 103:
  this.$ = $$[$0-1] 

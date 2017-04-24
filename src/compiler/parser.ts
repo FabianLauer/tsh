@@ -47,10 +47,6 @@ export function parseToArray(sourceCode: string): ast.BaseNode[] {
 		parser.yy[typeName] = (<any>ast)[typeName]
 	}
 
-	parser.yy.createToken = function (rawSource: string) {
-		return new ast.Token(rawSource)
-	}
-
 	parser.yy.getVarDeclModifierByKeyword = getVarDeclModifierByKeyword
 	parser.yy.getOperatorFromToken = getOperatorFromToken
 

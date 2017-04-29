@@ -1,1 +1,2 @@
 import './symbolTable'
+import './typeCheck'

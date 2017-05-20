@@ -6,8 +6,16 @@
 
 
 import { assert } from '../../utils'
-import { TypeChecker } from '@/compiler/analysis'
 import * as ast from '@/compiler/ast'
+import {
+	TypeChecker,
+	TypeCheckIssue,
+	TypeCheckIssueSeverity as Severity
+} from '@/compiler/analysis'
+
+
+// tslint:disable-next-line:variable-name
+const Issues = TypeCheckIssue.Issues
 
 
 /**
@@ -60,8 +68,49 @@ function runTestSuite(dependencies: ITestSuiteDependencies) {
 	///
 
 
-	it('used but not declared', () => {
-		
+	it('identifier used but not declared #1', () => {
+		const issues = getTypeCheckIssues('a')
+		assert(issues.length === 1, 'expected number of issues')
+		assert(issues[0] instanceof Issues.IdentifierUsedButNeverDeclared, 'correct issue type')
+		assert(issues[0].severity === Severity.Error, 'expected severity')
+	})
+
+	it('identifier used but not declared #2', () => {
+		const issues = getTypeCheckIssues(`
+			a
+			func () { b }
+		`)
+		assert(issues.length === 1, 'expected number of issues')
+		assert(issues[0] instanceof Issues.IdentifierUsedButNeverDeclared, 'correct issue type')
+		assert(issues[0].severity === Severity.Error, 'expected severity')
+	})
+
+	it('identifier used but not declared #3', () => {
+		const issues = getTypeCheckIssues(`
+			a
+			b
+			func () { b }
+			func () { c }
+		`)
+		assert(issues.length === 2, 'expected number of issues')
+		assert(issues[0] instanceof Issues.IdentifierUsedButNeverDeclared, 'correct issue type')
+		assert(issues[0].severity === Severity.Error, 'expected severity')
+		assert(issues[1] instanceof Issues.IdentifierUsedButNeverDeclared, 'correct issue type')
+		assert(issues[1].severity === Severity.Error, 'expected severity')
+	})
+
+	it('identifier used but not declared #4', () => {
+		const issues = getTypeCheckIssues(`
+			a
+			let b
+			b
+			a
+		`)
+		assert(issues.length === 2, 'expected number of issues')
+		assert(issues[0] instanceof Issues.IdentifierUsedButNeverDeclared, 'correct issue type')
+		assert(issues[0].severity === Severity.Error, 'expected severity')
+		assert(issues[1] instanceof Issues.IdentifierUsedButNeverDeclared, 'correct issue type')
+		assert(issues[1].severity === Severity.Error, 'expected severity')
 	})
 }
 

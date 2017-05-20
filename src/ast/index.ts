@@ -39,3 +39,7 @@ export * from './VarDeclModifier'
 
 /// AST Node Type Interfaces
 export * from './IConditionalStatement'
+
+/// Utilities
+import * as utils from './utils/'
+export { utils }

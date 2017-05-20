@@ -16,6 +16,17 @@ export class TypeCheckIssue {
 				super(Severity.Error, 'Variable declared but never used.', [varDecl])
 			}
 		}
+
+
+		public readonly IdentifierUsedButNeverDeclared = class extends TypeCheckIssue {
+			constructor(identifier: ast.Identifier) {
+				super(
+					Severity.Error,
+					`Identifier ${identifier.name.rawValue} was used but never declared.`,
+					[identifier]
+				)
+			}
+		}
 	}
 	// tslint:enable:variable-name
 }

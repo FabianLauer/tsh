@@ -38,8 +38,8 @@ function flattenContainerNodeInternal<T extends ast.BaseNode>(
 		// If the child node is a container node, check if it should also be flattened using
 		// the provided `flattenSubsequentContainer` closure.
 		if (
-			!ast.IContainerNode.isImplementedBy(<ast.IContainerNode.Any>childNode) ||
-			!flattenSubsequentContainer(<ast.IContainerNode.Any>childNode)
+			ast.IContainerNode.isImplementedBy(<ast.IContainerNode.Any>childNode) &&
+			flattenSubsequentContainer(<ast.IContainerNode.Any>childNode)
 		) {
 			// The child node should also be flattened, so call this function recursively:
 			flattenContainerNodeInternal<T>(

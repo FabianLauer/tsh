@@ -19,9 +19,14 @@ export abstract class TypeChecker<TNode extends BaseNode> {
 	 * @param results The results object to add type check issues to.
 	 */
 	public constructor(
-		protected readonly astNode: TNode,
+		private readonly astNode: TNode,
 		private results: TypeCheckResult = new TypeCheckResult()
 	) { }
+
+
+	public getAstNode() {
+		return this.astNode
+	}
 
 
 	/**
@@ -44,13 +49,11 @@ export abstract class TypeChecker<TNode extends BaseNode> {
 
 	/**
 	 * Run type checking on other nodes.
-	 * @param node One of the nodes to perform type checking on.
-	 * @param nodes Optional. More nodes to perform type checking on.
+	 * @param nodes The nodes to perform type checking on.
 	 * @example
 	 *     this.runSubsequentTypeChecksOn(this.astNode.runtimeParamDecls, this.astNode.body)
 	 */
-	protected runSubsequentTypeChecksOn(node: BaseNode, ...nodes: BaseNode[]) {
-		nodes.unshift(node)
+	protected runSubsequentTypeChecksOn(...nodes: BaseNode[]) {
 		nodes.forEach(_ => {
 			const typeChecker = createForAstNode(_)
 			// Overwrite the new type checker's `results` object with ours.

@@ -8,8 +8,8 @@ export class FunctionTypeChecker extends TypeChecker<ast.FuncDecl> {
 	protected performTypeCheckConcrete(): void {
 		// run type checks on the parameter declaration list and the function body
 		this.runSubsequentTypeChecksOn(
-			this.astNode.runtimeParamDecls,
-			this.astNode.body
+			this.getAstNode().runtimeParamDecls,
+			this.getAstNode().body
 		)
 	}
 }

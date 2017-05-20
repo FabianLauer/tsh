@@ -51,7 +51,7 @@ export class SymbolTable {
 	 * Check if a node is a scope node.
 	 * @param node The node to check.
 	 */
-	private static isScopeNode(node: IScope | ast.BaseNode): node is IScope {
+	public static isScopeNode(node: IScope | ast.BaseNode): node is IScope {
 		return scopeConstructors.indexOf(<any>node.constructor) !== -1
 	}
 

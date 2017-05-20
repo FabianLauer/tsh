@@ -13,7 +13,6 @@ describe(
 			return createTypeChecker(<any>node)
 		}
 
-
 		private sourceUnitCount = 0
 
 		parseSourceCodeToAST(sourceCode: string): SourceUnit {

@@ -1,6 +1,7 @@
 import { CompileTarget, ICompileTargetIds, ICompilerApi, ICompilationResult } from '@/compiler/api'
 import { parseToSourceUnit } from '@/compiler/parser'
 import { SourceUnit } from '@/compiler/ast'
+import { createTypeChecker } from '@/compiler/analysis'
 import { ICodeGenerator } from '@/compiler/codegen/base'
 import { CodeGenerator as EcmaScriptCodeGenerator } from '@/compiler/codegen/ecmascript'
 import { CodeGenerator as TypeScriptDeclarationsCodeGenerator } from '@/compiler/codegen/typescriptDeclarations'
@@ -107,13 +108,26 @@ export class CompilerApi implements ICompilerApi {
 	 * @return The compilation result. See declaration of `ICompilationResult` for more.
 	 */
 	public compileSourceCode(sourceCode: string, target: CompileTarget): ICompilationResult {
+		// Parse the source code:
 		const sourceUnit = parseToSourceUnit(
 			// we create the source unit with a unique name:
 			`SourceUnit-${++CompilerApi.sourceUnitCount}`,
 			sourceCode
 		)
+
+		// Perform type checking:
+		const typeChecker = createTypeChecker(sourceUnit)
+		typeChecker.performTypeCheck()
+
+
+		// Generate code:
 		const codeGenerator = this.createCodeGenerator(target, sourceUnit)
-		return { compiledCode: codeGenerator.generateCode() }
+
+		// Return the complete compilation result:
+		return {
+			typeCheckIssues: typeChecker.getIssues(),
+			compiledCode: codeGenerator.generateCode()
+		}
 	}
 
 

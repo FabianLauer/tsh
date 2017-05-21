@@ -55,6 +55,7 @@ export class ParamDeclList extends BaseNode implements IContainerNode<ParamDecl[
 	// tslint:disable-next-line:variable-name
 	public readonly __IContainerNodeBrand__ = IContainerNode.BRAND
 
+
 	/**
 	 * Returns all child nodes of a container node.
 	 */

@@ -38,6 +38,7 @@ export class SourceUnit extends BaseNode implements IContainerNode.Any {
 	// tslint:disable-next-line:variable-name
 	public readonly __IContainerNodeBrand__ = IContainerNode.BRAND
 
+
 	/**
 	 * Returns all child nodes of a container node.
 	 */

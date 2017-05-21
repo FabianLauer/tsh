@@ -9,6 +9,6 @@ const targetFilePath = process.argv[3]
 
 const sourceCode = readFileSync(sourceFilePath).toString('utf8')
 const api = CompilerApi.create()
-const compiledCode = api.compileSourceCode(sourceCode, CompileTarget.EcmaScript)
+const compilationResult = api.compileSourceCode(sourceCode, CompileTarget.EcmaScript)
 
-writeFileSync(targetFilePath, compiledCode)
+writeFileSync(targetFilePath, compilationResult.compiledCode)

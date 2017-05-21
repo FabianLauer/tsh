@@ -1,4 +1,5 @@
 export * from './CompilerApi'
 export * from './CompileTarget'
+export * from './ICompilationResult'
 export * from './ICompileTargetIds'
 export * from './ICompilerApi'

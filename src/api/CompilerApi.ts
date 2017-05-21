@@ -1,4 +1,4 @@
-import { CompileTarget, ICompileTargetIds, ICompilerApi } from '@/compiler/api'
+import { CompileTarget, ICompileTargetIds, ICompilerApi, ICompilationResult } from '@/compiler/api'
 import { parseToSourceUnit } from '@/compiler/parser'
 import { SourceUnit } from '@/compiler/ast'
 import { ICodeGenerator } from '@/compiler/codegen/base'
@@ -104,16 +104,16 @@ export class CompilerApi implements ICompilerApi {
 	 * Compiles a string of source code to output code.
 	 * @param sourceCode The source code to compile.
 	 * @param target The build target to compile to.
-	 * @return string The output code.
+	 * @return The compilation result. See declaration of `ICompilationResult` for more.
 	 */
-	public compileSourceCode(sourceCode: string, target: CompileTarget): string {
+	public compileSourceCode(sourceCode: string, target: CompileTarget): ICompilationResult {
 		const sourceUnit = parseToSourceUnit(
 			// we create the source unit with a unique name:
 			`SourceUnit-${++CompilerApi.sourceUnitCount}`,
 			sourceCode
 		)
 		const codeGenerator = this.createCodeGenerator(target, sourceUnit)
-		return codeGenerator.generateCode()
+		return { compiledCode: codeGenerator.generateCode() }
 	}
 
 

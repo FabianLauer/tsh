@@ -1,4 +1,4 @@
-import { CompileTarget, ICompileTargetIds } from '@/compiler/api'
+import { CompileTarget, ICompileTargetIds, ICompilationResult } from '@/compiler/api'
 
 /**
  * Describes the public compiler API.
@@ -22,7 +22,7 @@ export interface ICompilerApi {
 	 * Compiles a string of source code to output code.
 	 * @param sourceCode The source code to compile.
 	 * @param target The build target to compile to.
-	 * @return string The output code.
+	 * @return The compilation result. See declaration of `ICompilationResult` for more.
 	 */
-	compileSourceCode(sourceCode: string, target: CompileTarget): string
+	compileSourceCode(sourceCode: string, target: CompileTarget): ICompilationResult
 }

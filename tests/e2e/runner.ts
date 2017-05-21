@@ -50,7 +50,8 @@ function runTestCase(
 	// try to parse the source code
 	const sourceCode = readFileSync(testCaseFilePath).toString('utf8')
 	const api = CompilerApi.create()
-	const transpiledCode = api.compileSourceCode(sourceCode, testContext.compileTarget)
+	const compilationResult = api.compileSourceCode(sourceCode, testContext.compileTarget)
+	const compiledCode = compilationResult.compiledCode
 
 	// read the baseline file
 	const testCaseFileName = testCaseFilePath.replace(/^.*\//, '')
@@ -59,10 +60,10 @@ function runTestCase(
 	const baselineCode = readFileSync(`${baselinePath}/${baselineFileName}`).toString('utf8')
 
 	// compare the transpiled code to the baseline code
-	it('transpiled code should match baseline', () => {
-		if (normalizeCode(baselineCode) !== normalizeCode(transpiledCode)) {
-			printDiff(normalizeCode(baselineCode), normalizeCode(transpiledCode))
-			throw new Error(`Transpiled code does not match baseline.`)
+	it('compiled code should match baseline', () => {
+		if (normalizeCode(baselineCode) !== normalizeCode(compiledCode)) {
+			printDiff(normalizeCode(baselineCode), normalizeCode(compiledCode))
+			throw new Error(`Compiled code does not match baseline.`)
 		}
 	})
 }

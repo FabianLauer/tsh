@@ -1,12 +1,26 @@
-export * from './TypeChecker'
-export * from './TypeCheckIssue'
-export * from './TypeCheckIssueSeverity'
-export * from './TypeCheckResult'
+import TypeChecker from './TypeChecker'
+import TypeCheckIssue from './TypeCheckIssue'
+import TypeCheckIssueSeverity from './TypeCheckIssueSeverity'
+import TypeCheckResult from './TypeCheckResult'
 
 import { createForAstNode as createTypeChecker } from './typeCheckerFactory'
-export { createTypeChecker }
 
-// Make sure all concrete type checkers are imported.
+// Import all concrete type checkers:
 // Since they register themselves using the factory functions, there's
 // no need to interact with them here in any other way.
-import './typeCheckers/'
+import FunctionTypeChecker from './FunctionTypeChecker'
+import NoOpTypeChecker from './NoOpTypeChecker'
+import StatementTypeChecker from './StatementTypeChecker'
+
+export {
+	TypeChecker,
+	TypeCheckIssue,
+	TypeCheckIssueSeverity,
+	TypeCheckResult,
+
+	createTypeChecker,
+
+	FunctionTypeChecker,
+	NoOpTypeChecker,
+	StatementTypeChecker
+}

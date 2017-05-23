@@ -1,7 +1,7 @@
 import * as ast from '@/compiler/ast'
 import { SymbolTable } from '@/compiler/analysis'
-import { register } from './../typeCheckerFactory'
-import { TypeChecker, TypeCheckIssue } from './../'
+import { register } from './typeCheckerFactory'
+import { TypeChecker, TypeCheckIssue } from './'
 
 @register(node => (node instanceof ast.Statement ? Infinity : 0))
 export class StatementTypeChecker extends TypeChecker<ast.Statement> {
@@ -29,4 +29,4 @@ export class StatementTypeChecker extends TypeChecker<ast.Statement> {
 	}
 }
 
-export default TypeChecker
+export default StatementTypeChecker

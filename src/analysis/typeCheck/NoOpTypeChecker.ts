@@ -1,6 +1,6 @@
 import * as ast from '@/compiler/ast'
-import { register } from './../typeCheckerFactory'
-import TypeChecker from './../TypeChecker'
+import { register } from './typeCheckerFactory'
+import TypeChecker from './TypeChecker'
 
 @register(node => 1)
 export class NoOpTypeChecker extends TypeChecker<ast.Statement> {
@@ -10,4 +10,4 @@ export class NoOpTypeChecker extends TypeChecker<ast.Statement> {
 	}
 }
 
-export default TypeChecker
+export default NoOpTypeChecker

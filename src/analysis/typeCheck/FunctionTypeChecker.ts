@@ -1,6 +1,6 @@
 import * as ast from '@/compiler/ast'
-import { register } from './../typeCheckerFactory'
-import TypeChecker from './../TypeChecker'
+import { register } from './typeCheckerFactory'
+import TypeChecker from './TypeChecker'
 
 @register(node => (node instanceof ast.FuncDecl ? Infinity : 0))
 export class FunctionTypeChecker extends TypeChecker<ast.FuncDecl> {
@@ -14,4 +14,4 @@ export class FunctionTypeChecker extends TypeChecker<ast.FuncDecl> {
 	}
 }
 
-export default TypeChecker
+export default FunctionTypeChecker

@@ -104,8 +104,13 @@ var code = "";
 tryCatch((function () {
 			return compileToTarget(sourceCode, COMPILE_TARGET_JS);
 
-		}), (function (compiledCode) {
-			code += compiledCode;
+		}), (function (compilationResult) {
+			code += compilationResult.compiledCode;
+console.log(compilationResult.typeCheckIssues);
+if ((compilationResult.typeCheckIssues.length)) {
+			renderCompileProblem(arrayItem(compilationResult.typeCheckIssues, 0));
+
+		}
 
 		}), (function (err) {
 			renderCompileProblem(err);
@@ -114,8 +119,8 @@ tryCatch((function () {
 tryCatch((function () {
 			return compileToTarget(sourceCode, COMPILE_TARGET_TSD);
 
-		}), (function (compiledCode) {
-			compiledCode = compiledCode.replace(_new(RegExp, "\t+", "g"), "  ");
+		}), (function (compilationResult) {
+			var compiledCode = compilationResult.compiledCode.replace(_new(RegExp, "\t+", "g"), "  ");
 code += "\n/* --- TypeScript Declarations --- */\n";
 code += "/*\n\n" + compiledCode + "\n*/";
 

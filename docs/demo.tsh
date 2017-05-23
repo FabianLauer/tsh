@@ -74,16 +74,20 @@ func compile(sourceEditor: Any, compiledEditor: Any) -> Void {
 	// compile to JS
 	tryCatch(func() {
 		return compileToTarget(sourceCode, COMPILE_TARGET_JS)
-	}, func(compiledCode) {
-		code += compiledCode
+	}, func(compilationResult) {
+		code += compilationResult.compiledCode
+
+		if (compilationResult.typeCheckIssues.length) {
+			renderCompileProblem(arrayItem(compilationResult.typeCheckIssues, 0))
+		}
 	}, func(err: Error) {
 		renderCompileProblem(err)
 	})
 
 	tryCatch(func() {
 		return compileToTarget(sourceCode, COMPILE_TARGET_TSD)
-	}, func(compiledCode) {
-		compiledCode = compiledCode.replace(_new(RegExp, "\t+", "g"), "  ")
+	}, func(compilationResult) {
+		let compiledCode = compilationResult.compiledCode.replace(_new(RegExp, "\t+", "g"), "  ")
 
 		code += "\n/* --- TypeScript Declarations --- */\n"
 		code += "/*\n\n" + compiledCode + "\n*/"

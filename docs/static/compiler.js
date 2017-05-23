@@ -4,9 +4,18 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
+__export(require("analysis"));
+__export(require("analysis/typeCheck/"));
+
+},{"analysis":9,"analysis/typeCheck/":17}],2:[function(require,module,exports){
+"use strict";
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("api"));
 
-},{"api":10}],2:[function(require,module,exports){
+},{"api":22}],3:[function(require,module,exports){
 "use strict";
 function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
@@ -14,7 +23,7 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("ast"));
 
-},{"ast":44}],3:[function(require,module,exports){
+},{"ast":57}],4:[function(require,module,exports){
 "use strict";
 function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
@@ -22,7 +31,7 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("codegen/ecmascript/"));
 
-},{"codegen/ecmascript/":77}],4:[function(require,module,exports){
+},{"codegen/ecmascript/":92}],5:[function(require,module,exports){
 "use strict";
 function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
@@ -30,7 +39,7 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("codegen/typescriptDeclarations/"));
 
-},{"codegen/typescriptDeclarations/":90}],5:[function(require,module,exports){
+},{"codegen/typescriptDeclarations/":105}],6:[function(require,module,exports){
 "use strict";
 function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
@@ -38,7 +47,7 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("compiler/parser"));
 
-},{"compiler/parser":92}],6:[function(require,module,exports){
+},{"compiler/parser":107}],7:[function(require,module,exports){
 "use strict";
 function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
@@ -49,15 +58,373 @@ __export(require("../utils/alphabet"));
 __export(require("../utils/assert"));
 __export(require("../utils/importUtils"));
 
-},{"../utils/FactoryRegistry":93,"../utils/alphabet":94,"../utils/assert":95,"../utils/importUtils":96}],7:[function(require,module,exports){
+},{"../utils/FactoryRegistry":108,"../utils/alphabet":109,"../utils/assert":110,"../utils/importUtils":111}],8:[function(require,module,exports){
+///
+/// SymbolTable.ts
+///
+/// Contains the class implementation for symbol tables as well as a few type declarations
+/// that are being used by the `SymbolTable` class.
+///
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const ast = require("@/compiler/ast");
+const scopeConstructors = [
+    ast.SourceUnit,
+    ast.AnonFuncDecl, ast.FuncDecl, ast.MethodDecl,
+    ast.ParamDeclList,
+    ast.ClassDecl,
+    ast.Statement,
+    ast.IfStatement, ast.ElseIfStatement, ast.ElseStatement
+];
+const symbolDeclConstructors = [ast.VarDecl, ast.ParamDecl, ast.FuncDecl, ast.ClassDecl];
+class SymbolTable {
+    /** Ceates a new symbol table. */
+    constructor(
+        /**
+         * The AST node for which a symbol table was created.
+         */
+        proxy, 
+        /**
+         * The AST node for that the symbol table should use as the scope.
+         * This can be the same as `proxy` or it can be a member of the `proxy` node, such as
+         * the `body` statement of `FuncDecl`s.
+         */
+        actualScope) {
+        this.proxy = proxy;
+        this.actualScope = actualScope;
+    }
+    /**
+     * Check if a node is a scope node.
+     * @param node The node to check.
+     */
+    static isScopeNode(node) {
+        return scopeConstructors.indexOf(node.constructor) !== -1;
+    }
+    /**
+     * Returns a symbol table for a certain AST node.
+     * @param node The AST node to return a symbol table for.
+     */
+    static getSymbolTableForAstNode(node) {
+        if (!SymbolTable.isScopeNode(node)) {
+            throw new Error('Can not get/create symbol table for node: not a scope node.');
+        }
+        if (!SymbolTable.byAstNode.has(node)) {
+            const proxy = node;
+            let actualScope = node;
+            if (node instanceof ast.AnonFuncDecl || node instanceof ast.ClassDecl) {
+                actualScope = node.body;
+            }
+            SymbolTable.byAstNode.set(node, new SymbolTable(proxy, actualScope));
+        }
+        return SymbolTable.byAstNode.get(node);
+    }
+    /**
+     * Returns an array of all symbols that were declared in a symbol table's scope.
+     */
+    getAllSymbolDecls() {
+        if (ast.IContainerNode.isImplementedBy(this.actualScope)) {
+            const asContainerNode = this.actualScope;
+            return asContainerNode.getChildNodes()
+                .filter(node => symbolDeclConstructors.indexOf(node.constructor) !== -1);
+        }
+        return [];
+    }
+    /**
+     * Returns a symbol declaration by its name.
+     * @param symbolName The name of the symbol.
+     */
+    getSymbolDeclByName(symbolName) {
+        return this.getAllSymbolDecls()
+            .find(symbol => symbol.name.rawValue === symbolName);
+    }
+    /**
+     * Checks if a symbol with a certain name was declared in the scope of a symbol table.
+     * @param symbolName The name of the symbol to search for.
+     */
+    wasSymbolWithNameDeclared(symbolName) {
+        return this.getSymbolDeclByName(symbolName) instanceof ast.BaseNode;
+    }
+}
+/**
+ * Contains all symbol tables that were created.
+ * The map's keys are AST nodes for which symbol tables were created.
+ */
+SymbolTable.byAstNode = new Map();
+exports.SymbolTable = SymbolTable;
+
+},{"@/compiler/ast":3}],9:[function(require,module,exports){
+"use strict";
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(require("./SymbolTable"));
+__export(require("./typeCheck/"));
+
+},{"./SymbolTable":8,"./typeCheck/":10}],10:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const typeCheckerFactory_1 = require("./typeCheck/typeCheckerFactory");
+/**
+ * Finds the best matching type checker for the given AST node, then attempts to instantiate the type checker.
+ * Throws if no matching type checker could be found.
+ * @throws
+ * @param astNode The AST node to instantiate a type checker for.
+ * @return The type checker created for the given AST node.
+ */
+function createTypeChecker(astNode) {
+    return typeCheckerFactory_1.createForAstNode(astNode);
+}
+exports.createTypeChecker = createTypeChecker;
+
+},{"./typeCheck/typeCheckerFactory":18}],11:[function(require,module,exports){
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const ast = require("@/compiler/ast");
+const typeCheckerFactory_1 = require("./typeCheckerFactory");
+const TypeChecker_1 = require("./TypeChecker");
+let FunctionTypeChecker = class FunctionTypeChecker extends TypeChecker_1.default {
+    /** Performs type checking and updates the `TypeChecker` instance's result state along the way. */
+    performTypeCheckConcrete() {
+        // run type checks on the parameter declaration list and the function body
+        this.runSubsequentTypeChecksOn(this.getAstNode().runtimeParamDecls, this.getAstNode().body);
+    }
+};
+FunctionTypeChecker = __decorate([
+    typeCheckerFactory_1.register(node => (node instanceof ast.FuncDecl ? Infinity : 0))
+], FunctionTypeChecker);
+exports.FunctionTypeChecker = FunctionTypeChecker;
+exports.default = FunctionTypeChecker;
+
+},{"./TypeChecker":16,"./typeCheckerFactory":18,"@/compiler/ast":3}],12:[function(require,module,exports){
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const typeCheckerFactory_1 = require("./typeCheckerFactory");
+const TypeChecker_1 = require("./TypeChecker");
+let NoOpTypeChecker = class NoOpTypeChecker extends TypeChecker_1.default {
+    /** Performs type checking and updates the `TypeChecker` instance's result state along the way. */
+    performTypeCheckConcrete() {
+        return;
+    }
+};
+NoOpTypeChecker = __decorate([
+    typeCheckerFactory_1.register(node => 1)
+], NoOpTypeChecker);
+exports.NoOpTypeChecker = NoOpTypeChecker;
+exports.default = NoOpTypeChecker;
+
+},{"./TypeChecker":16,"./typeCheckerFactory":18}],13:[function(require,module,exports){
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const ast = require("@/compiler/ast");
+const analysis_1 = require("@/compiler/analysis");
+const typeCheckerFactory_1 = require("./typeCheckerFactory");
+const _1 = require("./");
+let StatementTypeChecker = class StatementTypeChecker extends _1.TypeChecker {
+    /** Performs type checking and updates the `TypeChecker` instance's result state along the way. */
+    performTypeCheckConcrete() {
+        const symbolTable = analysis_1.SymbolTable.getSymbolTableForAstNode(this.getAstNode());
+        const childNodesInScope = ast.utils.flattenContainerNode(this.getAstNode(), _ => !analysis_1.SymbolTable.isScopeNode(_));
+        const identifiers = ast.utils.filterByNodeType(childNodesInScope, ast.Identifier);
+        for (const identifier of identifiers) {
+            if (!symbolTable.wasSymbolWithNameDeclared(identifier.name.rawValue)) {
+                this.addIssue(new _1.TypeCheckIssue.Issues.IdentifierUsedButNeverDeclared(identifier));
+            }
+        }
+    }
+};
+StatementTypeChecker = __decorate([
+    typeCheckerFactory_1.register(node => (node instanceof ast.Statement ? Infinity : 0))
+], StatementTypeChecker);
+exports.StatementTypeChecker = StatementTypeChecker;
+exports.default = StatementTypeChecker;
+
+},{"./":17,"./typeCheckerFactory":18,"@/compiler/analysis":1,"@/compiler/ast":3}],14:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+class TypeCheckIssue {
+    constructor(severity, message, astNodes) {
+        this.severity = severity;
+        this.message = message;
+        this.astNodes = astNodes;
+    }
+}
+// tslint:disable:variable-name
+TypeCheckIssue.Issues = new class {
+    constructor() {
+        this.VariableDeclaredButNeverUsed = class extends TypeCheckIssue {
+            constructor(varDecl) {
+                super(1 /* Error */, 'Variable declared but never used.', [varDecl]);
+            }
+        };
+        this.IdentifierUsedButNeverDeclared = class extends TypeCheckIssue {
+            constructor(identifier) {
+                super(1 /* Error */, `Identifier ${identifier.name.rawValue} was used but never declared.`, [identifier]);
+            }
+        };
+    }
+};
+exports.TypeCheckIssue = TypeCheckIssue;
+exports.default = TypeCheckIssue;
+
+},{}],15:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+class TypeCheckResult {
+    constructor() {
+        this.issues = [];
+        // do nothing
+    }
+    getIssues() {
+        return this.issues;
+    }
+    addIssue(issue) {
+        if (this.issues.indexOf(issue) !== -1) {
+            throw new Error('Cannot add typecheck issue to result: issue already added.');
+        }
+        this.issues.push(issue);
+    }
+}
+exports.TypeCheckResult = TypeCheckResult;
+exports.default = TypeCheckResult;
+
+},{}],16:[function(require,module,exports){
+///
+/// TypeChecker.ts
+/// Contains the base class for all other type checker classes.
+///
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const typeCheckerFactory_1 = require("./typeCheckerFactory");
+const TypeCheckResult_1 = require("./TypeCheckResult");
+/**
+ * Base class for type checkers.
+ * Type checkers perform arbitrary type checks on `IContainerNode`s.
+ */
+class TypeChecker {
+    /**
+     * Creates a new instance.
+     * @param astNode The syntax tree part to perform typechecking on.
+     * @param results The results object to add type check issues to.
+     */
+    constructor(astNode, results = new TypeCheckResult_1.default()) {
+        this.astNode = astNode;
+        this.results = results;
+    }
+    getAstNode() {
+        return this.astNode;
+    }
+    /**
+     * Performs type checking and updates the `TypeChecker` instance's result state along the way.
+     */
+    performTypeCheck() {
+        this.performTypeCheckConcrete();
+    }
+    getIssues() {
+        return this.results.getIssues();
+    }
+    addIssue(issue) {
+        return this.results.addIssue(issue);
+    }
+    /**
+     * Run type checking on other nodes.
+     * @param nodes The nodes to perform type checking on.
+     * @example
+     *     this.runSubsequentTypeChecksOn(this.astNode.runtimeParamDecls, this.astNode.body)
+     */
+    runSubsequentTypeChecksOn(...nodes) {
+        nodes.forEach(_ => {
+            const typeChecker = typeCheckerFactory_1.createForAstNode(_);
+            // Overwrite the new type checker's `results` object with ours.
+            // This will make the subsequent issues appear in the our `results`.
+            typeChecker.results = this.results;
+            // run type checks
+            typeChecker.performTypeCheck();
+        });
+    }
+}
+exports.TypeChecker = TypeChecker;
+exports.default = TypeChecker;
+
+},{"./TypeCheckResult":15,"./typeCheckerFactory":18}],17:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const TypeChecker_1 = require("./TypeChecker");
+exports.TypeChecker = TypeChecker_1.default;
+const TypeCheckIssue_1 = require("./TypeCheckIssue");
+exports.TypeCheckIssue = TypeCheckIssue_1.default;
+const TypeCheckResult_1 = require("./TypeCheckResult");
+exports.TypeCheckResult = TypeCheckResult_1.default;
+const typeCheckerFactory_1 = require("./typeCheckerFactory");
+exports.createTypeChecker = typeCheckerFactory_1.createForAstNode;
+// Import all concrete type checkers:
+// Since they register themselves using the factory functions, there's
+// no need to interact with them here in any other way.
+const FunctionTypeChecker_1 = require("./FunctionTypeChecker");
+exports.FunctionTypeChecker = FunctionTypeChecker_1.default;
+const NoOpTypeChecker_1 = require("./NoOpTypeChecker");
+exports.NoOpTypeChecker = NoOpTypeChecker_1.default;
+const StatementTypeChecker_1 = require("./StatementTypeChecker");
+exports.StatementTypeChecker = StatementTypeChecker_1.default;
+
+},{"./FunctionTypeChecker":11,"./NoOpTypeChecker":12,"./StatementTypeChecker":13,"./TypeCheckIssue":14,"./TypeCheckResult":15,"./TypeChecker":16,"./typeCheckerFactory":18}],18:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const FactoryRegistry_1 = require("../../utils/FactoryRegistry");
+/**
+ * The factory registry used to instantiate type checker objects.
+ * @internal
+ */
+const factory = FactoryRegistry_1.FactoryRegistry.create();
+/**
+ * Class decorator used to register a type checker.
+ * @param ratingFunc A function that determines how relevant the registered code
+ *                   generator is for any given AST node. The higher the rating
+ *                   that this function returns, the more likely the code
+ *                   generator is to be used for a given AST node.
+ */
+exports.register = factory.registerClass.bind(factory);
+/**
+ * Finds the best matching type checker for the given AST node, then attempts
+ * to instantiate the type checker.
+ * Throws if no matching type checker could be found.
+ * @throws
+ * @param astNode The AST node to instantiate a type checker for.
+ * @return The type checker created for the given AST node.
+ */
+function createForAstNode(astNode) {
+    return factory.create(astNode);
+}
+exports.createForAstNode = createForAstNode;
+
+},{"../../utils/FactoryRegistry":108}],19:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 
-},{}],8:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const api_1 = require("@/compiler/api");
 const parser_1 = require("@/compiler/parser");
+const analysis_1 = require("@/compiler/analysis");
 const ecmascript_1 = require("@/compiler/codegen/ecmascript");
 const typescriptDeclarations_1 = require("@/compiler/codegen/typescriptDeclarations");
 /**
@@ -117,14 +484,23 @@ class CompilerApi {
      * Compiles a string of source code to output code.
      * @param sourceCode The source code to compile.
      * @param target The build target to compile to.
-     * @return string The output code.
+     * @return The compilation result. See declaration of `ICompilationResult` for more.
      */
     compileSourceCode(sourceCode, target) {
+        // Parse the source code:
         const sourceUnit = parser_1.parseToSourceUnit(
         // we create the source unit with a unique name:
         `SourceUnit-${++CompilerApi.sourceUnitCount}`, sourceCode);
+        // Perform type checking:
+        const typeChecker = analysis_1.createTypeChecker(sourceUnit);
+        typeChecker.performTypeCheck();
+        // Generate code:
         const codeGenerator = this.createCodeGenerator(target, sourceUnit);
-        return codeGenerator.generateCode();
+        // Return the complete compilation result:
+        return {
+            typeCheckIssues: typeChecker.getIssues(),
+            compiledCode: codeGenerator.generateCode()
+        };
     }
     /**
      * Creates a code generator instance
@@ -149,7 +525,7 @@ class CompilerApi {
 CompilerApi.sourceUnitCount = 0;
 exports.CompilerApi = CompilerApi;
 
-},{"@/compiler/api":1,"@/compiler/codegen/ecmascript":3,"@/compiler/codegen/typescriptDeclarations":4,"@/compiler/parser":5}],9:[function(require,module,exports){
+},{"@/compiler/analysis":1,"@/compiler/api":2,"@/compiler/codegen/ecmascript":4,"@/compiler/codegen/typescriptDeclarations":5,"@/compiler/parser":6}],21:[function(require,module,exports){
 // tslint:disable:one-line
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -210,7 +586,7 @@ var ICompileTargetIds;
 })(ICompileTargetIds = exports.ICompileTargetIds || (exports.ICompileTargetIds = {}));
 exports.default = ICompileTargetIds;
 
-},{}],10:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 "use strict";
 function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
@@ -220,7 +596,7 @@ __export(require("./CompilerApi"));
 __export(require("./CompileTarget"));
 __export(require("./ICompileTargetIds"));
 
-},{"./CompileTarget":7,"./CompilerApi":8,"./ICompileTargetIds":9}],11:[function(require,module,exports){
+},{"./CompileTarget":19,"./CompilerApi":20,"./ICompileTargetIds":21}],23:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -262,7 +638,7 @@ class AnonFuncDecl extends Expr_1.default {
 exports.AnonFuncDecl = AnonFuncDecl;
 exports.default = AnonFuncDecl;
 
-},{"./":44,"./Expr":19,"./utils/assert":45}],12:[function(require,module,exports){
+},{"./":57,"./Expr":31,"./utils/assert":58}],24:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
@@ -291,7 +667,7 @@ class BaseNode {
 exports.BaseNode = BaseNode;
 exports.default = BaseNode;
 
-},{}],13:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -311,7 +687,7 @@ class BinaryOperation extends Expr_1.default {
 exports.BinaryOperation = BinaryOperation;
 exports.default = BinaryOperation;
 
-},{"./Expr":19,"./Operator":29,"./utils/assert":45}],14:[function(require,module,exports){
+},{"./Expr":31,"./Operator":42,"./utils/assert":58}],26:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -348,7 +724,7 @@ class ClassDecl extends _1.BaseNode {
 exports.ClassDecl = ClassDecl;
 exports.default = ClassDecl;
 
-},{"./":44,"./utils/assert":45}],15:[function(require,module,exports){
+},{"./":57,"./utils/assert":58}],27:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -368,7 +744,7 @@ class Comment extends _1.BaseNode {
 exports.Comment = Comment;
 exports.default = Comment;
 
-},{"./":44,"./utils/assert":45}],16:[function(require,module,exports){
+},{"./":57,"./utils/assert":58}],28:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const IfStatement_1 = require("./IfStatement");
@@ -377,7 +753,7 @@ class ElseIfStatement extends IfStatement_1.default {
 exports.ElseIfStatement = ElseIfStatement;
 exports.default = ElseIfStatement;
 
-},{"./IfStatement":25}],17:[function(require,module,exports){
+},{"./IfStatement":38}],29:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Statement_1 = require("./Statement");
@@ -386,7 +762,7 @@ class ElseStatement extends Statement_1.default {
 exports.ElseStatement = ElseStatement;
 exports.default = ElseStatement;
 
-},{"./Statement":36}],18:[function(require,module,exports){
+},{"./Statement":49}],30:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -406,7 +782,7 @@ class ExportStatement extends Statement_1.default {
 exports.ExportStatement = ExportStatement;
 exports.default = ExportStatement;
 
-},{"./":44,"./Statement":36,"./utils/assert":45}],19:[function(require,module,exports){
+},{"./":57,"./Statement":49,"./utils/assert":58}],31:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -427,7 +803,7 @@ Expr.Empty = new Expr();
 exports.Expr = Expr;
 exports.default = Expr;
 
-},{"./":44,"./utils/assert":45}],20:[function(require,module,exports){
+},{"./":57,"./utils/assert":58}],32:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -448,7 +824,7 @@ class ExprList extends Expr_1.default {
 exports.ExprList = ExprList;
 exports.default = ExprList;
 
-},{"./Expr":19,"./utils/assert":45}],21:[function(require,module,exports){
+},{"./Expr":31,"./utils/assert":58}],33:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -471,7 +847,7 @@ ExprStatement.Any = class AnyExprStatement extends ExprStatement {
 exports.ExprStatement = ExprStatement;
 exports.default = ExprStatement;
 
-},{"./Expr":19,"./Statement":36,"./utils/assert":45}],22:[function(require,module,exports){
+},{"./Expr":31,"./Statement":49,"./utils/assert":58}],34:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -498,7 +874,7 @@ class FuncCall extends Expr_1.default {
 exports.FuncCall = FuncCall;
 exports.default = FuncCall;
 
-},{"./Expr":19,"./ExprList":20,"./Identifier":24,"./utils/assert":45}],23:[function(require,module,exports){
+},{"./Expr":31,"./ExprList":32,"./Identifier":37,"./utils/assert":58}],35:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -542,7 +918,28 @@ class FuncDecl extends _1.AnonFuncDecl {
 exports.FuncDecl = FuncDecl;
 exports.default = FuncDecl;
 
-},{"./":44,"./utils/assert":45}],24:[function(require,module,exports){
+},{"./":57,"./utils/assert":58}],36:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var IContainerNode;
+(function (IContainerNode) {
+    /**
+     * The `IContainerNode` brand symbol.
+     * This must be used by implementing classes as the value for `__IContainerNodeBrand__`.
+     */
+    IContainerNode.BRAND = Symbol('IContainerNodeBrand');
+    /**
+     * Checks if a certain object implements the `IContainerNode` interface.
+     * @param object The object to check.
+     */
+    function isImplementedBy(object) {
+        return object.__IContainerNodeBrand__ === IContainerNode.BRAND;
+    }
+    IContainerNode.isImplementedBy = isImplementedBy;
+})(IContainerNode = exports.IContainerNode || (exports.IContainerNode = {}));
+exports.default = IContainerNode;
+
+},{}],37:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -557,7 +954,7 @@ class Identifier extends _1.Expr {
 exports.Identifier = Identifier;
 exports.default = Identifier;
 
-},{"./":44,"./utils/assert":45}],25:[function(require,module,exports){
+},{"./":57,"./utils/assert":58}],38:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -577,7 +974,7 @@ class IfStatement extends Statement_1.default {
 exports.IfStatement = IfStatement;
 exports.default = IfStatement;
 
-},{"./Expr":19,"./Statement":36,"./utils/assert":45}],26:[function(require,module,exports){
+},{"./Expr":31,"./Statement":49,"./utils/assert":58}],39:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -597,7 +994,7 @@ class ImportStatement extends Statement_1.default {
 exports.ImportStatement = ImportStatement;
 exports.default = ImportStatement;
 
-},{"./Statement":36,"./StringLiteral":37,"./utils/assert":45}],27:[function(require,module,exports){
+},{"./Statement":49,"./StringLiteral":50,"./utils/assert":58}],40:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -650,7 +1047,7 @@ class MethodDecl extends FuncDecl_1.FuncDecl {
 exports.MethodDecl = MethodDecl;
 exports.default = MethodDecl;
 
-},{"./":44,"./FuncDecl":23,"./utils/assert":45}],28:[function(require,module,exports){
+},{"./":57,"./FuncDecl":35,"./utils/assert":58}],41:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -666,7 +1063,7 @@ class NumericExpr extends Expr_1.default {
 exports.NumericExpr = NumericExpr;
 exports.default = NumericExpr;
 
-},{"./Expr":19,"./Token":38,"./utils/assert":45}],29:[function(require,module,exports){
+},{"./Expr":31,"./Token":51,"./utils/assert":58}],42:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -691,7 +1088,7 @@ class Operator extends _1.BaseNode {
 exports.Operator = Operator;
 exports.default = Operator;
 
-},{"./":44,"./utils/assert":45}],30:[function(require,module,exports){
+},{"./":57,"./utils/assert":58}],43:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
@@ -730,7 +1127,7 @@ var OperatorIdent;
 })(OperatorIdent = exports.OperatorIdent || (exports.OperatorIdent = {}));
 exports.default = OperatorIdent;
 
-},{}],31:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -755,7 +1152,7 @@ class ParamDecl extends _1.BaseNode {
 exports.ParamDecl = ParamDecl;
 exports.default = ParamDecl;
 
-},{"./":44,"./utils/assert":45}],32:[function(require,module,exports){
+},{"./":57,"./utils/assert":58}],45:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -770,6 +1167,11 @@ class ParamDeclList extends _1.BaseNode {
         decls) {
         super();
         this.decls = decls;
+        ///
+        /// `IContainerNode` Implementation:
+        ///
+        // tslint:disable-next-line:variable-name
+        this.__IContainerNodeBrand__ = _1.IContainerNode.BRAND;
         assert_1.assertAstNodeParam(Array.isArray(decls));
         decls.forEach(decl => assert_1.assertAstNodeParam(decl instanceof _1.ParamDecl));
     }
@@ -792,6 +1194,12 @@ class ParamDeclList extends _1.BaseNode {
     static fromParamDecls(decls) {
         return new ParamDeclList(decls);
     }
+    /**
+     * Returns all child nodes of a container node.
+     */
+    getChildNodes() {
+        return [].concat(this.paramDecls);
+    }
 }
 /**
  * A completely empty parameter declaration list.
@@ -801,7 +1209,7 @@ ParamDeclList.Empty = new ParamDeclList([]);
 exports.ParamDeclList = ParamDeclList;
 exports.default = ParamDeclList;
 
-},{"./":44,"./utils/assert":45}],33:[function(require,module,exports){
+},{"./":57,"./utils/assert":58}],46:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -825,7 +1233,7 @@ class PrecedenceExpr extends Expr_1.default {
 exports.PrecedenceExpr = PrecedenceExpr;
 exports.default = PrecedenceExpr;
 
-},{"./Expr":19,"./utils/assert":45}],34:[function(require,module,exports){
+},{"./Expr":31,"./utils/assert":58}],47:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -845,7 +1253,7 @@ ReturnStatement.Empty = new ReturnStatement();
 exports.ReturnStatement = ReturnStatement;
 exports.default = ReturnStatement;
 
-},{"./":44,"./utils/assert":45}],35:[function(require,module,exports){
+},{"./":57,"./utils/assert":58}],48:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -860,6 +1268,11 @@ class SourceUnit extends _1.BaseNode {
         super();
         this.name = name;
         this.items = items;
+        ///
+        /// `IContainerNode` Implementation:
+        ///
+        // tslint:disable-next-line:variable-name
+        this.__IContainerNodeBrand__ = _1.IContainerNode.BRAND;
         assert_1.assertAstNodeParam(typeof name === 'string');
         assert_1.assertAstNodeParam(name.length > 0);
         assert_1.assertAstNodeParam(Array.isArray(items));
@@ -874,11 +1287,17 @@ class SourceUnit extends _1.BaseNode {
     getNodeAtIndex(index) {
         return this.items[index];
     }
+    /**
+     * Returns all child nodes of a container node.
+     */
+    getChildNodes() {
+        return [].concat(this.items);
+    }
 }
 exports.SourceUnit = SourceUnit;
 exports.default = SourceUnit;
 
-},{"./":44,"./utils/assert":45}],36:[function(require,module,exports){
+},{"./":57,"./utils/assert":58}],49:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -887,6 +1306,11 @@ class Statement extends _1.BaseNode {
     constructor(items) {
         super();
         this.items = items;
+        ///
+        /// `IContainerNode` Implementation:
+        ///
+        // tslint:disable-next-line:variable-name
+        this.__IContainerNodeBrand__ = _1.IContainerNode.BRAND;
         assert_1.assertAstNodeParam(Array.isArray(items), 'Invalid Argument for ast.Statement: must be an array');
         items.forEach(item => assert_1.assertAstNodeParam(item instanceof _1.BaseNode));
         items.forEach(item => this.setParentOf(item, this));
@@ -900,6 +1324,12 @@ class Statement extends _1.BaseNode {
     getNodeAtIndex(index) {
         return this.items[index];
     }
+    /**
+     * Returns all child nodes of a container node.
+     */
+    getChildNodes() {
+        return [].concat(this.nodes);
+    }
 }
 /**
  * A statement with no members.
@@ -909,7 +1339,7 @@ Statement.Empty = new Statement([]);
 exports.Statement = Statement;
 exports.default = Statement;
 
-},{"./":44,"./utils/assert":45}],37:[function(require,module,exports){
+},{"./":57,"./utils/assert":58}],50:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -925,7 +1355,7 @@ class StringLiteral extends Expr_1.default {
 exports.StringLiteral = StringLiteral;
 exports.default = StringLiteral;
 
-},{"./Expr":19,"./Token":38,"./utils/assert":45}],38:[function(require,module,exports){
+},{"./Expr":31,"./Token":51,"./utils/assert":58}],51:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -935,9 +1365,29 @@ class Token extends _1.BaseNode {
         /**
          * The raw value of this token in source code.
          */
-        rawValue) {
+        rawValue, 
+        /**
+         * The start line number of the token in source code.
+         */
+        startLineNumber = undefined, 
+        /**
+         * The start column number of the token in source code.
+         */
+        startColumnNumber = undefined, 
+        /**
+         * The end line number of the token in source code.
+         */
+        endLineNumber = undefined, 
+        /**
+         * The end column number of the token in source code.
+         */
+        endColumnNumber = undefined) {
         super();
         this.rawValue = rawValue;
+        this.startLineNumber = startLineNumber;
+        this.startColumnNumber = startColumnNumber;
+        this.endLineNumber = endLineNumber;
+        this.endColumnNumber = endColumnNumber;
         assert_1.assertAstNodeParam(typeof rawValue === 'string');
     }
 }
@@ -949,7 +1399,7 @@ Token.Empty = new Token('');
 exports.Token = Token;
 exports.default = Token;
 
-},{"./":44,"./utils/assert":45}],39:[function(require,module,exports){
+},{"./":57,"./utils/assert":58}],52:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -975,7 +1425,7 @@ TypeExpr.Empty = new TypeExpr(_1.Token.Empty);
 exports.TypeExpr = TypeExpr;
 exports.default = TypeExpr;
 
-},{"./":44,"./utils/assert":45}],40:[function(require,module,exports){
+},{"./":57,"./utils/assert":58}],53:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -994,7 +1444,7 @@ class UnaryOperation extends _1.Expr {
 exports.UnaryOperation = UnaryOperation;
 exports.default = UnaryOperation;
 
-},{"./":44,"./utils/assert":45}],41:[function(require,module,exports){
+},{"./":57,"./utils/assert":58}],54:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
@@ -1017,7 +1467,7 @@ var UnaryOperatorPosition;
 })(UnaryOperatorPosition = exports.UnaryOperatorPosition || (exports.UnaryOperatorPosition = {}));
 exports.default = UnaryOperatorPosition;
 
-},{}],42:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("./utils/assert");
@@ -1065,7 +1515,7 @@ class VarDecl extends _1.BaseNode {
 exports.VarDecl = VarDecl;
 exports.default = VarDecl;
 
-},{"./":44,"./utils/assert":45}],43:[function(require,module,exports){
+},{"./":57,"./utils/assert":58}],56:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
@@ -1182,12 +1632,14 @@ var VarDeclModifier;
 })(VarDeclModifier = exports.VarDeclModifier || (exports.VarDeclModifier = {}));
 exports.default = VarDeclModifier;
 
-},{}],44:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 "use strict";
 function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
+/// Interfaces
+__export(require("./IContainerNode"));
 /// AST Node Types
 __export(require("./BaseNode"));
 __export(require("./AnonFuncDecl"));
@@ -1222,8 +1674,11 @@ __export(require("./UnaryOperation"));
 __export(require("./UnaryOperatorPosition"));
 __export(require("./VarDecl"));
 __export(require("./VarDeclModifier"));
+/// Utilities
+const utils = require("./utils/");
+exports.utils = utils;
 
-},{"./AnonFuncDecl":11,"./BaseNode":12,"./BinaryOperation":13,"./ClassDecl":14,"./Comment":15,"./ElseIfStatement":16,"./ElseStatement":17,"./ExportStatement":18,"./Expr":19,"./ExprList":20,"./ExprStatement":21,"./FuncCall":22,"./FuncDecl":23,"./Identifier":24,"./IfStatement":25,"./ImportStatement":26,"./MethodDecl":27,"./NumericExpr":28,"./Operator":29,"./OperatorIdent":30,"./ParamDecl":31,"./ParamDeclList":32,"./PrecedenceExpr":33,"./ReturnStatement":34,"./SourceUnit":35,"./Statement":36,"./StringLiteral":37,"./Token":38,"./TypeExpression":39,"./UnaryOperation":40,"./UnaryOperatorPosition":41,"./VarDecl":42,"./VarDeclModifier":43}],45:[function(require,module,exports){
+},{"./AnonFuncDecl":23,"./BaseNode":24,"./BinaryOperation":25,"./ClassDecl":26,"./Comment":27,"./ElseIfStatement":28,"./ElseStatement":29,"./ExportStatement":30,"./Expr":31,"./ExprList":32,"./ExprStatement":33,"./FuncCall":34,"./FuncDecl":35,"./IContainerNode":36,"./Identifier":37,"./IfStatement":38,"./ImportStatement":39,"./MethodDecl":40,"./NumericExpr":41,"./Operator":42,"./OperatorIdent":43,"./ParamDecl":44,"./ParamDeclList":45,"./PrecedenceExpr":46,"./ReturnStatement":47,"./SourceUnit":48,"./Statement":49,"./StringLiteral":50,"./Token":51,"./TypeExpression":52,"./UnaryOperation":53,"./UnaryOperatorPosition":54,"./VarDecl":55,"./VarDeclModifier":56,"./utils/":59}],58:[function(require,module,exports){
 ///
 /// ast/utils/assert.ts
 /// Utilities for assertions in the AST module.
@@ -1251,7 +1706,61 @@ function assertAstNodeParam(condition, ...message) {
 }
 exports.assertAstNodeParam = assertAstNodeParam;
 
-},{"@/utils":6}],46:[function(require,module,exports){
+},{"@/utils":7}],59:[function(require,module,exports){
+"use strict";
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(require("./traverse"));
+
+},{"./traverse":60}],60:[function(require,module,exports){
+///
+/// AST Traversion Utilities
+///
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const ast = require("../");
+/**
+ * Filter an array of AST nodes so that only nodes of a certain AST node type remain.
+ * @param nodes The node array to filter.
+ * @param nodeType The AST node type to include in the result.
+ * @return An array of nodes of the given AST node type.
+ */
+function filterByNodeType(nodes, nodeType) {
+    return nodes.filter(node => node instanceof nodeType);
+}
+exports.filterByNodeType = filterByNodeType;
+/**
+ * @see flattenContainerNode(...)
+ */
+function flattenContainerNodeInternal(container, flattenSubsequentContainer, nodeList) {
+    for (const childNode of container.getChildNodes()) {
+        nodeList.push(childNode);
+        // If the child node is a container node, check if it should also be flattened using
+        // the provided `flattenSubsequentContainer` closure.
+        if (ast.IContainerNode.isImplementedBy(childNode) &&
+            flattenSubsequentContainer(childNode)) {
+            // The child node should also be flattened, so call this function recursively:
+            flattenContainerNodeInternal(childNode, flattenSubsequentContainer, nodeList);
+        }
+    }
+}
+/**
+ * Flatten a part of a syntax tree by collecting the child nodes of a container node recursively
+ * in a single array.
+ * @param container The container node that should be flattened.
+ * @param flatten A function that checks whether subsequent container nodes should also be flattened.
+ * @return The flattened list of child nodes in `container`.
+ */
+function flattenContainerNode(container, flattenSubsequentContainer = _ => true) {
+    const nodeList = [];
+    flattenContainerNodeInternal(container, flattenSubsequentContainer, nodeList);
+    return nodeList;
+}
+exports.flattenContainerNode = flattenContainerNode;
+
+},{"../":57}],61:[function(require,module,exports){
 ///
 /// BaseGenerator.ts
 /// Generic base class for EcmaScript code generators.
@@ -1303,7 +1812,7 @@ class BaseGenerator {
 exports.BaseGenerator = BaseGenerator;
 exports.default = BaseGenerator;
 
-},{}],47:[function(require,module,exports){
+},{}],62:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const BaseGenerator_1 = require("./BaseGenerator");
@@ -1323,7 +1832,7 @@ class CodeGenerator extends BaseGenerator_1.BaseGenerator {
 exports.CodeGenerator = CodeGenerator;
 exports.default = CodeGenerator;
 
-},{"./BaseGenerator":46,"./factory":48}],48:[function(require,module,exports){
+},{"./BaseGenerator":61,"./factory":63}],63:[function(require,module,exports){
 ///
 /// factory.ts
 /// Functions to register and instantiate EcmaScript code generators.
@@ -1354,7 +1863,7 @@ exports.register = factory.registerClass.bind(factory);
  */
 exports.createForAstNode = factory.create.bind(factory);
 
-},{"../../utils/FactoryRegistry":93}],49:[function(require,module,exports){
+},{"../../utils/FactoryRegistry":108}],64:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1387,7 +1896,7 @@ AnonFuncDeclCodeGenerator = __decorate([
 ], AnonFuncDeclCodeGenerator);
 exports.AnonFuncDeclCodeGenerator = AnonFuncDeclCodeGenerator;
 
-},{"../BaseGenerator":46,"../factory":48,"@/compiler/ast":2}],50:[function(require,module,exports){
+},{"../BaseGenerator":61,"../factory":63,"@/compiler/ast":3}],65:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const BaseGenerator_1 = require("../BaseGenerator");
@@ -1406,7 +1915,7 @@ class BaseConditionalStatementCodeGenerator extends BaseGenerator_1.default {
 }
 exports.BaseConditionalStatementCodeGenerator = BaseConditionalStatementCodeGenerator;
 
-},{"../BaseGenerator":46,"../factory":48}],51:[function(require,module,exports){
+},{"../BaseGenerator":61,"../factory":63}],66:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1441,7 +1950,7 @@ BinaryOperationCodeGenerator = __decorate([
 ], BinaryOperationCodeGenerator);
 exports.BinaryOperationCodeGenerator = BinaryOperationCodeGenerator;
 
-},{"../BaseGenerator":46,"../factory":48,"@/compiler/ast":2}],52:[function(require,module,exports){
+},{"../BaseGenerator":61,"../factory":63,"@/compiler/ast":3}],67:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1491,7 +2000,7 @@ ClassDeclCodeGenerator = __decorate([
 ], ClassDeclCodeGenerator);
 exports.ClassDeclCodeGenerator = ClassDeclCodeGenerator;
 
-},{"../BaseGenerator":46,"../factory":48,"@/compiler/ast":2}],53:[function(require,module,exports){
+},{"../BaseGenerator":61,"../factory":63,"@/compiler/ast":3}],68:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1538,7 +2047,7 @@ ClassVarDeclCodeGenerator = __decorate([
 ], ClassVarDeclCodeGenerator);
 exports.ClassVarDeclCodeGenerator = ClassVarDeclCodeGenerator;
 
-},{"../factory":48,"./VarDeclCodeGenerator":75,"@/compiler/ast":2}],54:[function(require,module,exports){
+},{"../factory":63,"./VarDeclCodeGenerator":90,"@/compiler/ast":3}],69:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1566,7 +2075,7 @@ CommentCodeGenerator = __decorate([
 ], CommentCodeGenerator);
 exports.CommentCodeGenerator = CommentCodeGenerator;
 
-},{"../BaseGenerator":46,"../factory":48,"@/compiler/ast":2}],55:[function(require,module,exports){
+},{"../BaseGenerator":61,"../factory":63,"@/compiler/ast":3}],70:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1586,7 +2095,7 @@ ElseIfStatementCodeGenerator = __decorate([
 ], ElseIfStatementCodeGenerator);
 exports.ElseIfStatementCodeGenerator = ElseIfStatementCodeGenerator;
 
-},{"../factory":48,"./BaseConditionalStatementCodeGenerator":50,"@/compiler/ast":2}],56:[function(require,module,exports){
+},{"../factory":63,"./BaseConditionalStatementCodeGenerator":65,"@/compiler/ast":3}],71:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1615,7 +2124,7 @@ ElseStatementCodeGenerator = __decorate([
 ], ElseStatementCodeGenerator);
 exports.ElseStatementCodeGenerator = ElseStatementCodeGenerator;
 
-},{"../BaseGenerator":46,"../factory":48,"@/compiler/ast":2}],57:[function(require,module,exports){
+},{"../BaseGenerator":61,"../factory":63,"@/compiler/ast":3}],72:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1642,7 +2151,7 @@ EmptyStatmenetCodeGenerator = __decorate([
 ], EmptyStatmenetCodeGenerator);
 exports.EmptyStatmenetCodeGenerator = EmptyStatmenetCodeGenerator;
 
-},{"../BaseGenerator":46,"../factory":48,"@/compiler/ast":2}],58:[function(require,module,exports){
+},{"../BaseGenerator":61,"../factory":63,"@/compiler/ast":3}],73:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1670,7 +2179,7 @@ ExportStatementCodeGenerator = __decorate([
 ], ExportStatementCodeGenerator);
 exports.ExportStatementCodeGenerator = ExportStatementCodeGenerator;
 
-},{"../BaseGenerator":46,"../factory":48,"@/compiler/ast":2}],59:[function(require,module,exports){
+},{"../BaseGenerator":61,"../factory":63,"@/compiler/ast":3}],74:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1703,7 +2212,7 @@ ExprCodeGenerator = __decorate([
 ], ExprCodeGenerator);
 exports.ExprCodeGenerator = ExprCodeGenerator;
 
-},{"../BaseGenerator":46,"../factory":48,"@/compiler/ast":2}],60:[function(require,module,exports){
+},{"../BaseGenerator":61,"../factory":63,"@/compiler/ast":3}],75:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1730,7 +2239,7 @@ ExprListCodeGenerator = __decorate([
 ], ExprListCodeGenerator);
 exports.ExprListCodeGenerator = ExprListCodeGenerator;
 
-},{"../BaseGenerator":46,"../factory":48,"@/compiler/ast":2}],61:[function(require,module,exports){
+},{"../BaseGenerator":61,"../factory":63,"@/compiler/ast":3}],76:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1757,7 +2266,7 @@ ExprCodeGenerator = __decorate([
 ], ExprCodeGenerator);
 exports.ExprCodeGenerator = ExprCodeGenerator;
 
-},{"../BaseGenerator":46,"../factory":48,"@/compiler/ast":2}],62:[function(require,module,exports){
+},{"../BaseGenerator":61,"../factory":63,"@/compiler/ast":3}],77:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1787,7 +2296,7 @@ ExprListCodeGenerator = __decorate([
 ], ExprListCodeGenerator);
 exports.ExprListCodeGenerator = ExprListCodeGenerator;
 
-},{"../BaseGenerator":46,"../factory":48,"@/compiler/ast":2}],63:[function(require,module,exports){
+},{"../BaseGenerator":61,"../factory":63,"@/compiler/ast":3}],78:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1820,7 +2329,7 @@ FuncDeclCodeGenerator = __decorate([
 ], FuncDeclCodeGenerator);
 exports.FuncDeclCodeGenerator = FuncDeclCodeGenerator;
 
-},{"../BaseGenerator":46,"../factory":48,"@/compiler/ast":2}],64:[function(require,module,exports){
+},{"../BaseGenerator":61,"../factory":63,"@/compiler/ast":3}],79:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1840,7 +2349,7 @@ IfStatementCodeGenerator = __decorate([
 ], IfStatementCodeGenerator);
 exports.IfStatementCodeGenerator = IfStatementCodeGenerator;
 
-},{"../factory":48,"./BaseConditionalStatementCodeGenerator":50,"@/compiler/ast":2}],65:[function(require,module,exports){
+},{"../factory":63,"./BaseConditionalStatementCodeGenerator":65,"@/compiler/ast":3}],80:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1873,7 +2382,7 @@ ImportStatementCodeGenerator = __decorate([
 ], ImportStatementCodeGenerator);
 exports.ImportStatementCodeGenerator = ImportStatementCodeGenerator;
 
-},{"../BaseGenerator":46,"../factory":48,"@/compiler/ast":2}],66:[function(require,module,exports){
+},{"../BaseGenerator":61,"../factory":63,"@/compiler/ast":3}],81:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1911,7 +2420,7 @@ MethodDeclCodeGenerator = __decorate([
 ], MethodDeclCodeGenerator);
 exports.MethodDeclCodeGenerator = MethodDeclCodeGenerator;
 
-},{"../BaseGenerator":46,"../factory":48,"./FuncDeclCodeGenerator":63,"@/compiler/ast":2}],67:[function(require,module,exports){
+},{"../BaseGenerator":61,"../factory":63,"./FuncDeclCodeGenerator":78,"@/compiler/ast":3}],82:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1941,7 +2450,7 @@ OperatorCodeGenerator = __decorate([
 ], OperatorCodeGenerator);
 exports.OperatorCodeGenerator = OperatorCodeGenerator;
 
-},{"../BaseGenerator":46,"../factory":48,"@/compiler/ast":2}],68:[function(require,module,exports){
+},{"../BaseGenerator":61,"../factory":63,"@/compiler/ast":3}],83:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1968,7 +2477,7 @@ ParamDeclListCodeGenerator = __decorate([
 ], ParamDeclListCodeGenerator);
 exports.ParamDeclListCodeGenerator = ParamDeclListCodeGenerator;
 
-},{"../BaseGenerator":46,"../factory":48,"@/compiler/ast":2}],69:[function(require,module,exports){
+},{"../BaseGenerator":61,"../factory":63,"@/compiler/ast":3}],84:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1995,7 +2504,7 @@ PrecedenceExprCodeGenerator = __decorate([
 ], PrecedenceExprCodeGenerator);
 exports.PrecedenceExprCodeGenerator = PrecedenceExprCodeGenerator;
 
-},{"../BaseGenerator":46,"../factory":48,"@/compiler/ast":2}],70:[function(require,module,exports){
+},{"../BaseGenerator":61,"../factory":63,"@/compiler/ast":3}],85:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -2022,7 +2531,7 @@ ReturnStatementCodeGenerator = __decorate([
 ], ReturnStatementCodeGenerator);
 exports.ReturnStatementCodeGenerator = ReturnStatementCodeGenerator;
 
-},{"../BaseGenerator":46,"../factory":48,"@/compiler/ast":2}],71:[function(require,module,exports){
+},{"../BaseGenerator":61,"../factory":63,"@/compiler/ast":3}],86:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -2049,7 +2558,7 @@ StatementCodeGenerator = __decorate([
 ], StatementCodeGenerator);
 exports.StatementCodeGenerator = StatementCodeGenerator;
 
-},{"../BaseGenerator":46,"../factory":48,"@/compiler/ast":2}],72:[function(require,module,exports){
+},{"../BaseGenerator":61,"../factory":63,"@/compiler/ast":3}],87:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -2076,7 +2585,7 @@ StringLiteralCodeGenerator = __decorate([
 ], StringLiteralCodeGenerator);
 exports.StringLiteralCodeGenerator = StringLiteralCodeGenerator;
 
-},{"../BaseGenerator":46,"../factory":48,"@/compiler/ast":2}],73:[function(require,module,exports){
+},{"../BaseGenerator":61,"../factory":63,"@/compiler/ast":3}],88:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -2103,7 +2612,7 @@ TokenCodeGenerator = __decorate([
 ], TokenCodeGenerator);
 exports.TokenCodeGenerator = TokenCodeGenerator;
 
-},{"../BaseGenerator":46,"../factory":48,"@/compiler/ast":2}],74:[function(require,module,exports){
+},{"../BaseGenerator":61,"../factory":63,"@/compiler/ast":3}],89:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -2139,7 +2648,7 @@ UnaryOperationCodeGenerator = __decorate([
 ], UnaryOperationCodeGenerator);
 exports.UnaryOperationCodeGenerator = UnaryOperationCodeGenerator;
 
-},{"../BaseGenerator":46,"../factory":48,"@/compiler/ast":2}],75:[function(require,module,exports){
+},{"../BaseGenerator":61,"../factory":63,"@/compiler/ast":3}],90:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -2177,7 +2686,7 @@ VarDeclCodeGenerator = __decorate([
 ], VarDeclCodeGenerator);
 exports.VarDeclCodeGenerator = VarDeclCodeGenerator;
 
-},{"../BaseGenerator":46,"../factory":48,"@/compiler/ast":2}],76:[function(require,module,exports){
+},{"../BaseGenerator":61,"../factory":63,"@/compiler/ast":3}],91:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 require("./AnonFuncDeclCodeGenerator");
@@ -2208,7 +2717,7 @@ require("./TokenCodeGenerator");
 require("./UnaryOperationCodeGenerator");
 require("./VarDeclCodeGenerator");
 
-},{"./AnonFuncDeclCodeGenerator":49,"./BaseConditionalStatementCodeGenerator":50,"./BinaryOperationCodeGenerator":51,"./ClassDeclCodeGenerator":52,"./ClassVarDeclCodeGenerator":53,"./CommentCodeGenerator":54,"./ElseIfStatementCodeGenerator":55,"./ElseStatementCodeGenerator":56,"./EmptyStatementCodeGenerator":57,"./ExportStatementCodeGenerator":58,"./ExprCodeGenerator":59,"./ExprListCodeGenerator":60,"./ExprStatementCodeGenerator":61,"./FuncCallCodeGenerator":62,"./FuncDeclCodeGenerator":63,"./IfStatementCodeGenerator":64,"./ImportStatementCodeGenerator":65,"./MethodDeclCodeGenerator":66,"./OperatorCodeGenerator":67,"./ParamDeclListCodeGenerator":68,"./PrecedenceExprCodeGenerator":69,"./ReturnStatementCodeGenerator":70,"./StatementCodeGenerator":71,"./StringLiteralCodeGenerator":72,"./TokenCodeGenerator":73,"./UnaryOperationCodeGenerator":74,"./VarDeclCodeGenerator":75}],77:[function(require,module,exports){
+},{"./AnonFuncDeclCodeGenerator":64,"./BaseConditionalStatementCodeGenerator":65,"./BinaryOperationCodeGenerator":66,"./ClassDeclCodeGenerator":67,"./ClassVarDeclCodeGenerator":68,"./CommentCodeGenerator":69,"./ElseIfStatementCodeGenerator":70,"./ElseStatementCodeGenerator":71,"./EmptyStatementCodeGenerator":72,"./ExportStatementCodeGenerator":73,"./ExprCodeGenerator":74,"./ExprListCodeGenerator":75,"./ExprStatementCodeGenerator":76,"./FuncCallCodeGenerator":77,"./FuncDeclCodeGenerator":78,"./IfStatementCodeGenerator":79,"./ImportStatementCodeGenerator":80,"./MethodDeclCodeGenerator":81,"./OperatorCodeGenerator":82,"./ParamDeclListCodeGenerator":83,"./PrecedenceExprCodeGenerator":84,"./ReturnStatementCodeGenerator":85,"./StatementCodeGenerator":86,"./StringLiteralCodeGenerator":87,"./TokenCodeGenerator":88,"./UnaryOperationCodeGenerator":89,"./VarDeclCodeGenerator":90}],92:[function(require,module,exports){
 "use strict";
 function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
@@ -2221,7 +2730,7 @@ require("./generator/");
 // Import and export the public types in this module.
 __export(require("./CodeGenerator"));
 
-},{"./CodeGenerator":47,"./generator/":76}],78:[function(require,module,exports){
+},{"./CodeGenerator":62,"./generator/":91}],93:[function(require,module,exports){
 ///
 /// BaseGenerator.ts
 /// Generic base class for TypeScript Declaration code generators.
@@ -2273,7 +2782,7 @@ class BaseGenerator {
 exports.BaseGenerator = BaseGenerator;
 exports.default = BaseGenerator;
 
-},{}],79:[function(require,module,exports){
+},{}],94:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const BaseGenerator_1 = require("./BaseGenerator");
@@ -2293,7 +2802,7 @@ class CodeGenerator extends BaseGenerator_1.BaseGenerator {
 exports.CodeGenerator = CodeGenerator;
 exports.default = CodeGenerator;
 
-},{"./BaseGenerator":78,"./factory":80}],80:[function(require,module,exports){
+},{"./BaseGenerator":93,"./factory":95}],95:[function(require,module,exports){
 ///
 /// factory.ts
 /// Functions to register and instantiate TypeScript code generators.
@@ -2324,7 +2833,7 @@ exports.register = factory.registerClass.bind(factory);
  */
 exports.createForAstNode = factory.create.bind(factory);
 
-},{"../../utils/FactoryRegistry":93}],81:[function(require,module,exports){
+},{"../../utils/FactoryRegistry":108}],96:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -2361,7 +2870,7 @@ ClassDeclCodeGenerator = __decorate([
 ], ClassDeclCodeGenerator);
 exports.ClassDeclCodeGenerator = ClassDeclCodeGenerator;
 
-},{"../BaseGenerator":78,"../factory":80,"@/compiler/ast":2}],82:[function(require,module,exports){
+},{"../BaseGenerator":93,"../factory":95,"@/compiler/ast":3}],97:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -2399,7 +2908,7 @@ ClassVarDeclCodeGenerator = __decorate([
 ], ClassVarDeclCodeGenerator);
 exports.ClassVarDeclCodeGenerator = ClassVarDeclCodeGenerator;
 
-},{"../factory":80,"./VarDeclCodeGenerator":87,"@/compiler/ast":2}],83:[function(require,module,exports){
+},{"../factory":95,"./VarDeclCodeGenerator":102,"@/compiler/ast":3}],98:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -2432,7 +2941,7 @@ FuncDeclCodeGenerator = __decorate([
 ], FuncDeclCodeGenerator);
 exports.FuncDeclCodeGenerator = FuncDeclCodeGenerator;
 
-},{"../BaseGenerator":78,"../factory":80,"@/compiler/ast":2}],84:[function(require,module,exports){
+},{"../BaseGenerator":93,"../factory":95,"@/compiler/ast":3}],99:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -2468,7 +2977,7 @@ MethodDeclCodeGenerator = __decorate([
 ], MethodDeclCodeGenerator);
 exports.MethodDeclCodeGenerator = MethodDeclCodeGenerator;
 
-},{"../BaseGenerator":78,"../factory":80,"@/compiler/ast":2}],85:[function(require,module,exports){
+},{"../BaseGenerator":93,"../factory":95,"@/compiler/ast":3}],100:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -2501,7 +3010,7 @@ ParamDeclListCodeGenerator = __decorate([
 ], ParamDeclListCodeGenerator);
 exports.ParamDeclListCodeGenerator = ParamDeclListCodeGenerator;
 
-},{"../BaseGenerator":78,"../factory":80,"@/compiler/ast":2}],86:[function(require,module,exports){
+},{"../BaseGenerator":93,"../factory":95,"@/compiler/ast":3}],101:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -2541,7 +3050,7 @@ TypeExprCodeGenerator = __decorate([
 ], TypeExprCodeGenerator);
 exports.TypeExprCodeGenerator = TypeExprCodeGenerator;
 
-},{"../BaseGenerator":78,"../factory":80,"@/compiler/ast":2}],87:[function(require,module,exports){
+},{"../BaseGenerator":93,"../factory":95,"@/compiler/ast":3}],102:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -2575,7 +3084,7 @@ VarDeclCodeGenerator = __decorate([
 ], VarDeclCodeGenerator);
 exports.VarDeclCodeGenerator = VarDeclCodeGenerator;
 
-},{"../BaseGenerator":78,"../factory":80,"@/compiler/ast":2}],88:[function(require,module,exports){
+},{"../BaseGenerator":93,"../factory":95,"@/compiler/ast":3}],103:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -2602,7 +3111,7 @@ IgnoredCodeGenerator = __decorate([
 ], IgnoredCodeGenerator);
 exports.IgnoredCodeGenerator = IgnoredCodeGenerator;
 
-},{"../BaseGenerator":78,"../factory":80,"@/compiler/ast":2}],89:[function(require,module,exports){
+},{"../BaseGenerator":93,"../factory":95,"@/compiler/ast":3}],104:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 require("./ClassDeclCodeGenerator");
@@ -2614,9 +3123,9 @@ require("./TypeExprCodeGenerator");
 require("./VarDeclCodeGenerator");
 require("./Z_IgnoredCodeGenerator");
 
-},{"./ClassDeclCodeGenerator":81,"./ClassVarDeclCodeGenerator":82,"./FuncDeclCodeGenerator":83,"./MethodDeclCodeGenerator":84,"./ParamDeclListCodeGenerator":85,"./TypeExprCodeGenerator":86,"./VarDeclCodeGenerator":87,"./Z_IgnoredCodeGenerator":88}],90:[function(require,module,exports){
-arguments[4][77][0].apply(exports,arguments)
-},{"./CodeGenerator":79,"./generator/":89,"dup":77}],91:[function(require,module,exports){
+},{"./ClassDeclCodeGenerator":96,"./ClassVarDeclCodeGenerator":97,"./FuncDeclCodeGenerator":98,"./MethodDeclCodeGenerator":99,"./ParamDeclListCodeGenerator":100,"./TypeExprCodeGenerator":101,"./VarDeclCodeGenerator":102,"./Z_IgnoredCodeGenerator":103}],105:[function(require,module,exports){
+arguments[4][92][0].apply(exports,arguments)
+},{"./CodeGenerator":94,"./generator/":104,"dup":92}],106:[function(require,module,exports){
 (function (process){
 /* parser generated by jison 0.4.17 */
 /*
@@ -2704,7 +3213,8 @@ var generatedParser = (function () {
             var $0 = $$.length - 1;
             switch (yystate) {
                 case 9:
-                    this.$ = new yy.Comment([new yy.Token($$[$0 - 1])]);
+                    const commentContent = new yy.Token($$[$0 - 1], _$[$0 - 1].first_line, _$[$0 - 1].first_column, _$[$0 - 1].last_line, _$[$0 - 1].last_column);
+                    this.$ = new yy.Comment([commentContent]);
                     break;
                 case 10:
                 case 11:
@@ -2788,14 +3298,16 @@ var generatedParser = (function () {
                         The `.trim()` before the `.slice(...)` shouldn't be necessary, but we're
                         rather safe than sorry.
                     */
-                    var content = new yy.Token(($$[$0]).trim().slice(1, -1));
-                    this.$ = new yy.StringLiteral(content);
+                    const stringLiteralContent = new yy.Token(($$[$0]).trim().slice(1, -1), _$[$0].first_line, _$[$0].first_column, _$[$0].last_line, _$[$0].last_column);
+                    this.$ = new yy.StringLiteral(stringLiteralContent);
                     break;
                 case 44:
-                    this.$ = new yy.Identifier(new yy.Token($$[$0]));
+                    const identifierContent = new yy.Token($$[$0], _$[$0].first_line, _$[$0].first_column, _$[$0].last_line, _$[$0].last_column);
+                    this.$ = new yy.Identifier(identifierContent);
                     break;
                 case 46:
-                    this.$ = new yy.NumericExpr(new yy.Token($$[$0]));
+                    const atomicPrimaryExprContent = new yy.Token($$[$0], _$[$0].first_line, _$[$0].first_column, _$[$0].last_line, _$[$0].last_column);
+                    this.$ = new yy.NumericExpr(atomicPrimaryExprContent);
                     break;
                 case 59:
                     const exprs = [];
@@ -2827,7 +3339,8 @@ var generatedParser = (function () {
                     this.$ = new yy.ExprStatement($$[$0 - 1]);
                     break;
                 case 64:
-                    this.$ = yy.TypeExpr.fromIdentifier(new yy.Token($$[$0]));
+                    const typeExprIdentifierContent = new yy.Token($$[$0], _$[$0].first_line, _$[$0].first_column, _$[$0].last_line, _$[$0].last_column);
+                    this.$ = yy.TypeExpr.fromIdentifier(typeExprIdentifierContent);
                     break;
                 case 67:
                     this.$ = new yy.IfStatement($$[$0 - 2], $$[$0 - 1]);
@@ -2882,7 +3395,8 @@ var generatedParser = (function () {
                     this.$ = yy.getVarDeclModifierByKeyword($$[$0]);
                     break;
                 case 88:
-                    this.$ = [yy.createToken($$[$0 - 1]), $$[$0]];
+                    const identifierToken = new yy.Token($$[$0 - 1], _$[$0 - 1].first_line, _$[$0 - 1].first_column, _$[$0 - 1].last_line, _$[$0 - 1].last_column);
+                    this.$ = [identifierToken, $$[$0]];
                     break;
                 case 89:
                     this.$ = new yy.Expr($$[$0]);
@@ -2904,7 +3418,8 @@ var generatedParser = (function () {
                     });
                     break;
                 case 99:
-                    this.$ = new yy.ParamDecl(new yy.Token($$[$0 - 1]), $$[$0]);
+                    const nameToken = new yy.Token($$[$0 - 1], _$[$0 - 1].first_line, _$[$0 - 1].first_column, _$[$0 - 1].last_line, _$[$0 - 1].last_column);
+                    this.$ = new yy.ParamDecl(nameToken, $$[$0]);
                     break;
                 case 100:
                     const decls = [];
@@ -2918,7 +3433,7 @@ var generatedParser = (function () {
                     break;
                 case 102:
                 case 120:
-                    this.$ = yy.createToken($$[$0]);
+                    this.$ = new yy.Token($$[$0], _$[$0].first_line, _$[$0].first_column, _$[$0].last_line, _$[$0].last_column);
                     break;
                 case 103:
                     this.$ = $$[$0 - 1];
@@ -3677,7 +4192,7 @@ if (typeof require !== 'undefined' && typeof exports !== 'undefined') {
 }
 
 }).call(this,require('_process'))
-},{"_process":99,"fs":97,"path":98}],92:[function(require,module,exports){
+},{"_process":114,"fs":112,"path":113}],107:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const generatedParser = require("./generatedParser.js");
@@ -3716,9 +4231,6 @@ function parseToArray(sourceCode) {
     for (const typeName in ast) {
         parser.yy[typeName] = ast[typeName];
     }
-    parser.yy.createToken = function (rawSource) {
-        return new ast.Token(rawSource);
-    };
     parser.yy.getVarDeclModifierByKeyword = getVarDeclModifierByKeyword;
     parser.yy.getOperatorFromToken = getOperatorFromToken;
     parser.yy.result = [];
@@ -3731,7 +4243,7 @@ function parseToSourceUnit(name, sourceCode) {
 }
 exports.parseToSourceUnit = parseToSourceUnit;
 
-},{"../ast":44,"./generatedParser.js":91}],93:[function(require,module,exports){
+},{"../ast":57,"./generatedParser.js":106}],108:[function(require,module,exports){
 ///
 /// FactoryRegistry
 ///
@@ -3839,7 +4351,7 @@ class FactoryRegistry {
 exports.FactoryRegistry = FactoryRegistry;
 exports.default = FactoryRegistry;
 
-},{}],94:[function(require,module,exports){
+},{}],109:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const alphabet = [
@@ -3863,7 +4375,7 @@ function getUppercaseAlphabet() {
 }
 exports.getUppercaseAlphabet = getUppercaseAlphabet;
 
-},{}],95:[function(require,module,exports){
+},{}],110:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
@@ -3898,7 +4410,7 @@ function assert(condition, ...message) {
 }
 exports.assert = assert;
 
-},{}],96:[function(require,module,exports){
+},{}],111:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = require("fs");
@@ -3923,9 +4435,9 @@ function importFromDirectorySync(directoryPath, filter = () => true) {
 }
 exports.importFromDirectorySync = importFromDirectorySync;
 
-},{"fs":97}],97:[function(require,module,exports){
+},{"fs":112}],112:[function(require,module,exports){
 
-},{}],98:[function(require,module,exports){
+},{}],113:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -4153,7 +4665,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require('_process'))
-},{"_process":99}],99:[function(require,module,exports){
+},{"_process":114}],114:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -4335,5 +4847,5 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}]},{},[8])(8)
+},{}]},{},[20])(20)
 });

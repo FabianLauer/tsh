@@ -106,7 +106,6 @@ tryCatch((function () {
 
 		}), (function (compilationResult) {
 			code += compilationResult.compiledCode;
-console.log(compilationResult.typeCheckIssues);
 if ((compilationResult.typeCheckIssues.length)) {
 			renderCompileProblem(arrayItem(compilationResult.typeCheckIssues, 0));
 

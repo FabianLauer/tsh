@@ -3,7 +3,11 @@ import { SymbolTable } from '@/compiler/analysis'
 import { register } from './typeCheckerFactory'
 import { TypeChecker, TypeCheckIssue } from './'
 
-@register(node => (node instanceof ast.Statement ? Infinity : 0))
+@register(node => (
+	node instanceof ast.Statement && SymbolTable.isScopeNode(node)
+	? Infinity
+	: 0
+))
 export class StatementTypeChecker extends TypeChecker<ast.Statement> {
 	/** Performs type checking and updates the `TypeChecker` instance's result state along the way. */
 	protected performTypeCheckConcrete(): void {

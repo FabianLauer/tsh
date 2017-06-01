@@ -10,6 +10,7 @@ import { createForAstNode as createTypeChecker } from './typeCheckerFactory'
 // no need to interact with them here in any other way.
 import FunctionTypeChecker from './FunctionTypeChecker'
 import NoOpTypeChecker from './NoOpTypeChecker'
+import SourceUnitTypeChecker from './SourceUnitTypeChecker'
 import StatementTypeChecker from './StatementTypeChecker'
 
 export {
@@ -22,5 +23,6 @@ export {
 
 	FunctionTypeChecker,
 	NoOpTypeChecker,
+	SourceUnitTypeChecker,
 	StatementTypeChecker
 }

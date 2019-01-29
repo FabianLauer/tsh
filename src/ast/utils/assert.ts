@@ -22,9 +22,7 @@ export class AstNodeParamAssertionException extends Error { }
 export function assertAstNodeParam(condition: boolean, ...message: any[]) {
 	configurableAssert(
 		condition,
-		errorMessage => {
-			return new AstNodeParamAssertionException(errorMessage)
-		},
+		errorMessage => new AstNodeParamAssertionException(errorMessage),
 		'AST node parameter assertion failed.', ...message
 	)
 }

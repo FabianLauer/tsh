@@ -20,6 +20,7 @@ NL							\n
 "return"					return 'RETURN';
 "if"						return 'IF';
 "else"						return 'ELSE';
+"while"						return 'WHILE';
 
 {NL}						return 'NL';
 

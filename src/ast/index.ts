@@ -36,6 +36,7 @@ export * from './UnaryOperation'
 export * from './UnaryOperatorPosition'
 export * from './VarDecl'
 export * from './VarDeclModifier'
+export * from './WhileStatement'
 
 /// AST Node Type Interfaces
 export * from './IConditionalStatement'

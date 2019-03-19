@@ -18,5 +18,5 @@ extends BaseGenerator<TNode> {
 	/**
 	 * Returns the keyword used to start the conditional statement, e.g. `if` or `else if`.
 	 */
-	protected abstract getConditionalKeyword(): string;
+	protected abstract getConditionalKeyword(): string
 }

@@ -5,15 +5,15 @@ import Expr from './Expr'
 
 export class WhileStatement extends Statement {
 	public constructor(
-		public readonly loop: ExprList<Expr[]>,
+		public readonly condition: ExprList<Expr[]>,
 		public readonly body: Statement
 	) {
 		super([body])
 
-		assertAstNodeParam(loop instanceof ExprList)
+		assertAstNodeParam(condition instanceof ExprList)
 		assertAstNodeParam(body instanceof Statement)
 
-		this.setParentOf(loop, this)
+		this.setParentOf(condition, this)
 		this.setParentOf(body, this)
 	}
 }

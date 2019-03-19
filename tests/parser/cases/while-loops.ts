@@ -63,36 +63,36 @@ function isInstanceOf<T>(obj: T, constructor: Function | ({ new(...args: any[]):
 test<ast.WhileStatement>(
 	`while true { }`,
 	([$]) => isInstanceOf($, ast.WhileStatement),
-	([$]) => $.loop.expressions.length === 1
+	([$]) => $.condition.expressions.length === 1
 )
 
 test<ast.WhileStatement>(
 	`while (true) { }`,
 	([$]) => isInstanceOf($, ast.WhileStatement),
-	([$]) => $.loop.expressions.length === 1
+	([$]) => $.condition.expressions.length === 1
 )
 
 test<ast.WhileStatement>(
 	`while 1 { }`,
 	([$]) => isInstanceOf($, ast.WhileStatement),
-	([$]) => $.loop.expressions.length === 1
+	([$]) => $.condition.expressions.length === 1
 )
 
 test<ast.WhileStatement>(
 	`while identifier { }`,
 	([$]) => isInstanceOf($, ast.WhileStatement),
-	([$]) => $.loop.expressions.length === 1
+	([$]) => $.condition.expressions.length === 1
 )
 
 test<ast.WhileStatement>(
 	`while callFunc() { }`,
 	([$]) => isInstanceOf($, ast.WhileStatement),
-	([$]) => $.loop.expressions.length === 1
+	([$]) => $.condition.expressions.length === 1
 )
 
 test<ast.WhileStatement>(
 	`while true if true { }`,
 	([$]) => isInstanceOf($, ast.WhileStatement),
 	([$]) => isInstanceOf($.body, ast.Statement),
-	([$]) => $.loop.expressions.length === 1
+	([$]) => $.condition.expressions.length === 1
 )

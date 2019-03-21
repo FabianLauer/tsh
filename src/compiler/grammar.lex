@@ -22,6 +22,9 @@ NL							\n
 "if"						return 'IF';
 "else"						return 'ELSE';
 "while"						return 'WHILE';
+"try"						return 'TRY';
+"catch"						return 'CATCH';
+"as"						return 'AS';
 
 {NL}						return 'NL';
 

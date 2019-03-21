@@ -346,8 +346,6 @@ conditional_statement:
 
 
 
-
-
 /* ------------------------------------------------------------------------------- */
 /* --------------------- WHILE STATEMENTS ---------------------------------------- */
 /* ------------------------------------------------------------------------------- */
@@ -359,6 +357,49 @@ while_statement:
 	WHILE expression __while_body maybe_nl_or_eof
 	{ $$ = new yy.WhileStatement(new yy.ExprList([$2]), new yy.Statement([$3])) }
 ;
+
+
+
+/* ------------------------------------------------------------------------------- */
+/* --------------------- TRY/CATCH STATEMENTS ------------------------------------ */
+/* ------------------------------------------------------------------------------- */
+
+
+__try_catch_body: statement | compound_statement;
+
+__try_statement:
+	TRY __try_catch_body maybe_nl_or_eof
+	{ $$ = $2 }
+;
+
+__catch_statement:
+		CATCH __try_catch_body maybe_nl_or_eof
+		{
+			$$ = {
+				errorHandlerStatement: $2,
+				errorIdentifier: undefined
+			}
+		}
+	|	CATCH AS expression __try_catch_body maybe_nl_or_eof
+		{
+			$$ = {
+				errorHandlerStatement: $4,
+				errorIdentifier: $3
+			}
+		}
+;
+
+try_catch_statement:
+	__try_statement __catch_statement
+	{
+		$$ = new yy.TryCatchStatement(
+			$1,
+			$2.errorHandlerStatement,
+			$2.errorIdentifier
+		)
+	}
+;
+
 
 
 /* ------------------------------------------------------------------------------- */
@@ -377,6 +418,7 @@ statement:
 	|	return_statement
 	|	conditional_statement
 	|	while_statement
+	|	try_catch_statement
 ;
 
 statements:

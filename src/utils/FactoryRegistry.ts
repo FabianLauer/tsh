@@ -130,10 +130,25 @@ export class FactoryRegistry<TContext, TProduct> {
 			// sort by rating descending
 			.sort(this.createRatingSorter(context))
 		if (list.length < 1) {
-			throw new Error('Unable to find matching constructor for context.')
+			throw new Error(
+				'Unable to find matching constructor for context ' +
+				this.tryStringifyContext(context)
+			)
 		}
 		// the first item in `list` is the item with the best match
 		return list[0].constructorFunc
+	}
+
+	/**
+	 * Attempts to stringify a context object for debugging.
+	 */
+	private tryStringifyContext(context: TContext): string {
+		try {
+			return JSON.stringify(context)
+		} catch {
+			// ignore error, just return
+			return ''
+		}
 	}
 }
 

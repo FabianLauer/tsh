@@ -490,7 +490,7 @@ __param_decl:
 ;
 param_decl_list:
 		param_decl {
-			const decls = []
+			var decls = []
 			if (typeof $1 !== 'undefined') {
 				decls.push($1)
 			}
@@ -628,6 +628,87 @@ class_decl:
 
 
 
+/* ------------------------------------------------------------------------------- */
+/* ----------- ENUM MEMBER DECL -------------------------------------------------- */
+/* ------------------------------------------------------------------------------- */
+
+enum_member_decl:
+		IDENTIFIER
+		{ $$ = new yy.EnumMemberDecl(new yy.Token($1)) }
+	|	comment IDENTIFIER
+		{ $$ = new yy.EnumMemberDecl(new yy.Token($2)) }
+;
+
+
+
+/* ------------------------------------------------------------------------------- */
+/* ------------ ENUM DECL -------------------------------------------------------- */
+/* ------------------------------------------------------------------------------- */
+
+enum_member_decl_list:
+		enum_member_decl {
+			var decls = []
+			if (typeof $1 !== 'undefined') {
+				decls.push($1)
+			}
+			$$ = new yy.Statement(decls)
+		}
+	|	enum_member_decl_list "," maybe_nl enum_member_decl
+		{ $$ = new yy.Statement([...$1.nodes, $4]) }
+;
+
+__enum_body_statement:
+		maybe_nl
+	|	comment
+	|	enum_member_decl_list
+;
+
+__enum_body_statements:
+		maybe_nl_or_eof		{ $$ = [] }
+	|	__enum_body_statements __enum_body_statement
+		{
+			$1 = $1 || []
+			$2 = $2 || yy.Statement.Empty
+			$$ = $1.concat($2)
+		}
+;
+
+__enum_body_compound_statement:
+	"{" maybe_nl __enum_body_statements maybe_nl "}"
+	{
+		var nodes = []
+		$3.forEach(commentOrStatement => {
+			if (commentOrStatement instanceof yy.Statement) {
+				nodes.push(...commentOrStatement.nodes)
+			} else {
+				nodes.push(commentOrStatement)
+			}
+		})
+		$$ = new yy.Statement(nodes)
+	}
+;
+
+__enum_ident: ENUM IDENTIFIER {
+	$$ = new yy.Token(
+		$2,
+		@2.first_line, @2.first_column,
+		@2.last_line, @2.last_column
+	)
+};
+enum_decl:
+		__enum_ident
+		__enum_body_compound_statement
+		nl_or_eof
+		{
+			$$ = yy.EnumDecl.create({
+				enumName: $1,
+				enumBody: $2
+			})
+		}
+;
+
+
+
 
 /* ------------------------------------------------------------------------------- */
 /* ----------- IMPORT STATEMENT -------------------------------------------------- */
@@ -661,6 +742,7 @@ root_grammar:
 		comment
 	|	func_decl
 	|	class_decl
+	|	enum_decl
 	|	import_statement
 	|	export_statement
 	|	nl_or_eof

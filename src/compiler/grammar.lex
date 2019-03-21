@@ -14,6 +14,7 @@ NL							\n
 "export"					return 'EXPORT';
 "func"						return 'FUNCTION';
 "class"						return 'CLASS';
+"enum"						return 'ENUM';
 "let"						return 'LET';
 "const"						return 'CONST';
 "static"					return 'STATIC';

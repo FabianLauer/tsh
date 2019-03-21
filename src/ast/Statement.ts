@@ -9,7 +9,9 @@ export class Statement extends BaseNode implements IContainerNode.Any {
 
 		assertAstNodeParam(
 			Array.isArray(items),
-			'Invalid Argument for ast.Statement: must be an array'
+			'Invalid Argument for ast.Statement: must be an array, is ',
+			'typeof ', typeof(items),
+			(items ? ', instanceof ' + items.constructor.name : '')
 		)
 		items.forEach(item => assertAstNodeParam(item instanceof BaseNode))
 

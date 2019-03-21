@@ -125,7 +125,7 @@ namespace('demo', function () {
 
 	desc('Compiles the demo\'s main file.')
 	task('compile', () => {
-		sh `ts-node scripts/compileFromFile.ts ./docs/demo.tsh ./docs/demo.js`
+		sh `./node_modules/.bin/ts-node scripts/compileFromFile.ts ./docs/demo.tsh ./docs/demo.js`
 	})
 
 

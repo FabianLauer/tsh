@@ -2,7 +2,8 @@
   "name": "__",
   "version": "0.0.1",
   "scripts": {
-    "test": "./jake build:parser && ./jake build:compiler && mocha build/tests/all.js --reporter progress"
+    "build": "./jake build:parser && ./jake build:compiler",
+    "test": "npm run build && mocha build/tests/all.js --reporter progress"
   },
   "devDependencies": {
     "@types/jake": "0.0.28",

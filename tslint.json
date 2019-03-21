@@ -60,7 +60,12 @@
 			}
 		],
 		"no-bitwise": false,
-		"no-namespace": false
+		"no-namespace": false,
+		"no-angle-bracket-type-assertion": false,
+		"arrow-parens": false,
+		"ban-types": false,
+		"no-submodule-imports": false,
+		"no-implicit-dependencies": false
 	},
 	"rulesDirectory": []
 }

@@ -190,6 +190,20 @@ function runTestSuite(dependencies: ITestSuiteDependencies) {
 	})
 
 
+	/// Method `parseSourceCode()`:
+
+	it('should throw: parseSourceCode(undef)', () => {
+		const api = dependencies.createCompilerApi()
+		assertThrows(() => api.parseSourceCode(undefined))
+	})
+
+	it('should not throw: parseSourceCode(valid)', () => {
+		const api = dependencies.createCompilerApi()
+		api.parseSourceCode(VALID_TEST_SOURCE_CODE)
+		assert(true, 'did not throw')
+	})
+
+
 	/// Method `compileSourceCode()`:
 	/// We test this method's `compileTarget` parameter with every available compile target
 	/// of the API. We loop over all available compile targets further below to do that.

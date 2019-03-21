@@ -1,4 +1,5 @@
 import { CompileTarget, ICompileTargetIds } from '@/compiler/api'
+import { SourceUnit } from 'ast';
 
 /**
  * Describes the public compiler API.
@@ -17,6 +18,13 @@ export interface ICompilerApi {
 	getIdentifiersForCompileTarget(target: ICompileTargetIds.Any): ICompileTargetIds.Any
 	getIdentifiersForCompileTarget(target: ICompileTargetIds.TCompileTarget): ICompileTargetIds.Any
 	getIdentifiersForCompileTarget(target: ICompileTargetIds.THumanReadableId): ICompileTargetIds.Any
+
+	/**
+	 * Parses a string of source code into an AST.
+	 * @param sourceCode The source code to compile.
+	 * @return The syntax tree.
+	 */
+	parseSourceCode(sourceCode: string): SourceUnit
 
 	/**
 	 * Compiles a string of source code to output code.

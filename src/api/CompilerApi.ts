@@ -101,17 +101,28 @@ export class CompilerApi implements ICompilerApi {
 
 
 	/**
+	 * Parses a string of source code into an AST.
+	 * @param sourceCode The source code to compile.
+	 * @return The syntax tree.
+	 */
+	public parseSourceCode(sourceCode: string): SourceUnit {
+		const sourceUnit = parseToSourceUnit(
+			// we create the source unit with a unique name:
+			`SourceUnit-${++CompilerApi.sourceUnitCount}`,
+			sourceCode
+		)
+		return sourceUnit
+	}
+
+
+	/**
 	 * Compiles a string of source code to output code.
 	 * @param sourceCode The source code to compile.
 	 * @param target The build target to compile to.
 	 * @return string The output code.
 	 */
 	public compileSourceCode(sourceCode: string, target: CompileTarget): string {
-		const sourceUnit = parseToSourceUnit(
-			// we create the source unit with a unique name:
-			`SourceUnit-${++CompilerApi.sourceUnitCount}`,
-			sourceCode
-		)
+		const sourceUnit = this.parseSourceCode(sourceCode)
 		const codeGenerator = this.createCodeGenerator(target, sourceUnit)
 		return codeGenerator.generateCode()
 	}

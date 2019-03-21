@@ -1,0 +1,27 @@
+enum A {}
+enum B { }
+enum C {
+    A
+}
+enum D {
+    A,
+    B
+}
+enum E {
+    Alpha,
+    Beta,
+    Gamma,
+    Delta
+}
+enum F {
+    // empty enum with comment
+}
+enum G {
+    // empty enum with
+    // multiline comment
+}
+enum G {
+    // enum with comment
+    Alpha,
+    Beta
+}

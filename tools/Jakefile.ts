@@ -21,7 +21,7 @@ namespace('build', function () {
 	desc('Compiles the compiler except for the parser.')
 	task('compiler', () => {
 		jake('build', 'clean')
-		sh `tsc`
+		sh `./node_modules/.bin/tsc`
 	})
 
 })

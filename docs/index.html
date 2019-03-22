@@ -49,17 +49,6 @@
 		}
 
 
-		function tryCatch(func, onSuccess, onError) {
-			var result;
-			try {
-				result = func()
-			} catch (err) {
-				return onError(err)
-			}
-			return onSuccess(result)
-		}
-
-
 		function getSampleCode() {
 			return [
 				'//',
@@ -116,6 +105,20 @@
 				'		// ...',
 				'	} else {',
 				'		// ...',
+				'	}',
+				'	',
+				'	// exceptions on try/catch don\'t have to be captured',
+				'	try {',
+				'		something()',
+				'	} catch {',
+				'		trySomethingElse()',
+				'	}',
+				'	',
+				'	// but of course exceptions can be captured',
+				'	try {',
+				'		something()',
+				'	} catch as err {',
+				'		handleError(err)',
 				'	}',
 				'}',
 				'',

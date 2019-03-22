@@ -60,34 +60,44 @@ func createEditor(monaco: Any, containerId: String, language: String, readOnly: 
 	return monaco.editor.create(document.getElementById(containerId), options)
 }
 
+enum CompileTarget {
+	JavaScript,
+	TypeScriptDeclaration
+}
+
 
 func compile(sourceEditor: Any, compiledEditor: Any) -> Void {
-	const COMPILE_TARGET_JS = 0
-	const COMPILE_TARGET_TSD = 1
-
 	clearCompileProblems()
 
 	let sourceCode = sourceEditor.getValue()
-
 	let code = ""
+	let compiled = false
+	let compiledCode
 
-	// compile to JS
-	tryCatch(func() {
-		return compileToTarget(sourceCode, COMPILE_TARGET_JS)
-	}, func(compiledCode) {
-		code += compiledCode
-	}, func(err: Error) {
+	// compile to JavaScript
+	try {
+		compiledCode = compileToTarget(sourceCode, CompileTarget.JavaScript)
+		compiled = true
+	} catch as err {
 		renderCompileProblem(err)
-	})
+	}
+	if compiled {
+		code += compiledCode
+	}
 
-	tryCatch(func() {
-		return compileToTarget(sourceCode, COMPILE_TARGET_TSD)
-	}, func(compiledCode) {
-		compiledCode = compiledCode.replace(_new(RegExp, "\t+", "g"), "  ")
+	// compile to TypeScript declarations
+	try {
+		compiledCode = compileToTarget(sourceCode, CompileTarget.TypeScriptDeclaration)
+		compiled = true
+	} catch {
+		compiled = false
+	}
+	if compiled {
+		code = compiledCode.replace(_new(RegExp, "\t+", "g"), "  ")
 
 		code += "\n/* --- TypeScript Declarations --- */\n"
 		code += "/*\n\n" + compiledCode + "\n*/"
-	}, func())
+	}
 
 	compiledEditor.setValue(tryBeautifyJavaScript(code))
 }
@@ -95,18 +105,24 @@ func compile(sourceEditor: Any, compiledEditor: Any) -> Void {
 
 func compileToTarget(sourceCode: String, compileTarget: CompileTarget) -> Void {
 	const api = compiler.CompilerApi.create()
-	return api.compileSourceCode(sourceCode, compileTarget)
+	let target: Int
+
+	if compileTarget == CompileTarget.JavaScript {
+		target = 0
+	} else {
+		target = 1
+	}
+
+	return api.compileSourceCode(sourceCode, target)
 }
 
 
 func tryBeautifyJavaScript(jsCode) -> String {
-	return tryCatch(func() {
+	try {
 		return window.js_beautify(jsCode)
-	}, func(formattedCode) {
-		return formattedCode
-	}, func() {
+	} catch {
 		return jsCode
-	})
+	}
 }
 
 

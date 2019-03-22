@@ -95,55 +95,70 @@ return monaco.editor.create(document.getElementById(containerId), options);
 
 		}
 		
+		/** @enum CompileTarget */
+		var CompileTarget = {
+			'JavaScript': 'JavaScript',
+'TypeScriptDeclaration': 'TypeScriptDeclaration'
+		};
+
+
 		function compile(sourceEditor, compiledEditor) {
-			var COMPILE_TARGET_JS = 0;
-var COMPILE_TARGET_TSD = 1;
-clearCompileProblems();
+			clearCompileProblems();
 var sourceCode = sourceEditor.getValue();
 var code = "";
-tryCatch((function () {
-			return compileToTarget(sourceCode, COMPILE_TARGET_JS);
+var compiled = false;
+var compiledCode;
+try {
+			compiledCode = compileToTarget(sourceCode, CompileTarget.JavaScript);
+compiled = true;
 
-		}), (function (compiledCode) {
-			code += compiledCode;
-
-		}), (function (err) {
+		} catch (err) {
 			renderCompileProblem(err);
 
-		}));
-tryCatch((function () {
-			return compileToTarget(sourceCode, COMPILE_TARGET_TSD);
+		}if (compiled) {
+			code += compiledCode;
 
-		}), (function (compiledCode) {
-			compiledCode = compiledCode.replace(_new(RegExp, "\t+", "g"), "  ");
+		}
+try {
+			compiledCode = compileToTarget(sourceCode, CompileTarget.TypeScriptDeclaration);
+compiled = true;
+
+		} catch {
+			compiled = false;
+
+		}if (compiled) {
+			code = compiledCode.replace(_new(RegExp, "\t+", "g"), "  ");
 code += "\n/* --- TypeScript Declarations --- */\n";
 code += "/*\n\n" + compiledCode + "\n*/";
 
-		}), (function () {
-			
-		}));
+		}
 compiledEditor.setValue(tryBeautifyJavaScript(code));
 
 		}
 		
 		function compileToTarget(sourceCode, compileTarget) {
 			var api = compiler.CompilerApi.create();
-return api.compileSourceCode(sourceCode, compileTarget);
+var target;
+if (compileTarget == CompileTarget.JavaScript) {
+			target = 0;
+
+		}
+else {
+			target = 1;
+
+		}
+return api.compileSourceCode(sourceCode, target);
 
 		}
 		
 		function tryBeautifyJavaScript(jsCode) {
-			return tryCatch((function () {
+			try {
 			return window.js_beautify(jsCode);
 
-		}), (function (formattedCode) {
-			return formattedCode;
-
-		}), (function () {
+		} catch {
 			return jsCode;
 
-		}));
-
+		}
 		}
 		
 		function getProblemsPanelContentElement() {

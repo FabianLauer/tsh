@@ -87,6 +87,18 @@ binary_operator:
 	|	'*'		{ $$ = yy.getOperatorFromToken($1) }
 	|	'/'		{ $$ = yy.getOperatorFromToken($1) }
 	|	'%'		{ $$ = yy.getOperatorFromToken($1) }
+
+	/* Comparison Operators */
+	|	EQ_OP	{ $$ = yy.getOperatorFromToken($1) }
+	|	NE_OP	{ $$ = yy.getOperatorFromToken($1) }
+	|	LE_OP	{ $$ = yy.getOperatorFromToken($1) }
+	|	GE_OP	{ $$ = yy.getOperatorFromToken($1) }
+	|	'<'		{ $$ = yy.getOperatorFromToken($1) }
+	|	'>'		{ $$ = yy.getOperatorFromToken($1) }
+
+	/* Logical Operators */
+	|	AND_OP	{ $$ = yy.getOperatorFromToken($1) }
+	|	OR_OP	{ $$ = yy.getOperatorFromToken($1) }
 ;
 
 

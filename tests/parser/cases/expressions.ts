@@ -221,3 +221,55 @@ for (const operator of unaryOperators) {
 	)
 }
 
+
+
+/// Comparison and Logical Operators:
+
+const comparisonAndLogicalOperators = [
+	// comparison:
+	'==', '!=', '<=', '>=', '<', '>',
+
+	// logical:
+	'&&', '||'
+]
+
+for (const operator of comparisonAndLogicalOperators) {
+	const leftOperands = ['a']
+	const leftOperandsWithLiterals = leftOperands.concat(['1'])
+	const rightOperandsWithLiterals = ['b', '2']
+
+	void (<Array<(sourceCode: string) => string>>[
+
+		// unmodified tests:
+		_ => _,
+
+		// tests wrapped in parens:
+		_ => `(${_})`,
+
+		// additional operator and left operand:
+		_ => `2 * (${_})`,
+
+		// additional operator and right operand:
+		_ => `(${_}) + 123`,
+
+		// additional operator and left operand in parens:
+		_ => `(234 * (${_}))`,
+
+		// operations in assignments:
+		_ => `a = ${_}`,
+
+		// operations in assignments, wrapped in parens:
+		_ => `a = (${_})`,
+
+		// operations in assignments, wrapped in parens:
+		_ => `a = (${_}) * 3`
+
+	]).forEach(modifySourceCode => {
+		runBinaryOperatorTests(
+			operator,
+			leftOperandsWithLiterals,
+			rightOperandsWithLiterals,
+			modifySourceCode
+		)
+	})
+}

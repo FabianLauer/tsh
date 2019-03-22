@@ -1,0 +1,70 @@
+func a1() {
+    try { } catch { }
+}
+
+func a2() {
+    try { }
+    catch { }
+}
+
+func a3() {
+    try {
+    }
+    catch {
+    }
+}
+
+func a4() {
+    try {
+    } catch {
+    }
+}
+
+
+func b1() {
+    try { } catch as error { }
+}
+
+func b2() {
+    try { }
+    catch as error { }
+}
+
+func b3() {
+    try {
+    }
+    catch as error {
+    }
+}
+
+func b4() {
+    try {
+    } catch as error {
+    }
+}
+
+
+func c1() {
+    try { } catch as error handleError(error)
+}
+
+func c2() {
+    try { }
+    catch as error handleError(error)
+}
+
+func c3() {
+    try {
+    }
+    catch as error handleError(error)
+}
+
+
+func d1() {
+    try something() catch as error handleError(error)
+}
+
+func d2() {
+    try something()
+    catch as error handleError(error)
+}

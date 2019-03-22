@@ -81,8 +81,8 @@ function normalizeCode(code: string): string {
 function printDiff(a: string, b: string) {
 	require('colors')
 	return require('diff').diffChars(a, b).forEach((part: any) => {
-		// green for additions, red for deletions 
-		// grey for common parts 
+		// green for additions, red for deletions
+		// grey for common parts
 		var color = part.added
 			? 'green'
 			: part.removed ? 'red' : 'grey'

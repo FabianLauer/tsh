@@ -259,9 +259,6 @@ case 82:
 break;
 case 83:
 
-		console.log('-----------')
-		console.log($$[$0-1], $$[$0])
-		console.log('-----------')
 		this.$ = new yy.TryCatchStatement(
 			$$[$0-1],
 			$$[$0].errorHandlerStatement,

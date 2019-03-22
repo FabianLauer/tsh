@@ -9,12 +9,17 @@ export enum OperatorIdent {
 	'=',
 
 	// Arithmetic Binary
-	'+',	'-',	'*',	'/',	'%',
-	'+=',	'-=', 	'*=',	'/=',	'%=',
+	'+', '-', '*', '/', '%',
+	'+=', '-=', '*=', '/=', '%=',
 
 	// Unary
-	'++', '--'
+	'++', '--',
 
+	// Comparison
+	'==', '!=', '<=', '>=', '<', '>',
+
+	// Logical
+	'&&', '||'
 }
 
 export namespace OperatorIdent {

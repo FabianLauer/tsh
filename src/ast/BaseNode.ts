@@ -10,6 +10,11 @@ export abstract class BaseNode {
 	}
 
 	/**
+	 * Creates an identical copy of this AST node.
+	 */
+	public abstract clone(): this
+
+	/**
 	 * Changes the parent of an AST node.
 	 * @param parent The new parent node.
 	 */

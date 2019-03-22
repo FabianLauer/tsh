@@ -12,6 +12,17 @@ export class UnaryOperation extends Expr {
 		assertAstNodeParam(operator instanceof Operator)
 		assertAstNodeParam(UnaryOperatorPosition.isValid(operatorPosition))
 	}
+
+	/**
+	 * Creates an identical copy of this AST node.
+	 */
+	public clone(): this {
+		return <this>new UnaryOperation(
+			this.operand.clone(),
+			this.operator.clone(),
+			this.operatorPosition
+		)
+	}
 }
 
 export default UnaryOperation

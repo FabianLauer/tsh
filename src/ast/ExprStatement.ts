@@ -15,6 +15,13 @@ export class ExprStatement<TExpr extends Expr> extends Statement {
 		super([expression])
 		assertAstNodeParam(expression instanceof Expr)
 	}
+
+	/**
+	 * Creates an identical copy of this AST node.
+	 */
+	public clone(): this {
+		return <this>new ExprStatement(this.expression.clone())
+	}
 }
 
 export default ExprStatement

@@ -13,6 +13,15 @@ export class ExprList<TExprs extends Expr[]> extends Expr {
 		assertAstNodeParam(Array.isArray(expressions))
 		expressions.forEach(expr => expr instanceof Expr)
 	}
+
+	/**
+	 * Creates an identical copy of this AST node.
+	 */
+	public clone(): this {
+		return <this>new ExprList(
+			this.expressions.map(expr => expr.clone())
+		)
+	}
 }
 
 export default ExprList

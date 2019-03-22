@@ -60,7 +60,7 @@ export namespace VarDeclModifier {
 
 		const modifierNames: string[] = []
 
-		for (let modifier in VarDeclModifier) {
+		for (const modifier in VarDeclModifier) {
 			if (typeof modifier !== 'number') {
 				continue
 			}
@@ -88,9 +88,9 @@ export namespace VarDeclModifier {
 
 	/**
 	 * Combines multiple var declaration modifiers and returns the combination.
-	 * @throws 
-	 * @param firstModifier 
-	 * @param modifiers 
+	 * @throws
+	 * @param firstModifier
+	 * @param modifiers
 	 */
 	export function combine(
 		firstModifier: VarDeclModifier,
@@ -100,7 +100,7 @@ export namespace VarDeclModifier {
 
 		// calculate the combination
 		let combination = 0
-		for (let modifier of modifiers) {
+		for (const modifier of modifiers) {
 			combination |= modifier
 		}
 

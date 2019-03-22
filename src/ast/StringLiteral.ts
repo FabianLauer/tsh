@@ -9,6 +9,13 @@ export class StringLiteral extends Expr {
 		super(contentToken)
 		assertAstNodeParam(contentToken instanceof Token)
 	}
+
+	/**
+	 * Creates an identical copy of this AST node.
+	 */
+	public clone(): this {
+		return <this>new StringLiteral(this.contentToken.clone())
+	}
 }
 
 export default StringLiteral

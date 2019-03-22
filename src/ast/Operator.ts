@@ -16,6 +16,16 @@ export class Operator extends BaseNode {
 		assertAstNodeParam(OperatorIdent.isValid(ident))
 		assertAstNodeParam(text instanceof Token)
 	}
+
+	/**
+	 * Creates an identical copy of this AST node.
+	 */
+	public clone(): this {
+		return <this>new Operator(
+			this.ident,
+			this.text.clone()
+		)
+	}
 }
 
 export default Operator

@@ -3,7 +3,7 @@ import { BaseNode } from './'
 
 export class Expr extends BaseNode {
 	public constructor(
-		public readonly content: BaseNode = undefined
+		public readonly content?: BaseNode
 	) {
 		super()
 		assertAstNodeParam(
@@ -18,6 +18,13 @@ export class Expr extends BaseNode {
 	 */
 	// tslint:disable-next-line:variable-name
 	public static readonly Empty = new Expr()
+
+	/**
+	 * Creates an identical copy of this AST node.
+	 */
+	public clone(): this {
+		return <this>new Expr(this.content ? this.content.clone() : undefined)
+	}
 }
 
 export default Expr

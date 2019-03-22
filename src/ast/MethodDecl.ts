@@ -56,6 +56,19 @@ export class MethodDecl extends FuncDecl {
 
 
 	/**
+	 * Creates an identical copy of this AST node.
+	 */
+	public clone(): this {
+		return <this>new MethodDecl(
+			this.name.clone(),
+			this.runtimeParamDecls.clone(),
+			this.returnTypeDecl.clone(),
+			this.body.clone()
+		)
+	}
+
+
+	/**
 	 * Returns the class declaration in which a method was defined.
 	 */
 	public getClass(): ClassDecl {

@@ -17,6 +17,13 @@ export class EnumMemberDecl extends BaseNode {
 
 		this.setParentOf(name, this)
 	}
+
+	/**
+	 * Creates an identical copy of this AST node.
+	 */
+	public clone(): this {
+		return <this>new EnumMemberDecl(this.name.clone())
+	}
 }
 
 export default EnumMemberDecl

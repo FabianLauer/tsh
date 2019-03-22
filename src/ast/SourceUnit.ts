@@ -19,6 +19,17 @@ export class SourceUnit extends BaseNode implements IContainerNode.Any {
 
 
 	/**
+	 * Creates an identical copy of this AST node.
+	 */
+	public clone(): this {
+		return <this>new SourceUnit(
+			this.name,
+			this.items.map(item => item.clone())
+		)
+	}
+
+
+	/**
 	 * Returns an array of all nodes in the source unit.
 	 */
 	public get nodes(): ReadonlyArray<BaseNode> {

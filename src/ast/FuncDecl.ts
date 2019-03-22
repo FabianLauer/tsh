@@ -24,7 +24,6 @@ export class FuncDecl extends AnonFuncDecl {
 		)
 	}
 
-
 	/**
 	 * Creates a new `FuncDecl` instance.
 	 */
@@ -52,6 +51,18 @@ export class FuncDecl extends AnonFuncDecl {
 		assertAstNodeParam(runtimeParamDecls instanceof ParamDeclList)
 		assertAstNodeParam(returnTypeDecl instanceof TypeExpr)
 		assertAstNodeParam(body instanceof Statement)
+	}
+
+	/**
+	 * Creates an identical copy of this AST node.
+	 */
+	public clone(): this {
+		return <this>new FuncDecl(
+			this.name.clone(),
+			this.runtimeParamDecls.clone(),
+			this.returnTypeDecl.clone(),
+			this.body.clone()
+		)
 	}
 }
 

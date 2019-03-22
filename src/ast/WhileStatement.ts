@@ -16,6 +16,16 @@ export class WhileStatement extends Statement {
 		this.setParentOf(condition, this)
 		this.setParentOf(body, this)
 	}
+
+	/**
+	 * Creates an identical copy of this AST node.
+	 */
+	public clone(): this {
+		return <this>new WhileStatement(
+			this.condition.clone(),
+			this.body.clone()
+		)
+	}
 }
 
 export default WhileStatement

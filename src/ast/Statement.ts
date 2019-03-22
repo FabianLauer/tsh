@@ -27,6 +27,16 @@ export class Statement extends BaseNode implements IContainerNode.Any {
 
 
 	/**
+	 * Creates an identical copy of this AST node.
+	 */
+	public clone(): this {
+		return <this>new Statement(
+			this.items.map(item => item.clone())
+		)
+	}
+
+
+	/**
 	 * Returns an array of all nodes in the statement.
 	 */
 	public get nodes(): ReadonlyArray<BaseNode> {

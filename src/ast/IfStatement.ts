@@ -16,6 +16,16 @@ export class IfStatement extends Statement implements Readonly<IConditionalState
 		this.setParentOf(condition, this)
 		this.setParentOf(body, this)
 	}
+
+	/**
+	 * Creates an identical copy of this AST node.
+	 */
+	public clone(): this {
+		return <this>new IfStatement(
+			this.condition.clone(),
+			this.body.clone()
+		)
+	}
 }
 
 export default IfStatement

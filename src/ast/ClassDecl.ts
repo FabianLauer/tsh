@@ -27,7 +27,6 @@ export class ClassDecl extends BaseNode {
 		)
 	}
 
-
 	/**
 	 * Creates a new `ClassDecl` instance.
 	 */
@@ -48,6 +47,16 @@ export class ClassDecl extends BaseNode {
 
 		this.setParentOf(name, this)
 		this.setParentOf(body, this)
+	}
+
+	/**
+	 * Creates an identical copy of this AST node.
+	 */
+	public clone(): this {
+		return <this>new ClassDecl(
+			this.name.clone(),
+			this.body.clone()
+		)
 	}
 }
 

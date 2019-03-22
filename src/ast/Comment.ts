@@ -12,6 +12,15 @@ export class Comment extends BaseNode {
 		assertAstNodeParam(Array.isArray(lines))
 		lines.forEach(line => assertAstNodeParam(line instanceof Token))
 	}
+
+	/**
+	 * Creates an identical copy of this AST node.
+	 */
+	public clone(): this {
+		return <this>new Comment(
+			this.lines.map(line => line.clone())
+		)
+	}
 }
 
 export default Comment

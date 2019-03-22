@@ -8,6 +8,13 @@ export class Identifier extends Expr {
 		super(name)
 		assertAstNodeParam(name instanceof Token)
 	}
+
+	/**
+	 * Creates an identical copy of this AST node.
+	 */
+	public clone(): this {
+		return <this>new Identifier(this.name.clone())
+	}
 }
 
 export default Identifier

@@ -24,6 +24,16 @@ export class ParamDeclList extends BaseNode implements IContainerNode<ParamDecl[
 
 
 	/**
+	 * Creates an identical copy of this AST node.
+	 */
+	public clone(): this {
+		return <this>new ParamDeclList(
+			this.decls.map(decl => decl.clone())
+		)
+	}
+
+
+	/**
 	 * The parameter declarations in the list.
 	 * The order of this array is exactly the same as the order of the
 	 * declarations in source code.

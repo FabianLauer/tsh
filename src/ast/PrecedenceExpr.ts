@@ -16,6 +16,13 @@ export class PrecedenceExpr<TExpr extends Expr> extends Expr {
 		super(expr)
 		assertAstNodeParam(expr instanceof Expr)
 	}
+
+	/**
+	 * Creates an identical copy of this AST node.
+	 */
+	public clone(): this {
+		return <this>new PrecedenceExpr(this.expr.clone())
+	}
 }
 
 export default PrecedenceExpr

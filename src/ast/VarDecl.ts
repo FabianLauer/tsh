@@ -70,6 +70,19 @@ export class VarDecl extends BaseNode {
 		assertAstNodeParam(typeDecl instanceof TypeExpr)
 		assertAstNodeParam(assignment instanceof Expr)
 	}
+
+
+	/**
+	 * Creates an identical copy of this AST node.
+	 */
+	public clone(): this {
+		return <this>new VarDecl(
+			this.modifiers,
+			this.name.clone(),
+			this.typeDecl.clone(),
+			this.assignment.clone()
+		)
+	}
 }
 
 export default VarDecl

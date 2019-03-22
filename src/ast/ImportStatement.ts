@@ -12,6 +12,13 @@ export class ImportStatement extends Statement {
 		super([importPath])
 		assertAstNodeParam(importPath instanceof StringLiteral)
 	}
+
+	/**
+	 * Creates an identical copy of this AST node.
+	 */
+	public clone(): this {
+		return <this>new ImportStatement(this.importPath.clone())
+	}
 }
 
 export default ImportStatement

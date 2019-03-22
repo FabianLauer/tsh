@@ -17,6 +17,16 @@ export class ParamDecl extends BaseNode {
 		assertAstNodeParam(name instanceof Token)
 		assertAstNodeParam(typeDecl instanceof TypeExpr)
 	}
+
+	/**
+	 * Creates an identical copy of this AST node.
+	 */
+	public clone(): this {
+		return <this>new ParamDecl(
+			this.name.clone(),
+			this.typeDecl.clone()
+		)
+	}
 }
 
 export default ParamDecl

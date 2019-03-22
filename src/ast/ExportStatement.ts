@@ -12,6 +12,13 @@ export class ExportStatement extends Statement {
 		super([exportedIdentifier])
 		assertAstNodeParam(exportedIdentifier instanceof Identifier)
 	}
+
+	/**
+	 * Creates an identical copy of this AST node.
+	 */
+	public clone(): this {
+		return <this>new ExportStatement(this.exportedIdentifier.clone())
+	}
 }
 
 export default ExportStatement

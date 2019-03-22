@@ -9,6 +9,13 @@ export class NumericExpr extends Expr {
 		super(contentToken)
 		assertAstNodeParam(contentToken instanceof Token)
 	}
+
+	/**
+	 * Creates an identical copy of this AST node.
+	 */
+	public clone(): this {
+		return <this>new NumericExpr(this.contentToken.clone())
+	}
 }
 
 export default NumericExpr

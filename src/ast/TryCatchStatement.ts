@@ -21,6 +21,17 @@ export class TryCatchStatement extends Statement {
 			this.setParentOf(errorIdentifier, this)
 		}
 	}
+
+	/**
+	 * Creates an identical copy of this AST node.
+	 */
+	public clone(): this {
+		return <this>new TryCatchStatement(
+			this.attemptStatement.clone(),
+			this.errorHandlerStatement.clone(),
+			this.errorIdentifier.clone()
+		)
+	}
 }
 
 export default TryCatchStatement

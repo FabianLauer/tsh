@@ -13,6 +13,17 @@ export class BinaryOperation extends Expr {
 		assertAstNodeParam(operator instanceof Operator)
 		assertAstNodeParam(rightOperand instanceof Expr)
 	}
+
+	/**
+	 * Creates an identical copy of this AST node.
+	 */
+	public clone(): this {
+		return <this>new BinaryOperation(
+			this.leftOperand.clone(),
+			this.operator.clone(),
+			this.rightOperand.clone()
+		)
+	}
 }
 
 export default BinaryOperation

@@ -27,7 +27,6 @@ export class EnumDecl extends BaseNode {
 		)
 	}
 
-
 	/**
 	 * Creates a new `EnumDecl` instance.
 	 */
@@ -48,6 +47,16 @@ export class EnumDecl extends BaseNode {
 
 		this.setParentOf(name, this)
 		this.setParentOf(body, this)
+	}
+
+	/**
+	 * Creates an identical copy of this AST node.
+	 */
+	public clone(): this {
+		return <this>new EnumDecl(
+			this.name.clone(),
+			this.body.clone()
+		)
 	}
 }
 

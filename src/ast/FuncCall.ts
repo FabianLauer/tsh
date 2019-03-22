@@ -18,6 +18,16 @@ export class FuncCall extends Expr {
 		assertAstNodeParam(identifier instanceof Identifier)
 		assertAstNodeParam(parameterList instanceof ExprList)
 	}
+
+	/**
+	 * Creates an identical copy of this AST node.
+	 */
+	public clone(): this {
+		return <this>new FuncCall(
+			this.identifier.clone(),
+			this.parameterList.clone()
+		)
+	}
 }
 
 export default FuncCall

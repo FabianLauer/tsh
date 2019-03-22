@@ -23,6 +23,14 @@ export class TypeExpr extends Expr {
 	 */
 	// tslint:disable-next-line:variable-name
 	public static readonly Empty = new TypeExpr(Token.Empty)
+
+
+	/**
+	 * Creates an identical copy of this AST node.
+	 */
+	public clone(): this {
+		return <this>new TypeExpr(this.typeIdentifier.clone())
+	}
 }
 
 export default TypeExpr

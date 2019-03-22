@@ -3,5 +3,6 @@
  */
 export const enum CompileTarget {
 	EcmaScript,
-	TypeScriptDeclarations
+	TypeScriptDeclarations,
+	Bash
 }

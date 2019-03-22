@@ -5,4 +5,3 @@ import './generator/'
 
 // Import and export the public types in this module.
 export * from './CodeGenerator'
-

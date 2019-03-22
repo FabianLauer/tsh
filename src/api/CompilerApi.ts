@@ -4,6 +4,7 @@ import { SourceUnit } from '@/compiler/ast'
 import { ICodeGenerator } from '@/compiler/codegen/base'
 import { CodeGenerator as EcmaScriptCodeGenerator } from '@/compiler/codegen/ecmascript'
 import { CodeGenerator as TypeScriptDeclarationsCodeGenerator } from '@/compiler/codegen/typescriptDeclarations'
+import { CodeGenerator as BashCodeGenerator } from '@/compiler/codegen/bash'
 
 /**
  * A programming interface to the compiler that is easy to use.
@@ -151,6 +152,8 @@ export class CompilerApi implements ICompilerApi {
 				return new EcmaScriptCodeGenerator(sourceUnit)
 			case CompileTarget.TypeScriptDeclarations:
 				return new TypeScriptDeclarationsCodeGenerator(sourceUnit)
+			case CompileTarget.Bash:
+				return new BashCodeGenerator(sourceUnit)
 		}
 	}
 }

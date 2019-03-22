@@ -83,7 +83,7 @@ function printDiff(a: string, b: string) {
 	return require('diff').diffChars(a, b).forEach((part: any) => {
 		// green for additions, red for deletions
 		// grey for common parts
-		var color = part.added
+		const color = part.added
 			? 'green'
 			: part.removed ? 'red' : 'grey'
 		process.stdout.write(part.value[color])

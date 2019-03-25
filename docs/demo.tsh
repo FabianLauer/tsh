@@ -93,7 +93,7 @@ func compile(sourceEditor: Any, compiledEditor: Any) -> Void {
 		compiled = false
 	}
 	if compiled {
-		code += compiledCode.replace(_new(RegExp, "\t+", "g"), "  ")
+		compiledCode = compiledCode.replace(_new(RegExp, "\t+", "g"), "  ")
 
 		code += "\n/* --- TypeScript Declarations --- */\n"
 		code += "/*\n\n" + compiledCode + "\n*/"

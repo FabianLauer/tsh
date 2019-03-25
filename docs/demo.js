@@ -127,7 +127,7 @@ compiled = true;
 			compiled = false;
 
 		}if (compiled) {
-			code = compiledCode.replace(_new(RegExp, "\t+", "g"), "  ");
+			code += compiledCode.replace(_new(RegExp, "\t+", "g"), "  ");
 code += "\n/* --- TypeScript Declarations --- */\n";
 code += "/*\n\n" + compiledCode + "\n*/";
 

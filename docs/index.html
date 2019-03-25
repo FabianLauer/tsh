@@ -18,6 +18,11 @@
 		<div id="problems-panel-content"></div>
 	</section>
 
+	<section id="output-panel" class="panel">
+		<h3>Output</h3>
+		<code id="output-panel-content"></code>
+	</section>
+
 
 	<!-- Fork me on GitHub -->
 	<a class="github-ribbon" href="https://github.com/FabianLauer/tsh">
@@ -44,6 +49,11 @@
 		}
 
 
+		function runJavaScript(jsCode) {
+			return new Function(jsCode)();
+		}
+
+
 		function createJSArray(item) {
 			return new Array(item)
 		}
@@ -56,89 +66,32 @@
 				'//           - https://github.com/FabianLauer/tsh -',
 				'//',
 				'// Any code you enter in this window will be compiled to JavaScript on the fly.',
+				'// The compiled JavaScript will be executed right away. Use `print(...)` to write.',
+				'// to the "Output" console below.',
 				'// By the way, the JS code that runs this demo was origininally written in TSH.',
 				'//',
 				'',
 				'',
-				'// import modules:',
-				'import "fs"',
-				'import "http"',
+				'func main() -> Void {',
+				'	let personCount = 0',
+				'	while (++personCount <= 10) {',
+				'		let person = Person()',
+				'		print("Person " + person.getId())',
 				'',
-				'// import files:',
-				'import "./otherFile"',
-				'import "../../yet/another/file"',
+				'		if personCount <= 9 {',
+				'			print(", ")',
+				'		}',
+				'	}',
 				'',
+				'}',
 				'',
 				'class Person {',
-				'	// Unlike Swift, `let` variables are mutable.',
-				'	// Use `const` for immutable variables and class variables.',
-				'	const name',
-				'	let spouse: Person',
+				'	static let idCounter = 0',
+				'	const id = ++Person.idCounter',
 				'',
-				'	static const defaultAge: Int = 0',
-				'	let age = defaultAge',
-				'',
-				'	func describe() -> String {',
-				'		return "Person ${name} is ${age} years old."',
+				'	func getId() -> Number {',
+				'		return this.id',
 				'	}',
-				'',
-				'	// types are optional:',
-				'	func noTypes(a, b, c) {',
-				'		// ...',
-				'	}',
-				'	// and even implementations can be omitted:',
-				'	func someTypes(a: String, b, c: Int)',
-				'	func allTypes(a: String, b, c: Int) -> Int',
-				'}',
-				'',
-				'// this will make `Person` available when this file is imported',
-				'export Person',
-				'',
-				'func main() -> Void {',
-				'	let person: Person = Person()',
-				'	let descr: String = person.describe()',
-				'',
-				'	// parens around conditions are optional:',
-				'	if person {',
-				'		// ...',
-				'	} else if descr {',
-				'		// ...',
-				'	} else {',
-				'		// ...',
-				'	}',
-				'	',
-				'	// exceptions on try/catch don\'t have to be captured',
-				'	try {',
-				'		something()',
-				'	} catch {',
-				'		trySomethingElse()',
-				'	}',
-				'	',
-				'	// but of course exceptions can be captured',
-				'	try {',
-				'		something()',
-				'	} catch as err {',
-				'		handleError(err)',
-				'	}',
-				'}',
-				'',
-				'// Callback functions are always anonymous.',
-				'// Their implementation can be omitted too.',
-				'func asyncCode() -> Any {',
-				'	// this function can be called at runtime:',
-				'	let someCallback = func() -> Void',
-				'	',
-				'	// that\'s okay!',
-				'	someCallback()',
-				'',
-				'	// funcs can be passed as parameters',
-				'	fs.readFile("names.json", func(err: Error, content: String) -> Void {',
-				'		if err {',
-				'			return undef',
-				'		} else {',
-				'			doMoreWork(JSON.parse(content.toString("utf8"), someCallback))',
-				'		}',
-				'	})',
 				'}',
 				''
 			].join('\n')

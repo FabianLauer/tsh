@@ -42,12 +42,22 @@ html, body {
 	height: 100%;
 }
 
-#problems-panel {
+#problems-panel,
+#output-panel {
+	float: left;
+	clear: none;
+	width: 50%;
 	height: 25%;
 	z-index: 2000;
+	background: #fff;
 }
 
-#problems-panel h3 {
+#output-panel {
+	border-left: 1px solid #ddd;
+}
+
+#problems-panel h3,
+#output-panel h3 {
 	width: 100%;
 	font-size: 0.8em;
 	font-weight: 300;
@@ -89,4 +99,16 @@ html, body {
 	text-align: center;
 	font-weight: 100;
 	color: #aaa;
+}
+
+#output-panel-content {
+	float: left;
+	width: 100%;
+	margin: 0;
+	padding: 0.3em;
+	box-sizing: border-box;
+	height: calc(100% - 0.3em);
+	overflow-x: hidden;
+	overflow-y: auto;
+	word-break: break-all;
 }

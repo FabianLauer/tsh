@@ -17,21 +17,35 @@ func main() -> Void {
 
 func startDemo(monaco: Any) -> Void {
 	const sourceEditor = createEditor(monaco, "source-container", "swift", false, getSampleCode())
-
 	const compiledEditor = createEditor(monaco, "compiled-container", "javascript", true, "")
 
-	const recompile = func() {
-		compile(sourceEditor, compiledEditor)
+	let lastRun = 0
+	let lastRunTimeout
+
+	const recompileAndRun = func() {
+		const result = compile(sourceEditor, compiledEditor)
+
+		clearTimeout(lastRunTimeout)
+
+		if result == CompileResult.CompilationSuccessful {
+			const now = Date.now()
+
+			if now - lastRun < 100 {
+				lastRunTimeout = setTimeout(recompileAndRun)
+			} else {
+				run(compiledEditor.getValue())
+			}	
+		}
 	}
 
 	// compile once on start
-	recompile()
+	recompileAndRun()
 
 	// bind events
-	sourceEditor.onDidType(recompile)
-	sourceEditor.onDidPaste(recompile)
-	sourceEditor.onDidBlurEditor(recompile)
-	sourceEditor.onDidChangeModelContent(recompile)
+	sourceEditor.onDidType(recompileAndRun)
+	sourceEditor.onDidPaste(recompileAndRun)
+	sourceEditor.onDidBlurEditor(recompileAndRun)
+	sourceEditor.onDidChangeModelContent(recompileAndRun)
 }
 
 
@@ -60,26 +74,35 @@ func createEditor(monaco: Any, containerId: String, language: String, readOnly: 
 	return monaco.editor.create(document.getElementById(containerId), options)
 }
 
+
 enum CompileTarget {
 	JavaScript,
 	TypeScriptDeclaration
 }
 
 
-func compile(sourceEditor: Any, compiledEditor: Any) -> Void {
-	clearCompileProblems()
+enum CompileResult {
+	CompilationSuccessful,
+	CompilationFailed
+}
+
+
+func compile(sourceEditor: Any, compiledEditor: Any) -> CompileResult {
+	clearProblems()
 
 	let sourceCode = sourceEditor.getValue()
 	let code = ""
 	let compiled = false
 	let compiledCode
+	let result: CompileResult = CompileResult.CompilationSuccessful
 
 	// compile to JavaScript
 	try {
 		compiledCode = compileToTarget(sourceCode, CompileTarget.JavaScript)
 		compiled = true
 	} catch as err {
-		renderCompileProblem(err)
+		result = CompileResult.CompilationFailed
+		renderProblem(ProblemType.CompileTime, err)
 	}
 	if compiled {
 		code += compiledCode
@@ -91,6 +114,7 @@ func compile(sourceEditor: Any, compiledEditor: Any) -> Void {
 		compiled = true
 	} catch {
 		compiled = false
+		result = CompileResult.CompilationFailed
 	}
 	if compiled {
 		compiledCode = compiledCode.replace(_new(RegExp, "\t+", "g"), "  ")
@@ -100,6 +124,26 @@ func compile(sourceEditor: Any, compiledEditor: Any) -> Void {
 	}
 
 	compiledEditor.setValue(tryBeautifyJavaScript(code))
+	return result
+}
+
+func run(code: String) -> Void {
+	clearOutput()
+
+	js = "(function(exports, print, require) {"
+	js += code
+
+	// auto-call the main function
+	js += "; main();"
+
+	// inject dependencies
+	js += "})({}, window.renderOutput, function() { throw new Error('import/reuqire not supported.') })"
+
+	try {
+		window.runJavaScript(js)
+	} catch as runtimeErr {
+		renderProblem(ProblemType.RunTime, runtimeErr)
+	}
 }
 
 
@@ -126,12 +170,17 @@ func tryBeautifyJavaScript(jsCode) -> String {
 }
 
 
+enum ProblemType {
+	CompileTime,
+	RunTime
+}
+
 func getProblemsPanelContentElement() -> HTMLElement {
 	return document.getElementById("problems-panel-content")
 }
 
 
-func clearCompileProblems() -> Void {
+func clearProblems() -> Void {
 	const problemsPanelContent = getProblemsPanelContentElement()
 	problemsPanelContent.innerHTML = ""
 	const content = document.createElement("span")
@@ -140,10 +189,38 @@ func clearCompileProblems() -> Void {
 }
 
 
-func renderCompileProblem(error) -> Void {
+func renderProblem(type: ProblemType, error: Any) -> Void {
 	const problemsPanelContent = getProblemsPanelContentElement()
 	problemsPanelContent.innerHTML = ""
 	let problem = document.createElement("pre")
-	problem.innerText = error.message
+	
+	if type == ProblemType.CompileTime {
+		problem.innerText = "Compiler Error:"
+	} else {
+		problem.innerText = "Runtime Error:"
+	}
+
+	problem.innerText += "\n" + error.message
 	problemsPanelContent.appendChild(problem)
+
+	console.warn("Problem:", type, error)
+}
+
+
+func getOutputPanelContentElement() -> HTMLElement {
+	return document.getElementById("output-panel-content")
+}
+
+
+func clearOutput() -> Void {
+	const outputPanelContent = getOutputPanelContentElement()
+	outputPanelContent.innerHTML = ""
+}
+
+
+func renderOutput(output: String) -> Void {
+	const outputPanelContent = getOutputPanelContentElement()
+	outputPanelContent.innerHTML += output
+
+	console.log("Output:", output)
 }

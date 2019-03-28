@@ -1,5 +1,5 @@
 import BaseGenerator from '../BaseGenerator'
-import { createForAstNode } from '../factory'
+import { createForAstNode } from '../codeGeneratorFactory'
 import { IConditionalStatement } from '@/compiler/ast'
 
 export abstract class BaseConditionalStatementCodeGenerator<TNode extends IConditionalStatement>

@@ -29,7 +29,7 @@ export class TryCatchStatement extends Statement {
 		return <this>new TryCatchStatement(
 			this.attemptStatement.clone(),
 			this.errorHandlerStatement.clone(),
-			this.errorIdentifier.clone()
+			this.errorIdentifier ? this.errorIdentifier.clone() : undefined
 		)
 	}
 }

@@ -1,5 +1,5 @@
 import BaseGenerator from '../BaseGenerator'
-import { register } from '../factory'
+import { register } from '../codeGeneratorFactory'
 import { ImportStatement } from '@/compiler/ast'
 
 @register(node => node instanceof ImportStatement ? Infinity : 0)

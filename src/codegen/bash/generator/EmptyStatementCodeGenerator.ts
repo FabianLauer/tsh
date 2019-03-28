@@ -1,5 +1,5 @@
 import BaseGenerator from '../BaseGenerator'
-import { register } from '../factory'
+import { register } from '../codeGeneratorFactory'
 import { Statement } from '@/compiler/ast'
 
 @register(node => node === Statement.Empty ? Infinity : 0)

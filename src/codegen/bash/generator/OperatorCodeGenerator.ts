@@ -1,5 +1,5 @@
 import BaseGenerator from '../BaseGenerator'
-import { register } from '../factory'
+import { register } from '../codeGeneratorFactory'
 import { Operator, OperatorIdent } from '@/compiler/ast'
 
 @register(node => node instanceof Operator ? 1 : 0)

@@ -1,5 +1,5 @@
 import BaseGenerator from '../BaseGenerator'
-import { register, createForAstNode } from '../factory'
+import { register, createForAstNode } from '../codeGeneratorFactory'
 import { UnaryOperation, UnaryOperatorPosition } from '@/compiler/ast'
 
 @register(node => node instanceof UnaryOperation ? Infinity : 0)

@@ -1,5 +1,5 @@
 import BaseGenerator from '../BaseGenerator'
-import { register, createForAstNode } from '../factory'
+import { register, createForAstNode } from '../codeGeneratorFactory'
 import { FuncCall } from '@/compiler/ast'
 
 @register(node => node instanceof FuncCall ? Infinity : 0)

@@ -1,5 +1,5 @@
 import BaseGenerator from '../BaseGenerator'
-import { register } from '../factory'
+import { register } from '../codeGeneratorFactory'
 import { Token } from '@/compiler/ast'
 
 @register(node => node instanceof Token ? 1 : 0)

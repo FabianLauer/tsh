@@ -4,7 +4,7 @@ import BaseNode from './BaseNode'
  * Describes nodes that contain an arbitrary number of other nodes.
  * Used to create a common interface for different kinds of container nodes, such as `Statement`, `*DeclList`, etc.
  */
-export interface IContainerNode<TChildNodes extends BaseNode[]> extends BaseNode {
+export interface IContainerNode<TChildNode extends BaseNode> extends BaseNode {
 	/**
 	 * IContainerNode brand. This must be set to `IContainerNode.BRAND`.
 	 */
@@ -13,15 +13,20 @@ export interface IContainerNode<TChildNodes extends BaseNode[]> extends BaseNode
 	/**
 	 * Returns all child nodes of a container node.
 	 */
-	getChildNodes(): TChildNodes
+	getChildNodes(): TChildNode[]
+
+	/**
+	 * Replaces a child node of the container node.
+	 */
+	replaceChildNode(childNode: TChildNode, replacementNode: TChildNode): void
 }
 
 
 export namespace IContainerNode {
 	/**
-	 * Declares the IContainerNode type with `BaseNode[]`.
+	 * Declares the IContainerNode type with `BaseNode`.
 	 */
-	export type Any = IContainerNode<BaseNode[]>
+	export type Any = IContainerNode<BaseNode>
 
 	/**
 	 * The `IContainerNode` brand symbol.

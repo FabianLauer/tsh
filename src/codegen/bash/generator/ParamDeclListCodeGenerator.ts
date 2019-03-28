@@ -1,5 +1,5 @@
 import BaseGenerator from '../BaseGenerator'
-import { register } from '../factory'
+import { register } from '../codeGeneratorFactory'
 import { ParamDeclList } from '@/compiler/ast'
 
 @register(node => node instanceof ParamDeclList ? Infinity : 0)

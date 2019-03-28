@@ -1,5 +1,5 @@
 import BaseGenerator from '../BaseGenerator'
-import { register, createForAstNode } from '../factory'
+import { register, createForAstNode } from '../codeGeneratorFactory'
 import { Statement } from '@/compiler/ast'
 
 @register(node => node instanceof Statement ? 1 : 0)

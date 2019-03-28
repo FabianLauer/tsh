@@ -1,5 +1,5 @@
 import BaseGenerator from '../BaseGenerator'
-import { register } from '../factory'
+import { register } from '../codeGeneratorFactory'
 import { AnonFuncDecl, FuncDecl, MethodDecl } from '@/compiler/ast'
 
 @register(node => (

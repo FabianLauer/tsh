@@ -1,5 +1,5 @@
 import { BaseConditionalStatementCodeGenerator } from './BaseConditionalStatementCodeGenerator'
-import { register } from '../factory'
+import { register } from '../codeGeneratorFactory'
 import { ElseIfStatement } from '@/compiler/ast'
 
 @register(node => node instanceof ElseIfStatement ? 10 : 0)

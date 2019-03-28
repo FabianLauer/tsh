@@ -1,5 +1,5 @@
 import BaseGenerator from '../BaseGenerator'
-import { register } from '../factory'
+import { register } from '../codeGeneratorFactory'
 import { StringLiteral } from '@/compiler/ast'
 
 @register(node => node instanceof StringLiteral ? Infinity : 0)

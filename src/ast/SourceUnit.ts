@@ -55,6 +55,19 @@ export class SourceUnit extends BaseNode implements IContainerNode.Any {
 	public getChildNodes() {
 		return [].concat(this.items)
 	}
+
+	/**
+	 * Replaces a child node of the container node.
+	 */
+	public replaceChildNode(childNode: BaseNode, replacementNode: BaseNode): void {
+		const index = this.items.indexOf(childNode)
+
+		if (index === -1) {
+			throw new Error('Unknown child node.')
+		}
+
+		this.items.splice(index, 1, replacementNode)
+	}
 }
 
 export default SourceUnit

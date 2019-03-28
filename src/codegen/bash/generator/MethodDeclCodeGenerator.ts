@@ -1,6 +1,6 @@
 import BaseGenerator from '../BaseGenerator'
 import { FuncDeclCodeGenerator } from './FuncDeclCodeGenerator'
-import { register } from '../factory'
+import { register } from '../codeGeneratorFactory'
 import { MethodDecl, ClassDecl } from '@/compiler/ast'
 
 @register(node => node instanceof MethodDecl ? Infinity : 0)

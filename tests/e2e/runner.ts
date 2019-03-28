@@ -2,6 +2,7 @@ import { CompilerApi } from '@/compiler/api'
 import { readdirSync, statSync, readFileSync } from 'fs'
 import ICodeGeneratorTestContext from './ICodeGeneratorTestContext'
 import { importFromDirectorySync } from 'utils/importUtils'
+import { EOL } from 'os'
 
 const basedir = `${process.cwd()}/tests/e2e/`
 
@@ -61,6 +62,7 @@ function runTestCase(
 	// compare the transpiled code to the baseline code
 	it('transpiled code should match baseline', () => {
 		if (normalizeCode(baselineCode) !== normalizeCode(transpiledCode)) {
+			process.stdout.write(`-- DIFF ${testCaseFileName} --${EOL}`)
 			printDiff(normalizeCode(baselineCode), normalizeCode(transpiledCode))
 			throw new Error(`Transpiled code does not match baseline.`)
 		}
@@ -86,7 +88,7 @@ function printDiff(a: string, b: string) {
 		const color = part.added
 			? 'green'
 			: part.removed ? 'red' : 'grey'
-		process.stdout.write(part.value[color])
+		process.stdout.write(part.value[color] + EOL)
 	})
 }
 

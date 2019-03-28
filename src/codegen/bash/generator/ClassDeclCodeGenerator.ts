@@ -1,5 +1,5 @@
 import BaseGenerator from '../BaseGenerator'
-import { register, createForAstNode } from '../factory'
+import { register, createForAstNode } from '../codeGeneratorFactory'
 import { ClassDecl, MethodDecl, VarDecl, VarDeclModifier } from '@/compiler/ast'
 
 @register(node => node instanceof ClassDecl ? Infinity : 0)

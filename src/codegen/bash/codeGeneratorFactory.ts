@@ -1,5 +1,5 @@
 ///
-/// factory.ts
+/// codeGeneratorFactory.ts
 /// Functions to register and instantiate bash code generators.
 ///
 

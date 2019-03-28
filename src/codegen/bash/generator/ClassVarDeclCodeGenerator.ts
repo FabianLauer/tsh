@@ -1,5 +1,5 @@
 import { VarDeclCodeGenerator } from './VarDeclCodeGenerator'
-import { register } from '../factory'
+import { register } from '../codeGeneratorFactory'
 import { VarDecl, VarDeclModifier, Statement, ClassDecl } from '@/compiler/ast'
 
 @register(node => (

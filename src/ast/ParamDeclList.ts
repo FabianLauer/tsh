@@ -1,7 +1,7 @@
 import { assertAstNodeParam } from './utils/assert'
 import { BaseNode, IContainerNode, ParamDecl } from './'
 
-export class ParamDeclList extends BaseNode implements IContainerNode<ParamDecl[]> {
+export class ParamDeclList extends BaseNode implements IContainerNode<ParamDecl> {
 	private constructor(
 		/**
 		 * The parameter declarations in the list.
@@ -70,6 +70,19 @@ export class ParamDeclList extends BaseNode implements IContainerNode<ParamDecl[
 	 */
 	public getChildNodes() {
 		return [].concat(this.paramDecls)
+	}
+
+	/**
+	 * Replaces a child node of the container node.
+	 */
+	public replaceChildNode(childNode: ParamDecl, replacementNode: ParamDecl): void {
+		const index = this.decls.indexOf(childNode)
+
+		if (index === -1) {
+			throw new Error('Unknown child node.')
+		}
+
+		this.decls.splice(index, 1, replacementNode)
 	}
 }
 

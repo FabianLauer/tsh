@@ -1,5 +1,5 @@
 import BaseGenerator from '../BaseGenerator'
-import { register } from '../factory'
+import { register } from '../codeGeneratorFactory'
 import { Comment } from '@/compiler/ast'
 
 @register(node => node instanceof Comment ? Infinity : 0)
@@ -10,7 +10,6 @@ export class CommentCodeGenerator extends BaseGenerator<Comment> {
 	 * @param ast The syntax tree to generate code for.
 	 */
 	protected generateCodeConcrete(astNode: Comment) {
-		// we ignore comments in output
-		return ''
+		return '\n' + astNode.lines.map(line => `# ${line.rawValue}`).join('\n') + '\n'
 	}
 }

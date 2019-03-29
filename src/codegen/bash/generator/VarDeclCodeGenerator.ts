@@ -14,15 +14,6 @@ export class VarDeclCodeGenerator extends BaseGenerator<VarDecl> {
 		if (typeof astNode.assignment.content !== 'undefined') {
 			assignmentCode = ` = ${createForAstNode(astNode.assignment)}`
 		}
-		return `${this.generateDeclarationKeyword(astNode)}${astNode.name.rawValue}${assignmentCode};\n`
-	}
-
-
-	/**
-	 * Generate the keyword part of the variable declaration, for example `var `.
-	 * @param ast The syntax tree to generate code for.
-	 */
-	protected generateDeclarationKeyword(astNode: VarDecl) {
-		return 'var '
+		return `${astNode.name.rawValue}${assignmentCode};\n`
 	}
 }

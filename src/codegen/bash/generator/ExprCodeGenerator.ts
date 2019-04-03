@@ -16,6 +16,6 @@ export class ExprCodeGenerator extends BaseGenerator<Expr> {
 		if (typeof astNode.content !== 'string') {
 			return ''
 		}
-		return (<any>astNode.content).toString()
+		return `${(<any>astNode.content).toString()}`
 	}
 }

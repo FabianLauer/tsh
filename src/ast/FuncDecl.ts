@@ -51,6 +51,11 @@ export class FuncDecl extends AnonFuncDecl {
 		assertAstNodeParam(runtimeParamDecls instanceof ParamDeclList)
 		assertAstNodeParam(returnTypeDecl instanceof TypeExpr)
 		assertAstNodeParam(body instanceof Statement)
+
+		this.setParentOf(name, this)
+		this.setParentOf(runtimeParamDecls, this)
+		this.setParentOf(returnTypeDecl, this)
+		this.setParentOf(body, this)
 	}
 
 	/**

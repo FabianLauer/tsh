@@ -22,20 +22,23 @@ export class TryCatchStatementCodeGenerator extends BaseGenerator<TryCatchStatem
 	}
 
 	private generateTryBlock(astNode: TryCatchStatement) {
-		return `try {
+		return `{
 			${createForAstNode(astNode.attemptStatement)}
 		}`
 	}
 
 	private generateCatchBlockWithoutErrorVariable(astNode: TryCatchStatement) {
-		return ` catch {
+		return ` || {
 			${createForAstNode(astNode.errorHandlerStatement)}
-		}`
+		}\n`
 	}
 
 	private generateCatchBlockWithErrorVariable(astNode: TryCatchStatement) {
-		return ` catch (${astNode.errorIdentifier.name.rawValue}) {
-			${createForAstNode(astNode.errorHandlerStatement)}
-		}`
+		return ` 2>$1 | {
+			read -d "\0" -t 0.01 ${astNode.errorIdentifier.name.rawValue}
+			if [-z "$error"]; then
+				${createForAstNode(astNode.errorHandlerStatement)}
+			fi
+		}\n`
 	}
 }

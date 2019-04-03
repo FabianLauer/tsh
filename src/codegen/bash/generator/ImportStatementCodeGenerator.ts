@@ -11,12 +11,6 @@ export class ImportStatementCodeGenerator extends BaseGenerator<ImportStatement>
 	 */
 	protected generateCodeConcrete(astNode: ImportStatement) {
 		const importPath = astNode.importPath.contentToken.rawValue
-
-		return [
-			`var __import = require('${importPath}');`,
-			'for (var key in __import) global[key] = __import[key];',
-			// append an extra line so generated code is easier to read:
-			''
-		].join('\n')
+		return `source "${importPath}";\n`
 	}
 }

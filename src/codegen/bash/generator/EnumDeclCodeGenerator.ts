@@ -10,16 +10,6 @@ export class EnumDeclCodeGenerator extends BaseGenerator<EnumDecl> {
 	 * @param ast The syntax tree to generate code for.
 	 */
 	protected generateCodeConcrete(astNode: EnumDecl) {
-		const enumName = astNode.name.rawValue
-
-		const memberDecls = astNode.body.nodes.filter(node => (
-			node instanceof EnumMemberDecl
-		))
-
-		return `
-		/** @enum ${enumName} */
-		var ${enumName} = {
-			${memberDecls.map(createForAstNode).join(',\n')}
-		};\n\n`
+		return astNode.body.nodes.map(createForAstNode)
 	}
 }

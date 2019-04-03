@@ -12,6 +12,6 @@ export class EnumMemberDeclCodeGenerator extends BaseGenerator<EnumMemberDecl> {
 	protected generateCodeConcrete(astNode: EnumMemberDecl) {
 		const declName = astNode.name.rawValue
 
-		return `'${declName}': '${declName}'`
+		return `${declName}='${declName}'\n`
 	}
 }

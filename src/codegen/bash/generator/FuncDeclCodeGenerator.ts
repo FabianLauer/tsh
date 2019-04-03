@@ -14,14 +14,17 @@ export class FuncDeclCodeGenerator extends BaseGenerator<FuncDecl> {
 	 * @param ast The syntax tree to generate code for.
 	 */
 	protected generateCodeConcrete(astNode: FuncDecl) {
-		return `
-		${astNode.name.rawValue}() {
-			# parameter declarations:
-			${createForAstNode(astNode.runtimeParamDecls)}
+		const code = [
+			`${astNode.name.rawValue}() {`,
+			astNode.runtimeParamDecls ? createForAstNode(astNode.runtimeParamDecls) : undefined,
+			createForAstNode(astNode.body),
+			'}'
+		]
 
-			# function implementation:
-			${createForAstNode(astNode.body)}
-		}
-		`
+		// make sure there are newlines between all parts of the generated code
+		return code
+			.filter(Boolean)
+			.map(part => part.toString())
+			.map(part => part.slice(-1) !== '\n' ? `${part}\n` : part)
 	}
 }

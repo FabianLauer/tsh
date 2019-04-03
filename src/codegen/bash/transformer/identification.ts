@@ -1,28 +1,15 @@
 // tslint:disable:one-line
-
-import { ClassDecl, FuncDecl, MethodDecl, VarDecl, BaseNode, Token } from 'ast'
-
-/**
- * Finds the next highest class declaration node that contains the given AST node.
- * @param child The child to find the containing class declaration for.
- */
-function findContainingClassDecl(
-	node: (
-		MethodDecl |
-		VarDecl
-	)
-) {
-	let parent: BaseNode = node
-
-	do {
-		parent = parent.parent
-		if (!parent) {
-			return undefined
-		}
-	} while (!(parent instanceof ClassDecl))
-
-	return parent
-}
+import {
+	ClassDecl,
+	FuncDecl,
+	MethodDecl,
+	VarDecl,
+	Token,
+	VarDeclModifier,
+	EnumMemberDecl,
+	EnumDecl
+} from 'ast'
+import { findContainingNode } from 'ast/utils/traverse'
 
 /**
  * All node types that can have a unique name generated.
@@ -31,7 +18,8 @@ type IUniquelyNamedNode = (
 	ClassDecl |
 	FuncDecl |
 	MethodDecl |
-	VarDecl
+	VarDecl |
+	EnumMemberDecl
 )
 
 /**
@@ -46,19 +34,38 @@ export function getUniqueName(node: IUniquelyNamedNode): string {
 
 	// VarDecl:
 	else if (node instanceof VarDecl) {
-		const containingClassDecl = findContainingClassDecl(<VarDecl>node)
+		const containingClassDecl = findContainingNode<ClassDecl>(
+			<VarDecl>node,
+			parent => parent instanceof ClassDecl
+		)
+
 		if (!containingClassDecl) {
 			throw new Error(
 				'Cannot generate unique name for variable declaration that ' +
 				'is not member of a class declaration.'
 			)
 		}
-		return `var__${containingClassDecl.name.rawValue}__${node.name.rawValue}`
+
+		const isStatic = VarDeclModifier.doesCombinationContain(
+			node.modifiers,
+			VarDeclModifier.Static
+		)
+
+		let modifiers = '_public'
+		if (isStatic) {
+			modifiers += '_static'
+		}
+
+
+		return `var${modifiers}__${containingClassDecl.name.rawValue}__${node.name.rawValue}`
 	}
 
 	// MethodDecl:
 	else if (node instanceof MethodDecl) {
-		const containingClassDecl = findContainingClassDecl(<MethodDecl>node)
+		const containingClassDecl = findContainingNode<ClassDecl>(
+			<MethodDecl>node,
+			parent => parent instanceof ClassDecl
+		)
 		if (!containingClassDecl) {
 			throw new Error(
 				'Cannot generate unique name for method declaration that ' +
@@ -71,6 +78,22 @@ export function getUniqueName(node: IUniquelyNamedNode): string {
 	// FuncDecl:
 	else if (node instanceof FuncDecl) {
 		return `func__${node.name.rawValue}`
+	}
+
+	// EnumMemberDecl:
+	else if (node instanceof EnumMemberDecl) {
+		const containingEnumDecl = findContainingNode<EnumDecl>(
+			<MethodDecl>node,
+			parent => parent instanceof EnumDecl
+		)
+		if (!containingEnumDecl) {
+			throw new Error(
+				'Cannot generate unique name for enum member declaration that ' +
+				'is not member of an enum declaration.'
+			)
+		}
+
+		return `enum__${containingEnumDecl.name.rawValue}__${node.name.rawValue}`
 	}
 }
 

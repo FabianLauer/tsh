@@ -5,7 +5,7 @@ export class EnumMemberDecl extends BaseNode {
 	/**
 	 * Creates a new `EnumMemberDecl` instance.
 	 */
-	private constructor(
+	public constructor(
 		/**
 		 * The name of the enum member.
 		 */

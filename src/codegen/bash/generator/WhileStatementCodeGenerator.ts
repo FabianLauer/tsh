@@ -10,8 +10,8 @@ export class WhileStatementCodeGenerator extends BaseGenerator<WhileStatement> {
 	 * @param ast The syntax tree to generate code for.
 	 */
 	protected generateCodeConcrete(astNode: WhileStatement) {
-		return `while (${createForAstNode(astNode.condition)}) {
-            ${createForAstNode(astNode.body)}
-        }\n`
+		return `while ${createForAstNode(astNode.condition)}; do
+			${createForAstNode(astNode.body)}
+		done\n`
 	}
 }

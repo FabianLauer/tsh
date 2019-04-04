@@ -11,10 +11,8 @@ export class FuncCallCodeGenerator extends BaseGenerator<FuncCall> {
 	 */
 	protected generateCodeConcrete(astNode: FuncCall) {
 		return [
-			'$(',
 			`${createForAstNode(astNode.identifier)} `,
-			createForAstNode(astNode.parameterList),
-			')'
+			createForAstNode(astNode.parameterList)
 		]
 	}
 }

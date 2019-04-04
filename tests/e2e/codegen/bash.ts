@@ -1,7 +1,7 @@
 import { CompileTarget } from '@/compiler/api'
 import ICodeGeneratorTestContext from '../ICodeGeneratorTestContext'
 
-export const context = new class EcmaScriptTestContext implements ICodeGeneratorTestContext {
+export const context = new class BashTestContext implements ICodeGeneratorTestContext {
 	/**
 	 * The name of the output language.
 	 * This is used to search for baseline files in the `e2e/baseline` directory.

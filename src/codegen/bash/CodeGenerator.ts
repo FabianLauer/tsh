@@ -14,7 +14,28 @@ export class CodeGenerator extends BaseGenerator<SourceUnit> {
 	 */
 	protected generateCodeConcrete(ast: SourceUnit) {
 		const transformed = this.transformAstInContainerNode(ast.clone())
-		return transformed.getChildNodes().map(createGeneratorForAstNode).join('')
+		const transformedCode = transformed.getChildNodes().map(createGeneratorForAstNode).join('')
+
+		const code = [
+			'# library:',
+			this.getLibFileCode(),
+			'# program',
+			transformedCode,
+			'# entry point:',
+			'main',
+			'exit $?'
+		]
+
+		return code.join('\n')
+	}
+
+	private getLibFileCode(): string {
+		return `
+			print() {
+				local message=$1
+				printf $message
+			}
+		`
 	}
 
 	private transformAstInContainerNode(ast: IContainerNode.Any): IContainerNode.Any {

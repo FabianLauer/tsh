@@ -1,0 +1,8 @@
+{
+	"bash": {
+		"expectation": {
+			"exitCode": 0,
+			"stdout": "test"
+		}
+	}
+}

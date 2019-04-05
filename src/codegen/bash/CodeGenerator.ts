@@ -1,8 +1,7 @@
-import { SourceUnit, IContainerNode, ClassDecl, EnumDecl } from '@/compiler/ast'
+import { SourceUnit } from '@/compiler/ast'
 import { BaseGenerator } from './BaseGenerator'
 import { createForAstNode as createGeneratorForAstNode } from './codeGeneratorFactory'
-import { classTransformer } from './transformer/classTransformer'
-import { enumTransformer } from './transformer/enumTransformer'
+import { astTransformer } from './transformer/astTransformer'
 
 /**
  * Main code generator for the bash compile target.
@@ -13,15 +12,20 @@ export class CodeGenerator extends BaseGenerator<SourceUnit> {
 	 * @param ast The syntax tree to generate code for.
 	 */
 	protected generateCodeConcrete(ast: SourceUnit) {
-		const transformed = this.transformAstInContainerNode(ast.clone())
-		const transformedCode = transformed.getChildNodes().map(createGeneratorForAstNode).join('')
+		const transformedAst = astTransformer(ast)
+		const transformedCode = transformedAst.transformedNode.getChildNodes().map(createGeneratorForAstNode).join('')
 
 		const code = [
-			'# library:',
+			// add the library code
+			this.createSectionComment('library'),
 			this.getLibFileCode(),
-			'# program',
+
+			// add the actual program code
+			this.createSectionComment('program'),
 			transformedCode,
-			'# entry point:',
+
+			// add code that starts the program
+			this.createSectionComment('program entry point'),
 			'main',
 			'exit $?'
 		]
@@ -29,35 +33,28 @@ export class CodeGenerator extends BaseGenerator<SourceUnit> {
 		return code.join('\n')
 	}
 
+	private createSectionComment(sectionTitle: string) {
+		return [
+			'#####',
+			`##### ${sectionTitle}`,
+			'#####'
+		].join('\n')
+	}
+
 	private getLibFileCode(): string {
-		return `
+		const code = `
 			print() {
 				local message=$1
 				printf $message
-			}
-		`
-	}
+			}`
 
-	private transformAstInContainerNode(ast: IContainerNode.Any): IContainerNode.Any {
-		ast.getChildNodes().forEach(node => {
-			if (node instanceof ClassDecl) {
-				const transformation = classTransformer(node)
-				ast.replaceChildNode(
-					transformation.originalNode,
-					transformation.transformedNode
-				)
-			}
-
-			if (node instanceof EnumDecl) {
-				const transformation = enumTransformer(node)
-				ast.replaceChildNode(
-					transformation.originalNode,
-					transformation.transformedNode
-				)
-			}
-		})
-
-		return ast
+		return code
+			// remove the first blank line
+			.replace(/\n/, '')
+			// remove the unnecessary indentation from the code
+			.replace(/\n\t{3}/g, '\n') +
+			// append a newline
+			'\n'
 	}
 }
 
